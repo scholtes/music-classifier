@@ -39,5 +39,10 @@ namespace Framework
         {
             audioPlayer.controls.stop();
         }
+
+        public void setPosition(double percentage)
+        {
+            audioPlayer.controls.currentPosition = percentage;
+        }
     }
 }

@@ -39,8 +39,8 @@ namespace EmotionalGUI
         // A button to test functionality
         private void button2_Click(object sender, EventArgs e)
         {
-            addButton();
-            //player = new MediaController(metadataDTO, dir);
+            //addButton();
+            player = new MediaController(metadataDTO, dir);
         }
 
         private void playButton_Click(object sender, EventArgs e)
@@ -83,7 +83,6 @@ namespace EmotionalGUI
             Button button = new Button();
             button.Click += (s, e) => { System.Console.Beep(); };
             button.Text = "Test " + buttonCount.ToString();
-            //button.Location.X = Convert.ToInt32(50 * Math.Floor(buttonCount / 2.0));
             Point location = new Point();
             location.Y = Convert.ToInt32(50 * Math.Floor(buttonCount / 2.0));
             location.X = 200 * (buttonCount++ % 2);
@@ -91,6 +90,15 @@ namespace EmotionalGUI
             Panel pan = this.Controls.Find("panel2", true).First() as Panel;
             pan.Controls.Add(button);
 
+        }
+
+        private void progressBar1_Click(object sender, EventArgs e)
+        {
+            Fraction frac = new Fraction();
+            frac.numerator = ((MouseEventArgs)e).X - ((ProgressBar)sender).Location.X;
+            frac.denominator = ((ProgressBar)sender).Width;
+            double seconds = frac.estimateFraction() * player.getTotalSeconds();
+            player.Seek(seconds);
         }
     }
 }

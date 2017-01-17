@@ -1,6 +1,4 @@
 ﻿using System;
-using System.IO;
-using System.Collections.Generic;
 
 namespace Framework
 {
@@ -18,6 +16,7 @@ namespace Framework
         private PlayList playlist = null;
         private PlayerStatus playerstatus = PlayerStatus.Stopped;
         private PlayerAndTagDTO currentPlayerAndTag = null;
+        private TimeSpan duration;
 
         private MediaController() { throw new Exception("How did you call this?"); }
         public MediaController(MetaDataDTO MDD, string dir)
@@ -78,6 +77,17 @@ namespace Framework
             currentPlayerAndTag = data;
             data.player.Play(song);
             playerstatus = PlayerStatus.Playing;
+        }
+
+        public void Seek(double seconds)
+        {
+            currentPlayerAndTag.player.setPosition(seconds);
+        }
+
+        public double getTotalSeconds()
+        {
+            TimeSpan timespan = currentPlayerAndTag.tagmanager.getDuration();
+            return timespan.TotalSeconds;
         }
     }
 }

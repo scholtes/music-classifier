@@ -53,6 +53,7 @@
     <Compile Include="EmotionSpaceDTO.cs" />
     <Compile Include="IDatabaseArgs.cs" />
     <Compile Include="MediaController.cs" />
+    <Compile Include="Fraction.cs" />
     <Compile Include="PlayerAndTagDTO.cs" />
     <Compile Include="MediaPlayback\IAudioPlayer.cs" />
     <Compile Include="MetaDataDTO.cs" />

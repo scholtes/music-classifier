@@ -16,5 +16,7 @@ namespace Framework
         void Stop();
         // Resumes Playback from the paused state
         void Resume();
+        // Start the audio at the specified time (in seconds)
+        void setPosition(double seconds);
     }
 }

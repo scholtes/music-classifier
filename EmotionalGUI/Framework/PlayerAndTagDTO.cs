@@ -16,9 +16,10 @@ namespace Framework
             DTO.Duration.Text = manager.getDuration().ToString(@"mm\:ss");
             DTO.Thumbnail.Image = manager.getThumbnail();
             DTO.Title.Text = manager.getTitle();
+            tagmanager = manager;
         }
 
         public IAudioPlayer player;
-        private ITagManager tagmanager;
+        public ITagManager tagmanager;
     }
 }
