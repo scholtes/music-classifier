@@ -4,7 +4,7 @@ function [ N ] = normalize( A, k, min1, Max1 )
 % A different min/max range to normalize to can be chosen for each
 % attribute, so min1 and max1 are `1`x`size(A,2)` vectors
 A_sort = sort(A);
-min0 = A_sort(k,:);
+min0 = A_sort(k+1,:);
 Max0 = A_sort(end-k,:);
 
 coeff = repmat((Max1-min1)./(Max0-min0), size(A,1), 1);

@@ -14,6 +14,8 @@ ricky = xlsread('formatted/ricky.xlsx');
 
 % Number of data points
 COUNT = size(daniel, 1); 
+WIDTH = size(daniel, 2);
+TEAM_MEMBERS = 4;
 
 %% Visualize the 2-D emotion distribution for each person 
 figure; 
@@ -132,16 +134,8 @@ xlabel('song (sorted)');
 ylabel('confidence');
 
 
-%% Median values and variance 
-% We are interested in comparing the amount of variance among the group
-% members for each attribute for each song.  
-% The above distributions appear to be similar, but that alone is not
-% enough to ensure that variance among team members will be low.  
-% 
-% The median will serve as a decent measure of center for the "baseline" 
-% scores for the team.  The reasoning behind this is that if 3 team members
-% are in similar agreement on values but one is an outlier, the median will
-% represent a less biased middle  
+%% Normalize data
+% We need to make everyone's data fall within the same range.
 
 close all;
 
@@ -190,12 +184,97 @@ xlabel('positivity');
 ylabel('intensity');
 legend('Daniel','Garrett','Meeks','Ricky');
 
+close all;
+
 % More normalization integrity checking 
 figure;
 
+subplot(1,3,1);
+plot(dan_norm(:,1),sort(dan_norm(:,2)),'r.', ...
+     gar_norm(:,1),sort(gar_norm(:,2)),'b.', ...
+     mee_norm(:,1),sort(mee_norm(:,2)),'m.', ...
+     ric_norm(:,1),sort(ric_norm(:,2)),'k.');
+title('Positivity distribution');
+xlabel('song (sorted, per person)');
+ylabel('positivity');
+legend('Daniel','Garrett','Meeks','Ricky');
 
-subplot(3,1,1);
-plot(sort(dan_norm(:,1)),dan_norm(:,2),'r.', ...
-     sort(dan_norm(:,1)),dan_norm(:,2),'r.', ...
-     sort(dan_norm(:,1)),dan_norm(:,2),'r.', ...
-     sort(dan_norm(:,1)),dan_norm(:,2),'r.');
+subplot(1,3,2);
+plot(dan_norm(:,1),sort(dan_norm(:,3)),'r.', ...
+     gar_norm(:,1),sort(gar_norm(:,3)),'b.', ...
+     mee_norm(:,1),sort(mee_norm(:,3)),'m.', ...
+     ric_norm(:,1),sort(ric_norm(:,3)),'k.');
+title('Intensity distribution');
+xlabel('song (sorted, per person)');
+ylabel('intensity');
+legend('Daniel','Garrett','Meeks','Ricky');
+
+subplot(1,3,3);
+plot(dan_norm(:,1),sort(dan_norm(:,4)),'r.', ...
+     gar_norm(:,1),sort(gar_norm(:,4)),'b.', ...
+     mee_norm(:,1),sort(mee_norm(:,4)),'m.', ...
+     ric_norm(:,1),sort(ric_norm(:,4)),'k.');
+title('Confidence distribution');
+xlabel('song (sorted, per person)');
+ylabel('confidence');
+legend('Daniel','Garrett','Meeks','Ricky');
+
+
+%% Median values and variance 
+% We are interested in comparing the amount of variance among the group
+% members for each attribute for each song.  
+% The above distributions appear to be similar, but that alone is not
+% enough to ensure that variance among team members will be low.  
+% 
+% The median will serve as a decent measure of center for the "baseline" 
+% scores for the team.  The reasoning behind this is that if 3 team members
+% are in similar agreement on values but one is an outlier, the median will
+% represent a less biased middle  
+
+close all;
+
+norm_tensor = zeros(COUNT, WIDTH, TEAM_MEMBERS); 
+norm_tensor(:,:,1) = dan_norm;
+norm_tensor(:,:,2) = gar_norm;
+norm_tensor(:,:,3) = mee_norm;
+norm_tensor(:,:,4) = ric_norm;
+
+mean_data = mean(norm_tensor, 3);
+
+% Graph each variable, with the x axis representing the same song for every
+% person (songs sorted by the median) 
+figure;
+[~, order] = sort(mean_data(:,2));
+plot(1:COUNT,dan_norm(order,2),'r.', ...
+     1:COUNT,gar_norm(order,2),'b.', ...
+     1:COUNT,mee_norm(order,2),'m.', ...
+     1:COUNT,ric_norm(order,2),'k.', ...
+     1:COUNT,mean_data(order,2),'k-');
+title('Song vs positivity');
+xlabel('song ID (sorted by median)');
+ylabel('positivity');
+legend('Daniel','Garrett','Meeks','Ricky','(median)');
+
+figure;
+[~, order] = sort(mean_data(:,3));
+plot(1:COUNT,dan_norm(order,3),'r.', ...
+     1:COUNT,gar_norm(order,3),'b.', ...
+     1:COUNT,mee_norm(order,3),'m.', ...
+     1:COUNT,ric_norm(order,3),'k.', ...
+     1:COUNT,mean_data(order,3),'k-');
+title('Song vs intensity');
+xlabel('song ID (sorted by median)');
+ylabel('intensity');
+legend('Daniel','Garrett','Meeks','Ricky','(median)');
+
+figure;
+[~, order] = sort(mean_data(:,4));
+plot(1:COUNT,dan_norm(order,4),'r.', ...
+     1:COUNT,gar_norm(order,4),'b.', ...
+     1:COUNT,mee_norm(order,4),'m.', ...
+     1:COUNT,ric_norm(order,4),'k.', ...
+     1:COUNT,mean_data(order,4),'k-');
+title('Song vs confidence');
+xlabel('song ID (sorted by median)');
+ylabel('confidence');
+legend('Daniel','Garrett','Meeks','Ricky','(median)');
