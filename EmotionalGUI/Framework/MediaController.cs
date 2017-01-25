@@ -2,6 +2,9 @@
 
 namespace Framework
 {
+    /// <summary>
+    /// Enumerations for the current status of the audio player
+    /// </summary>
     enum PlayerStatus
     {
         Playing,
@@ -9,85 +12,94 @@ namespace Framework
         Stopped
     }
 
+    /// <summary>
+    /// A class used to control the audio player and write label information
+    /// </summary>
     public class MediaController
     {
-        public MetaDataDTO metadataLabels = null;
+        #region Properties
+        public MetaDataLabelsDTO metadataLabels = null;
         public string directory = null;
         private PlayList playlist = null;
         private PlayerStatus playerstatus = PlayerStatus.Stopped;
         private PlayerAndTagDTO currentPlayerAndTag = null;
-        private TimeSpan duration;
+        TimeKeeper timer;
+        #endregion
 
-        private MediaController() { throw new Exception("How did you call this?"); }
-        public MediaController(MetaDataDTO MDD, string dir)
+        #region Constructors
+        private MediaController() { }
+        public MediaController(MetaDataLabelsDTO MDD, string dir)
         {
             metadataLabels = MDD;
             directory = dir;
             playlist = new PlayList(dir);
+            timer = new TimeKeeper(MDD.Time);
         }
+        #endregion
 
+        #region Methods
         public void Play()
         {
-            if(playerstatus == PlayerStatus.Stopped)
+            if (playerstatus == PlayerStatus.Stopped)
             {
-                string song = playlist.getCurrentSong();
-                PlayerAndTagDTO data = MediaClassifier.getDTO(metadataLabels,song);
+                string song = playlist.getSong();
+                PlayerAndTagDTO data = MediaClassifier.getDTO(song);
                 currentPlayerAndTag = data;
-                data.player.Play(song);
+                timer.max = data.TagManager.getDuration();
+                timer.Start();
+                data.AudioPlayer.Play(song);
                 playerstatus = PlayerStatus.Playing;
                 return;
             }
 
-            if(playerstatus == PlayerStatus.Playing)
+            if (playerstatus == PlayerStatus.Playing)
             {
-                currentPlayerAndTag.player.Pause();
+                timer.Pause();
+                currentPlayerAndTag.AudioPlayer.Pause();
                 playerstatus = PlayerStatus.Paused;
                 return;
             }
 
-            if(playerstatus == PlayerStatus.Paused)
+            if (playerstatus == PlayerStatus.Paused)
             {
-                string song = playlist.getCurrentSong();
-                currentPlayerAndTag.player.Resume();
-                playerstatus = PlayerStatus.Playing;return;
+                timer.Start();
+                currentPlayerAndTag.AudioPlayer.Resume();
+                playerstatus = PlayerStatus.Playing;
+                return;
             }
         }
 
         public void Stop()
         {
-            currentPlayerAndTag.player.Stop();
+            timer.Reset();
+            currentPlayerAndTag.AudioPlayer.Stop();
             playerstatus = PlayerStatus.Stopped;
         }
 
         public void Prev()
         {
-            string song = playlist.getPrevSong();
-            PlayerAndTagDTO data = MediaClassifier.getDTO(metadataLabels,song);
-            currentPlayerAndTag.player.Stop();
-            currentPlayerAndTag = data;
-            data.player.Play(song);
-            playerstatus = PlayerStatus.Playing;
+            playlist.cyclePlaylistBackwards();
+            this.Stop();
+            this.Play();
         }
 
         public void Next()
         {
-            string song = playlist.getNextSong();
-            PlayerAndTagDTO data = MediaClassifier.getDTO(metadataLabels,song);
-            currentPlayerAndTag.player.Stop();
-            currentPlayerAndTag = data;
-            data.player.Play(song);
-            playerstatus = PlayerStatus.Playing;
+            playlist.cyclePlaylistForwards();
+            this.Stop();
+            this.Play();
         }
 
         public void Seek(double seconds)
         {
-            currentPlayerAndTag.player.setPosition(seconds);
+            currentPlayerAndTag.AudioPlayer.setPosition(seconds);
         }
 
         public double getTotalSeconds()
         {
-            TimeSpan timespan = currentPlayerAndTag.tagmanager.getDuration();
+            TimeSpan timespan = currentPlayerAndTag.TagManager.getDuration();
             return timespan.TotalSeconds;
         }
+        #endregion
     }
 }

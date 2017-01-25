@@ -6,17 +6,30 @@ namespace Framework
 {
     public class PlayList
     {
+        #region Properties
         private string dir = null;
         private LinkedList<string> playlist = null;
+        #endregion
 
+        #region Constructors
         private PlayList() { }
         public PlayList(string directory)
         {
+            if(String.IsNullOrEmpty(directory))
+            {
+                throw new ArgumentException("Directory cannot be empty");
+            }
+            if (!Directory.Exists(directory))
+            {
+                throw new ArgumentException("Invalid Directory");
+            }
             dir = directory;
             populatePlaylist();
         }
+        #endregion
 
-        // Creates a playlist supported filetypes given a directory (non recursive)
+        #region Methods
+        // Nonrecursively checks directory for supported filetypes and creates a playlist out of them
         private void populatePlaylist()
         {
             playlist = new LinkedList<string>();
@@ -34,25 +47,34 @@ namespace Framework
             }
         }
 
-        public string getCurrentSong()
+        /// <summary>
+        /// Gets the currently selected song from the playlist
+        /// </summary>
+        /// <returns>A fully qualified path to a song file</returns>
+        public string getSong()
         {
             return playlist.First.Value;
         }
 
-        public string getNextSong()
+        /// <summary>
+        /// Cycles the playlist forward one song
+        /// </summary>
+        public void cyclePlaylistForwards()
         {
             string song = playlist.First.Value;
             playlist.RemoveFirst();
             playlist.AddLast(song);
-            return playlist.First.Value;
         }
 
-        public string getPrevSong()
+        /// <summary>
+        /// Cycles the playlist backwards one song
+        /// </summary>
+        public void cyclePlaylistBackwards()
         {
             string song = playlist.Last.Value;
             playlist.RemoveLast();
             playlist.AddFirst(song);
-            return song;
         }
+        #endregion
     }
 }

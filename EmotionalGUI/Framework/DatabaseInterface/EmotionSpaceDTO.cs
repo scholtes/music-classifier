@@ -1,31 +1,32 @@
 ﻿using System;
 
-
 namespace Framework
 {
-    class EmotionSpaceDTO
+    /// <summary>
+    /// DTO used for Database Transactions
+    /// </summary>
+    public class EmotionSpaceDTO
     {
-        double intensity
+        double Energy
         {
             get
             {
-                return intensity;
+                return Energy;
             }
             set
             {
                 if(value > 1 || value < 0)
                 {
-                    throw new Exception("Invalid value for intensity");
+                    throw new Exception("Invalid value for energy");
                 }
-                intensity = value;
+                Energy = value;
             }
         }
-
-        double positivity
+        double Positivity
         {
             get
             {
-                return positivity;
+                return Positivity;
             }
             set
             {
@@ -33,7 +34,7 @@ namespace Framework
                 {
                     throw new Exception("Invalid value for positivity");
                 }
-                positivity = value;
+                Positivity = value;
             }
         }
     }

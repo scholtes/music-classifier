@@ -8,13 +8,23 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Framework;
+using System.Runtime.InteropServices;
 
 namespace EmotionalGUI
 {
     public partial class Canvas : Form
     {
+        public const int WM_NCLBUTTONDOWN = 0xA1;
+        public const int HT_CAPTION = 0x2;
+
+        [DllImportAttribute("user32.dll")]
+        public static extern int SendMessage(IntPtr hWnd,
+                         int Msg, int wParam, int lParam);
+        [DllImportAttribute("user32.dll")]
+        public static extern bool ReleaseCapture();
+
         private MediaController player = null;
-        private MetaDataDTO metadataDTO = null;
+        private MetaDataLabelsDTO metadataDTO = null;
         Settings settings = null;
         string dir = null;
         int buttonCount = 0;
@@ -22,14 +32,16 @@ namespace EmotionalGUI
         public Canvas()
         {
             InitializeComponent();
-            
-            metadataDTO = new MetaDataDTO()
+
+            metadataDTO = new MetaDataLabelsDTO()
             {
-                Album = this.Controls.Find("albumLabel",true).First() as Label,
+                Album = this.Controls.Find("albumLabel", true).First() as Label,
                 Artist = this.Controls.Find("artistLabel", true).First() as Label,
                 Duration = this.Controls.Find("durationLabel", true).First() as Label,
                 Thumbnail = this.Controls.Find("thumbNailPictureBox", true).First() as PictureBox,
-                Title = this.Controls.Find("titleLabel", true).First() as Label
+                Title = this.Controls.Find("titleLabel", true).First() as Label,
+                Time = this.Controls.Find("currentTime",true).First() as Label
+
             };
             settings = new Settings();
             settings.Owner = this;
@@ -49,7 +61,7 @@ namespace EmotionalGUI
         }
 
         private void stopButton_Click(object sender, EventArgs e)
-        { 
+        {
             player.Stop();
         }
 
@@ -99,6 +111,15 @@ namespace EmotionalGUI
             frac.denominator = ((ProgressBar)sender).Width;
             double seconds = frac.estimateFraction() * player.getTotalSeconds();
             player.Seek(seconds);
+        }
+
+        private void panel1_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                ReleaseCapture();
+                SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+            }
         }
     }
 }

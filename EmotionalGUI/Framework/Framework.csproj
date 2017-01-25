@@ -50,8 +50,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EmotionSpaceDTO.cs" />
-    <Compile Include="IDatabaseArgs.cs" />
+    <Compile Include="DatabaseInterface\EmotionSpaceDTO.cs" />
+    <Compile Include="DatabaseInterface\IDatabaseArgs.cs" />
     <Compile Include="MediaController.cs" />
     <Compile Include="Fraction.cs" />
     <Compile Include="PlayerAndTagDTO.cs" />
@@ -64,6 +64,7 @@
     <Compile Include="Song MetaData\Datatypes\MP3.cs" />
     <Compile Include="SupportedFiletypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TimeKeeper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Framework
 {
@@ -17,10 +13,10 @@ namespace Framework
         // Get the song artist
         string getArtist();
 
-        // get the album art
+        // Get the album art
         System.Drawing.Image getThumbnail();
 
-        // get the song duration
+        // Get the song duration
         TimeSpan getDuration();
     }
 }

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 using System.Drawing;
 
@@ -10,36 +6,64 @@ namespace Framework
 {
     class MP3 : ITagManager
     {
-        // Properties
+        #region Properties
         private TagLib.Mpeg.AudioFile file = null;
         private string path;
+        #endregion
 
-        //Constructors
+        #region Constructors
+        private MP3() { }
         public MP3(string songpath)
         {
+            if (!songpath.ToLower().Contains(".mp3"))
+            {
+                throw new ArgumentException("File is not an mp3");
+            }
+            if (String.IsNullOrEmpty(songpath))
+            {
+                throw new ArgumentException("No songpath given");
+            }
+            if(!File.Exists(songpath))
+            {
+                throw new ArgumentException("File not found");
+            }
             path = songpath;
             file = new TagLib.Mpeg.AudioFile(songpath);
         }
+        #endregion
 
-        // This should toss an exception as a safety check because songpath is absolutely needed
-        private MP3() { throw new Exception("How did you call this?"); }
-
-        //Methods
+        #region Methods
+        /// <summary>
+        /// Returns the title of the mp3
+        /// </summary>
+        /// <returns>The title</returns>
         public string getTitle()
         {
             return file.Tag.Title;
         }
 
+        /// <summary>
+        /// Returns the Album of the mp3
+        /// </summary>
+        /// <returns>The album</returns>
         public string getAlbum()
         {
             return file.Tag.Album;
         }
 
+        /// <summary>
+        /// Returns the first Artist of the mp3
+        /// </summary>
+        /// <returns>An artist</returns>
         public string getArtist()
         {
             return file.Tag.AlbumArtists[0];
         }
 
+        /// <summary>
+        /// Returns the thumbnail image of an mp3
+        /// </summary>
+        /// <returns>An image</returns>
         public Image getThumbnail()
         {
             if (file.Tag.Pictures.Length >= 1)
@@ -50,9 +74,14 @@ namespace Framework
             return null;
         }
 
+        /// <summary>
+        /// Returns the Duration of a song
+        /// </summary>
+        /// <returns>The duration</returns>
         public TimeSpan getDuration()
         {
             return file.Properties.Duration;
         }
+        #endregion
     }
 }

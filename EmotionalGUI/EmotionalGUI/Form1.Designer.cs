@@ -43,6 +43,7 @@
             this.artist = new System.Windows.Forms.Label();
             this.title = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.panel5 = new System.Windows.Forms.Panel();
             this.Settings = new System.Windows.Forms.Button();
             this.nextButton = new System.Windows.Forms.Button();
@@ -51,7 +52,6 @@
             this.playButton = new System.Windows.Forms.Button();
             this.panel6 = new System.Windows.Forms.Panel();
             this.thumbNailPictureBox = new System.Windows.Forms.PictureBox();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             panel2 = new System.Windows.Forms.Panel();
             panel2.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -91,6 +91,7 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(500, 40);
             this.panel1.TabIndex = 0;
+            this.panel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseDown);
             // 
             // appName
             // 
@@ -208,6 +209,14 @@
             this.panel4.Size = new System.Drawing.Size(500, 25);
             this.panel4.TabIndex = 3;
             // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(0, 3);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(500, 19);
+            this.progressBar1.TabIndex = 5;
+            this.progressBar1.Click += new System.EventHandler(this.progressBar1_Click);
+            // 
             // panel5
             // 
             this.panel5.BackColor = System.Drawing.SystemColors.ActiveBorder;
@@ -287,14 +296,6 @@
             this.thumbNailPictureBox.Size = new System.Drawing.Size(206, 101);
             this.thumbNailPictureBox.TabIndex = 0;
             this.thumbNailPictureBox.TabStop = false;
-            // 
-            // progressBar1
-            // 
-            this.progressBar1.Location = new System.Drawing.Point(0, 3);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(500, 19);
-            this.progressBar1.TabIndex = 5;
-            this.progressBar1.Click += new System.EventHandler(this.progressBar1_Click);
             // 
             // Canvas
             // 
