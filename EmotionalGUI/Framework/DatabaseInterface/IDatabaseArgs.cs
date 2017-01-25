@@ -18,6 +18,13 @@ namespace Framework
         /// <param name="minValueEmotionSpaceDTO"></param>
         /// <param name="maxValueEmotionSpaceDTO"></param>
         /// <returns></returns>
-        string[] getSongWithConstraints(int numberOfSongs, EmotionSpaceDTO minValueEmotionSpaceDTO, EmotionSpaceDTO maxValueEmotionSpaceDTO);
+        string[] getSongithConstraints(int numberOfSongs, EmotionSpaceDTO minValueEmotionSpaceDTO, EmotionSpaceDTO maxValueEmotionSpaceDTO);
+
+        /// <summary>
+        /// Adds a song to the database
+        /// </summary>
+        /// <param name="songpath">The location of the song</param>
+        /// <param name="emotionSpaceDTO">The coordinates in the emotionspace</param>
+        void addSongToDatabase(string songpath, EmotionSpaceDTO emotionSpaceDTO);
     }
 }
