@@ -19,21 +19,19 @@ namespace Framework
     {
         #region Properties
         public MetaDataLabelsDTO metadataLabels = null;
-        public string directory = null;
-        private PlayList playlist = null;
+        public PlayList playlist = null;
         private PlayerStatus playerstatus = PlayerStatus.Stopped;
-        private PlayerAndTagDTO currentPlayerAndTag = null;
+        private SongDTO songDTO = null;
         TimeKeeper timer;
         #endregion
 
         #region Constructors
         private MediaController() { }
-        public MediaController(MetaDataLabelsDTO MDD, string dir)
+        public MediaController(MetaDataLabelsDTO MDD)
         {
             metadataLabels = MDD;
-            directory = dir;
-            playlist = new PlayList(dir);
             timer = new TimeKeeper(MDD.Time);
+            playlist = new PlayList();
         }
         #endregion
 
@@ -43,11 +41,11 @@ namespace Framework
             if (playerstatus == PlayerStatus.Stopped)
             {
                 string song = playlist.getSong();
-                PlayerAndTagDTO data = MediaClassifier.getDTO(song);
-                currentPlayerAndTag = data;
-                timer.max = data.TagManager.getDuration();
+                songDTO = SongDTOMapper.getSongDTO(song);
+                timer.max = songDTO.songTag.getDuration();
                 timer.Start();
-                data.AudioPlayer.Play(song);
+                updateMetaDataLabels();
+                songDTO.songPlayer.Play(song);
                 playerstatus = PlayerStatus.Playing;
                 return;
             }
@@ -55,7 +53,8 @@ namespace Framework
             if (playerstatus == PlayerStatus.Playing)
             {
                 timer.Pause();
-                currentPlayerAndTag.AudioPlayer.Pause();
+                setTimeLabel(timer.getAccumulatedTime());
+                songDTO.songPlayer.Pause();
                 playerstatus = PlayerStatus.Paused;
                 return;
             }
@@ -63,7 +62,7 @@ namespace Framework
             if (playerstatus == PlayerStatus.Paused)
             {
                 timer.Start();
-                currentPlayerAndTag.AudioPlayer.Resume();
+                songDTO.songPlayer.Resume();
                 playerstatus = PlayerStatus.Playing;
                 return;
             }
@@ -72,7 +71,8 @@ namespace Framework
         public void Stop()
         {
             timer.Reset();
-            currentPlayerAndTag.AudioPlayer.Stop();
+            setTimeLabel(new TimeSpan(0));
+            songDTO.songPlayer.Stop();
             playerstatus = PlayerStatus.Stopped;
         }
 
@@ -90,15 +90,29 @@ namespace Framework
             this.Play();
         }
 
-        public void Seek(double seconds)
+        public void Seek(double percent)
         {
-            currentPlayerAndTag.AudioPlayer.setPosition(seconds);
+            double seconds = percent * songDTO.songTag.getDuration().TotalSeconds;
+            TimeSpan time = new TimeSpan(0, (int)seconds / 60, (int)seconds % 60);
+            timer.setAccumulatedTime(time);
+            songDTO.songPlayer.setPosition(seconds);
+            playerstatus = PlayerStatus.Paused;
         }
 
-        public double getTotalSeconds()
+        private void updateMetaDataLabels()
         {
-            TimeSpan timespan = currentPlayerAndTag.TagManager.getDuration();
-            return timespan.TotalSeconds;
+            metadataLabels.Album.Text = songDTO.songTag.getAlbum();
+            metadataLabels.Artist.Text = songDTO.songTag.getArtist();
+            metadataLabels.Duration.Text = songDTO.songTag.getDuration().ToString(@"mm\:ss");
+            metadataLabels.Thumbnail.Image = songDTO.songTag.getThumbnail();
+            metadataLabels.Title.Text = songDTO.songTag.getTitle();
+            setTimeLabel(new TimeSpan(0));
+        }
+
+        private void setTimeLabel(TimeSpan time)
+        {
+            string result = time.ToString(@"mm\:ss");
+            metadataLabels.Time.Text = result;
         }
         #endregion
     }

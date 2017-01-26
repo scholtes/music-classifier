@@ -1,7 +1,7 @@
 ﻿
 namespace Framework
 {
-    interface IDatabaseArgs
+    interface IDatabase
     {
         /// <summary>
         /// Get a list of X of the closest matching songs, DTO is a coordinate in emotionspace
@@ -18,7 +18,7 @@ namespace Framework
         /// <param name="minValueEmotionSpaceDTO"></param>
         /// <param name="maxValueEmotionSpaceDTO"></param>
         /// <returns></returns>
-        string[] getSongithConstraints(int numberOfSongs, EmotionSpaceDTO minValueEmotionSpaceDTO, EmotionSpaceDTO maxValueEmotionSpaceDTO);
+        string[] getSongsWithConstraints(int numberOfSongs, EmotionSpaceDTO minValueEmotionSpaceDTO, EmotionSpaceDTO maxValueEmotionSpaceDTO);
 
         /// <summary>
         /// Adds a song to the database

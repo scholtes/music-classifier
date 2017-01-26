@@ -7,43 +7,33 @@ namespace Framework
     public class PlayList
     {
         #region Properties
-        private string dir = null;
         private LinkedList<string> playlist = null;
         #endregion
 
         #region Constructors
-        private PlayList() { }
-        public PlayList(string directory)
-        {
-            if(String.IsNullOrEmpty(directory))
-            {
-                throw new ArgumentException("Directory cannot be empty");
-            }
-            if (!Directory.Exists(directory))
-            {
-                throw new ArgumentException("Invalid Directory");
-            }
-            dir = directory;
-            populatePlaylist();
-        }
+        public PlayList() { }
         #endregion
 
         #region Methods
-        // Nonrecursively checks directory for supported filetypes and creates a playlist out of them
-        private void populatePlaylist()
+
+        /// <summary>
+        /// Loads songs into the playlist, will overwrite current playlist
+        /// </summary>
+        /// <param name="songs">An array of fully qualified song paths</param>
+        public void loadSongs(string[] songs)
         {
             playlist = new LinkedList<string>();
-            string[] files = Directory.GetFiles(dir);
-            foreach (string file in files)
+            if(songs == null || songs.Length == 0)
             {
-                foreach (string filetype in SupportedFiletypes.Types)
+                throw new ArgumentException("Cannot pass in null or 0 songs");
+            }
+            foreach (string song in songs)
+            {
+                if (string.IsNullOrEmpty(song))
                 {
-                    if (file.Contains(filetype))
-                    {
-                        playlist.AddLast(file);
-                        break;
-                    }
+                    continue;
                 }
+                playlist.AddLast(song);
             }
         }
 
@@ -53,6 +43,7 @@ namespace Framework
         /// <returns>A fully qualified path to a song file</returns>
         public string getSong()
         {
+            if(playlist == null || playlist.Count == 0) { throw new NullReferenceException("No Playlist loaded"); }
             return playlist.First.Value;
         }
 
@@ -61,6 +52,7 @@ namespace Framework
         /// </summary>
         public void cyclePlaylistForwards()
         {
+            if (playlist == null || playlist.Count == 0) { throw new NullReferenceException("No Playlist loaded"); }
             string song = playlist.First.Value;
             playlist.RemoveFirst();
             playlist.AddLast(song);
@@ -71,9 +63,20 @@ namespace Framework
         /// </summary>
         public void cyclePlaylistBackwards()
         {
+            if (playlist == null || playlist.Count == 0) { throw new NullReferenceException("No Playlist loaded"); }
             string song = playlist.Last.Value;
             playlist.RemoveLast();
             playlist.AddFirst(song);
+        }
+
+        /// <summary>
+        /// Get the number of songs in the playlist
+        /// </summary>
+        /// <returns>Number of songs</returns>
+        public int getCount()
+        {
+            if (playlist == null) { throw new NullReferenceException("No Playlist loaded"); }
+            return playlist.Count;
         }
         #endregion
     }

@@ -28,9 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.Panel panel2;
-            this.button2 = new System.Windows.Forms.Button();
-            this.panel1 = new System.Windows.Forms.Panel();
+            System.Windows.Forms.Panel dynamicButtonPanel;
+            this.windowControlPanel = new System.Windows.Forms.Panel();
             this.appName = new System.Windows.Forms.Label();
             this.closeButton = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
@@ -38,12 +37,12 @@
             this.artistLabel = new System.Windows.Forms.Label();
             this.titleLabel = new System.Windows.Forms.Label();
             this.durationLabel = new System.Windows.Forms.Label();
-            this.currentTime = new System.Windows.Forms.Label();
+            this.currentTimeLabel = new System.Windows.Forms.Label();
             this.album = new System.Windows.Forms.Label();
             this.artist = new System.Windows.Forms.Label();
             this.title = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.seekbar = new System.Windows.Forms.ProgressBar();
             this.panel5 = new System.Windows.Forms.Panel();
             this.Settings = new System.Windows.Forms.Button();
             this.nextButton = new System.Windows.Forms.Button();
@@ -52,9 +51,8 @@
             this.playButton = new System.Windows.Forms.Button();
             this.panel6 = new System.Windows.Forms.Panel();
             this.thumbNailPictureBox = new System.Windows.Forms.PictureBox();
-            panel2 = new System.Windows.Forms.Panel();
-            panel2.SuspendLayout();
-            this.panel1.SuspendLayout();
+            dynamicButtonPanel = new System.Windows.Forms.Panel();
+            this.windowControlPanel.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel5.SuspendLayout();
@@ -62,36 +60,25 @@
             ((System.ComponentModel.ISupportInitialize)(this.thumbNailPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
-            // panel2
+            // dynamicButtonPanel
             // 
-            panel2.AutoScroll = true;
-            panel2.BackColor = System.Drawing.SystemColors.ActiveBorder;
-            panel2.Controls.Add(this.button2);
-            panel2.Location = new System.Drawing.Point(0, 40);
-            panel2.Name = "panel2";
-            panel2.Size = new System.Drawing.Size(500, 350);
-            panel2.TabIndex = 1;
+            dynamicButtonPanel.AutoScroll = true;
+            dynamicButtonPanel.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            dynamicButtonPanel.Location = new System.Drawing.Point(0, 40);
+            dynamicButtonPanel.Name = "dynamicButtonPanel";
+            dynamicButtonPanel.Size = new System.Drawing.Size(500, 350);
+            dynamicButtonPanel.TabIndex = 1;
             // 
-            // button2
+            // windowControlPanel
             // 
-            this.button2.Location = new System.Drawing.Point(294, 28);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 0;
-            this.button2.Text = "Test Button";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.panel1.Controls.Add(this.appName);
-            this.panel1.Controls.Add(this.closeButton);
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(500, 40);
-            this.panel1.TabIndex = 0;
-            this.panel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseDown);
+            this.windowControlPanel.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.windowControlPanel.Controls.Add(this.appName);
+            this.windowControlPanel.Controls.Add(this.closeButton);
+            this.windowControlPanel.Location = new System.Drawing.Point(0, 0);
+            this.windowControlPanel.Name = "windowControlPanel";
+            this.windowControlPanel.Size = new System.Drawing.Size(500, 40);
+            this.windowControlPanel.TabIndex = 0;
+            this.windowControlPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.windowControlPanel_MouseDown);
             // 
             // appName
             // 
@@ -119,7 +106,7 @@
             this.panel3.Controls.Add(this.artistLabel);
             this.panel3.Controls.Add(this.titleLabel);
             this.panel3.Controls.Add(this.durationLabel);
-            this.panel3.Controls.Add(this.currentTime);
+            this.panel3.Controls.Add(this.currentTimeLabel);
             this.panel3.Controls.Add(this.album);
             this.panel3.Controls.Add(this.artist);
             this.panel3.Controls.Add(this.title);
@@ -164,14 +151,14 @@
             this.durationLabel.TabIndex = 4;
             this.durationLabel.Text = "Duration";
             // 
-            // currentTime
+            // currentTimeLabel
             // 
-            this.currentTime.AutoSize = true;
-            this.currentTime.Location = new System.Drawing.Point(23, 107);
-            this.currentTime.Name = "currentTime";
-            this.currentTime.Size = new System.Drawing.Size(30, 13);
-            this.currentTime.TabIndex = 3;
-            this.currentTime.Text = "xx:xx";
+            this.currentTimeLabel.AutoSize = true;
+            this.currentTimeLabel.Location = new System.Drawing.Point(23, 107);
+            this.currentTimeLabel.Name = "currentTimeLabel";
+            this.currentTimeLabel.Size = new System.Drawing.Size(34, 13);
+            this.currentTimeLabel.TabIndex = 3;
+            this.currentTimeLabel.Text = "00:00";
             // 
             // album
             // 
@@ -203,19 +190,19 @@
             // panel4
             // 
             this.panel4.BackColor = System.Drawing.SystemColors.ButtonShadow;
-            this.panel4.Controls.Add(this.progressBar1);
+            this.panel4.Controls.Add(this.seekbar);
             this.panel4.Location = new System.Drawing.Point(0, 530);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(500, 25);
             this.panel4.TabIndex = 3;
             // 
-            // progressBar1
+            // seekbar
             // 
-            this.progressBar1.Location = new System.Drawing.Point(0, 3);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(500, 19);
-            this.progressBar1.TabIndex = 5;
-            this.progressBar1.Click += new System.EventHandler(this.progressBar1_Click);
+            this.seekbar.Location = new System.Drawing.Point(0, 3);
+            this.seekbar.Name = "seekbar";
+            this.seekbar.Size = new System.Drawing.Size(500, 19);
+            this.seekbar.TabIndex = 5;
+            this.seekbar.Click += new System.EventHandler(this.seekBar_Click);
             // 
             // panel5
             // 
@@ -306,14 +293,13 @@
             this.Controls.Add(this.panel5);
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel3);
-            this.Controls.Add(panel2);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(dynamicButtonPanel);
+            this.Controls.Add(this.windowControlPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Canvas";
             this.Text = "Form1";
-            panel2.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.windowControlPanel.ResumeLayout(false);
+            this.windowControlPanel.PerformLayout();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             this.panel4.ResumeLayout(false);
@@ -326,12 +312,12 @@
 
         #endregion
 
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel windowControlPanel;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.Label durationLabel;
-        private System.Windows.Forms.Label currentTime;
+        private System.Windows.Forms.Label currentTimeLabel;
         private System.Windows.Forms.Label album;
         private System.Windows.Forms.Label artist;
         private System.Windows.Forms.Label title;
@@ -347,8 +333,7 @@
         private System.Windows.Forms.Label artistLabel;
         private System.Windows.Forms.Label titleLabel;
         private System.Windows.Forms.PictureBox thumbNailPictureBox;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.ProgressBar seekbar;
     }
 }
 

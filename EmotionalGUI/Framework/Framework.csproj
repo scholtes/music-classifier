@@ -50,21 +50,28 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DatabaseInterface\EmotionSpaceDTO.cs" />
-    <Compile Include="DatabaseInterface\IDatabaseArgs.cs" />
-    <Compile Include="MediaController.cs" />
-    <Compile Include="Fraction.cs" />
-    <Compile Include="PlayerAndTagDTO.cs" />
-    <Compile Include="MediaPlayback\IAudioPlayer.cs" />
-    <Compile Include="MetaDataDTO.cs" />
+    <Compile Include="HelperClasses\ButtonAdder.cs" />
+    <Compile Include="HelperClasses\Buttons.cs" />
+    <Compile Include="DTOs\ControlDTO.cs" />
+    <Compile Include="Mappers\ControlDTOMapper.cs" />
+    <Compile Include="DTOs\EmotionSpaceDTO.cs" />
+    <Compile Include="Interfaces\IDatabase.cs" />
+    <Compile Include="HelperClasses\FakeDatabase.cs" />
+    <Compile Include="Mappers\MetaDataDTOMapper.cs" />
+    <Compile Include="HelperClasses\MediaController.cs" />
+    <Compile Include="GUIModel.cs" />
+    <Compile Include="Interfaces\IAudioPlayer.cs" />
+    <Compile Include="DTOs\MetaDataDTO.cs" />
     <Compile Include="MediaPlayback\MediaTypes\MP3Player.cs" />
-    <Compile Include="PlayList.cs" />
-    <Compile Include="Song MetaData\ITagManager.cs" />
-    <Compile Include="MediaClassifier.cs" />
+    <Compile Include="HelperClasses\PlayList.cs" />
+    <Compile Include="Interfaces\ITagManager.cs" />
+    <Compile Include="Mappers\SongDTOMapper.cs" />
     <Compile Include="Song MetaData\Datatypes\MP3.cs" />
-    <Compile Include="SupportedFiletypes.cs" />
+    <Compile Include="DTOs\SongDTO.cs" />
+    <Compile Include="HelperClasses\SupportedFiletypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TimeKeeper.cs" />
+    <Compile Include="HelperClasses\TimeKeeper.cs" />
+    <Compile Include="HelperClasses\WindowMovement.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

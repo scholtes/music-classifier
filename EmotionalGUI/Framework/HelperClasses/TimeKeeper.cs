@@ -64,6 +64,25 @@ namespace Framework
             accumulatedTime = new TimeSpan(0);
         }
 
+        /// <summary>
+        /// Sets the accumulated time for the song Timer functionality
+        /// </summary>
+        /// <param name="time"></param>
+        public void setAccumulatedTime(TimeSpan time)
+        {
+            accumulatedTime = time;
+            Timer_Tick(null,null);
+        }
+
+        /// <summary>
+        /// Gets the elasped song time for song Timer functionality
+        /// </summary>
+        /// <returns></returns>
+        public TimeSpan getAccumulatedTime()
+        {
+            return accumulatedTime;
+        }
+
         // function that actually updates the time
         private void Timer_Tick(object sender, EventArgs e)
         {

@@ -7,11 +7,11 @@ namespace Framework
     /// </summary>
     public class EmotionSpaceDTO
     {
-        double Energy
+        public double Energy
         {
             get
             {
-                return Energy;
+                return _energy;
             }
             set
             {
@@ -19,14 +19,14 @@ namespace Framework
                 {
                     throw new Exception("Invalid value for energy");
                 }
-                Energy = value;
+                _energy = value;
             }
         }
-        double Positivity
+        public double Positivity
         {
             get
             {
-                return Positivity;
+                return _positivity;
             }
             set
             {
@@ -34,8 +34,12 @@ namespace Framework
                 {
                     throw new Exception("Invalid value for positivity");
                 }
-                Positivity = value;
+                _positivity = value;
             }
         }
+
+        private double _energy;
+        private double _positivity;
+
     }
 }
