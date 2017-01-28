@@ -3,6 +3,8 @@ using System.Linq;
 using System.Windows.Forms;
 using Framework;
 
+
+using System.Drawing;
 namespace EmotionalGUI
 {
     public partial class Canvas : Form
@@ -64,6 +66,29 @@ namespace EmotionalGUI
         private void seekBar_Click(object sender, EventArgs e)
         {
             model.seekBarMoved(((MouseEventArgs)e).X);
+        }
+
+        bool clicked = false;
+        Point MouseDownLocation;
+        private void seekbarCursorPanel_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == System.Windows.Forms.MouseButtons.Left)
+            {
+                MouseDownLocation = e.Location;
+            }
+        }
+
+        private void seekbarCursorPanel_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.Button == System.Windows.Forms.MouseButtons.Left)
+            {
+                ((Panel)sender).Left = e.X + ((Panel)sender).Left - MouseDownLocation.X;
+            }
+        }
+
+        private void seekbarCursorPanel_MouseUp(object sender, MouseEventArgs e)
+        {
+            //clicked = false;
         }
     }
 }

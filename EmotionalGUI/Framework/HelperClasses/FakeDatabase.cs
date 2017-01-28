@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System;
 
 namespace Framework
 {
@@ -20,6 +21,11 @@ namespace Framework
         }
 
         public void addSongToDatabase(string songpath, EmotionSpaceDTO emotionSpaceDTO)
+        {
+            return;
+        }
+
+        public void removeSongFromDatabase(string songpath)
         {
             return;
         }

@@ -42,6 +42,7 @@
             this.artist = new System.Windows.Forms.Label();
             this.title = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.seekbarCursorPanel = new System.Windows.Forms.Panel();
             this.seekbar = new System.Windows.Forms.ProgressBar();
             this.panel5 = new System.Windows.Forms.Panel();
             this.Settings = new System.Windows.Forms.Button();
@@ -190,11 +191,23 @@
             // panel4
             // 
             this.panel4.BackColor = System.Drawing.SystemColors.ButtonShadow;
+            this.panel4.Controls.Add(this.seekbarCursorPanel);
             this.panel4.Controls.Add(this.seekbar);
             this.panel4.Location = new System.Drawing.Point(0, 530);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(500, 25);
             this.panel4.TabIndex = 3;
+            // 
+            // seekbarCursorPanel
+            // 
+            this.seekbarCursorPanel.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.seekbarCursorPanel.Location = new System.Drawing.Point(3, 3);
+            this.seekbarCursorPanel.Name = "seekbarCursorPanel";
+            this.seekbarCursorPanel.Size = new System.Drawing.Size(28, 22);
+            this.seekbarCursorPanel.TabIndex = 0;
+            this.seekbarCursorPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.seekbarCursorPanel_MouseDown);
+            this.seekbarCursorPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.seekbarCursorPanel_MouseMove);
+            this.seekbarCursorPanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.seekbarCursorPanel_MouseUp);
             // 
             // seekbar
             // 
@@ -334,6 +347,7 @@
         private System.Windows.Forms.Label titleLabel;
         private System.Windows.Forms.PictureBox thumbNailPictureBox;
         private System.Windows.Forms.ProgressBar seekbar;
+        private System.Windows.Forms.Panel seekbarCursorPanel;
     }
 }
 

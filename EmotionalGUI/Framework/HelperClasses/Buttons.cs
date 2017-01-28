@@ -20,7 +20,8 @@ namespace Framework
             {
 
                 but = new Button();
-                but.Text = "Button Example " + i.ToString();
+                string text = "Button " + i.ToString();
+                but.Text = text;
                 but.Click += (s, e) => { System.Console.Beep(); };
                 result.Add(but);
             }

@@ -27,10 +27,10 @@ namespace Framework
 
         #region Constructors
         private MediaController() { }
-        public MediaController(MetaDataLabelsDTO MDD)
+        public MediaController(MetaDataLabelsDTO MDD,ControlDTO C)
         {
             metadataLabels = MDD;
-            timer = new TimeKeeper(MDD.Time);
+            timer = new TimeKeeper(MDD.Time,C);
             playlist = new PlayList();
         }
         #endregion

@@ -13,7 +13,8 @@ namespace Framework
             var dto = new ControlDTO()
             {
                 dynamicButtonPanel = form.Controls.Find("dynamicButtonPanel", true).First() as Panel,
-                seekbar = form.Controls.Find("seekbar", true).First() as ProgressBar
+                seekbar = form.Controls.Find("seekbar", true).First() as ProgressBar,
+                seekbarCursorPanel = form.Controls.Find("seekbarCursorPanel",true).First() as Panel
             };
             return dto;
         }

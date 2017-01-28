@@ -1,4 +1,4 @@
-﻿
+﻿using System;
 namespace Framework
 {
     interface IDatabase
@@ -26,5 +26,11 @@ namespace Framework
         /// <param name="songpath">The location of the song</param>
         /// <param name="emotionSpaceDTO">The coordinates in the emotionspace</param>
         void addSongToDatabase(string songpath, EmotionSpaceDTO emotionSpaceDTO);
+
+        /// <summary>
+        /// Remove a song from the database
+        /// </summary>
+        /// <param name="songpath">A fully qualified path to an audio file</param>
+        void removeSongFromDatabase(string songpath);
     }
 }

@@ -14,6 +14,8 @@ namespace Framework
         private DateTime timerStart;
         private TimeSpan accumulatedTime;
         public TimeSpan max;
+        public ProgressBar seekbar;
+        public Panel seekbarCursor;
         #endregion
 
         #region Constructors
@@ -22,7 +24,7 @@ namespace Framework
         /// A class used for easy functionality of the current song timer label
         /// </summary>
         /// <param name="lbl">The label that will be updated</param>
-        public TimeKeeper(Label lbl)
+        public TimeKeeper(Label lbl,ControlDTO controlDTO)
         {
             if(lbl == null)
             {
@@ -33,6 +35,9 @@ namespace Framework
             timer.Interval = 1000;
             timer.Tick += Timer_Tick;
             accumulatedTime = new TimeSpan(0);
+            seekbar = controlDTO.seekbar;
+            seekbarCursor = controlDTO.seekbarCursorPanel;
+            formatSeekbarCursor();
         }
         #endregion
 
@@ -89,6 +94,21 @@ namespace Framework
             accumulatedTime += DateTime.Now - timerStart;
             timerStart = DateTime.Now;
             label.Text = accumulatedTime < max ? accumulatedTime.ToString(@"mm\:ss") : max.ToString(@"mm\:ss");
+            setSeekbarCursor(accumulatedTime.TotalSeconds / max.TotalSeconds);
+
+        }
+
+        private void formatSeekbarCursor()
+        {
+            seekbarCursor.Height = seekbar.Height;
+            seekbarCursor.Width = seekbar.Width / 50;
+            seekbarCursor.Location = seekbar.Location;
+        }
+
+        private void setSeekbarCursor(double percent)
+        {
+            int x = (int)((seekbar.Width / 50) * 49 * percent);
+            seekbarCursor.Location = new System.Drawing.Point(x, seekbar.Location.Y);
         }
         #endregion
 

@@ -9,5 +9,6 @@ namespace Framework
     {
         public Panel dynamicButtonPanel;
         public ProgressBar seekbar;
+        public Panel seekbarCursorPanel;
     }
 }

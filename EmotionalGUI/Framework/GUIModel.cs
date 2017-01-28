@@ -19,7 +19,7 @@ namespace Framework
             target = form;
             metadataLabels = MetaDataDTOMapper.getMetaDataDTO(form);
             controls = ControlDTOMapper.getControlDTO(form);
-            mediaController = new MediaController(metadataLabels);
+            mediaController = new MediaController(metadataLabels,controls);
             populateDynamicButtons();
         }
         #endregion
@@ -56,13 +56,17 @@ namespace Framework
 
         public void moveWindow(Form window, MouseEventArgs e)
         {
-            new WindowMovement(window, e);
+            WindowMovement.moveWindow(window, e);
+        }
+
+        public void moveSeekbarCursorAlongX(Panel panel,MouseEventArgs e)
+        {
+            WindowMovement.moveWindowAlongX(panel, e, controls.seekbarCursorPanel.Location.X, controls.seekbarCursorPanel.Location.X + controls.seekbarCursorPanel.Width);
         }
 
         public void seekBarMoved(int x)
         {
             if (mediaController.playlist == null || mediaController.playlist.getCount() == 0) { throw new InvalidOperationException("No playlist generated"); }
-            //double seconds = (player.getTotalSeconds()) * (((MouseEventArgs)e).X - ((ProgressBar)sender).Location.X) / (((ProgressBar)sender).Width);
             double percent = 0;
             int form_width = controls.seekbar.Width;
             int form_x_start = controls.seekbar.Location.X;
