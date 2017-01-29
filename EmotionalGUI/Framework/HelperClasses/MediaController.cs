@@ -27,7 +27,7 @@ namespace Framework
 
         #region Constructors
         private MediaController() { }
-        public MediaController(MetaDataLabelsDTO MDD,ControlDTO C)
+        public MediaController(MetaDataLabelsDTO MDD,GUIControlDTO C)
         {
             metadataLabels = MDD;
             timer = new TimeKeeper(MDD.Time,C);

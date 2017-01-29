@@ -12,15 +12,6 @@ namespace Framework
         string[] getSongs(int numberOfSongs, EmotionSpaceDTO emotionSpaceDTO);
 
         /// <summary>
-        /// Gets a list of X songs that fall in between the min and max values
-        /// </summary>
-        /// <param name="numberOfSongs"></param>
-        /// <param name="minValueEmotionSpaceDTO"></param>
-        /// <param name="maxValueEmotionSpaceDTO"></param>
-        /// <returns></returns>
-        string[] getSongsWithConstraints(int numberOfSongs, EmotionSpaceDTO minValueEmotionSpaceDTO, EmotionSpaceDTO maxValueEmotionSpaceDTO);
-
-        /// <summary>
         /// Adds a song to the database
         /// </summary>
         /// <param name="songpath">The location of the song</param>

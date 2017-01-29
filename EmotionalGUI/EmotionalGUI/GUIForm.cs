@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Windows.Forms;
 using Framework;
 
@@ -7,20 +6,19 @@ using Framework;
 using System.Drawing;
 namespace EmotionalGUI
 {
-    public partial class Canvas : Form
+    public partial class GUI : Form
     {
-        Settings settings = null;
-        string dir = null;
-
+        Point MouseDownLocation;
         GUIModel model;
 
-        public Canvas()
+        public GUI()
         {
             InitializeComponent();
-            settings = new Settings();
+            Settings settings = new EmotionalGUI.Settings();
             settings.Owner = this;
-            model = new GUIModel(this);
-            //dir = (settings.Controls.Find("textBox1", true).First() as TextBox).Text;
+
+            model = new GUIModel(this,settings);
+            settings.setModel(model);
         }
 
         private void playButton_Click(object sender, EventArgs e)
@@ -50,12 +48,7 @@ namespace EmotionalGUI
 
         private void Settings_Click(object sender, EventArgs e)
         {
-            settings.Show();
-        }
-
-        public void refreshSettings_Click()
-        {
-            dir = (settings.Controls.Find("textBox1", true).First() as TextBox).Text;
+            model.showSettings();
         }
 
         private void windowControlPanel_MouseDown(object sender, MouseEventArgs e)
@@ -67,9 +60,7 @@ namespace EmotionalGUI
         {
             model.seekBarMoved(((MouseEventArgs)e).X);
         }
-
-        bool clicked = false;
-        Point MouseDownLocation;
+        
         private void seekbarCursorPanel_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == System.Windows.Forms.MouseButtons.Left)
@@ -88,7 +79,7 @@ namespace EmotionalGUI
 
         private void seekbarCursorPanel_MouseUp(object sender, MouseEventArgs e)
         {
-            //clicked = false;
+            model.seekBarCursorMoved(Cursor.Position.X);
         }
     }
 }

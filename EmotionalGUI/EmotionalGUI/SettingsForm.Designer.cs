@@ -70,6 +70,7 @@
             this.classifyLibraryButton.TabIndex = 3;
             this.classifyLibraryButton.Text = "Classify Library";
             this.classifyLibraryButton.UseVisualStyleBackColor = true;
+            this.classifyLibraryButton.Click += new System.EventHandler(this.classifyLibraryButton_Click);
             // 
             // Settings
             // 
@@ -83,6 +84,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Settings";
             this.Text = "Settings";
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Settings_MouseDown);
             this.ResumeLayout(false);
             this.PerformLayout();
 

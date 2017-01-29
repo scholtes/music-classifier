@@ -15,11 +15,6 @@ namespace Framework
             return result.ToArray();
         }
 
-        public string[] getSongsWithConstraints(int numberOfSongs, EmotionSpaceDTO minValueEmotionSpaceDTO, EmotionSpaceDTO maxValueEmotionSpaceDTO)
-        {
-            return null;
-        }
-
         public void addSongToDatabase(string songpath, EmotionSpaceDTO emotionSpaceDTO)
         {
             return;

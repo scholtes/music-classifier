@@ -1,6 +1,6 @@
 ﻿namespace EmotionalGUI
 {
-    partial class Canvas
+    partial class GUI
     {
         /// <summary>
         /// Required designer variable.

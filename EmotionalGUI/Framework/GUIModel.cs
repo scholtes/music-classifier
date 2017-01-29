@@ -1,25 +1,30 @@
 ﻿using System;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
 namespace Framework
 {
     public class GUIModel
     {
         #region Properties
-        private Form target;
+        private Form guiForm;
+        private Form settingsForm;
         private MetaDataLabelsDTO metadataLabels;
-        private ControlDTO controls;
+        private GUIControlDTO guiControls;
+        private SettingsControlDTO settingsControls;
         private MediaController mediaController;
         #endregion
 
         #region Constructors
         private GUIModel() { }
-        public GUIModel(Form form)
+        public GUIModel(Form gui, Form settings)
         {
-            target = form;
-            metadataLabels = MetaDataDTOMapper.getMetaDataDTO(form);
-            controls = ControlDTOMapper.getControlDTO(form);
-            mediaController = new MediaController(metadataLabels,controls);
+            guiForm = gui;
+            settingsForm = settings;
+            metadataLabels = MetaDataDTOMapper.getMetaDataDTO(gui);
+            guiControls = GUIControlDTOMapper.getControlDTO(gui);
+            settingsControls = SettingsControlDTOMapper.getSettingsControlDTO(settings);
+            mediaController = new MediaController(metadataLabels,guiControls);
             populateDynamicButtons();
         }
         #endregion
@@ -27,7 +32,7 @@ namespace Framework
         #region Methods
         public void closeApplication()
         {
-            target.Close();
+            guiForm.Close();
         }
 
         public void playSong()
@@ -61,23 +66,46 @@ namespace Framework
 
         public void moveSeekbarCursorAlongX(Panel panel,MouseEventArgs e)
         {
-            WindowMovement.moveWindowAlongX(panel, e, controls.seekbarCursorPanel.Location.X, controls.seekbarCursorPanel.Location.X + controls.seekbarCursorPanel.Width);
+            WindowMovement.moveWindowAlongX(panel, e, guiControls.seekbarCursorPanel.Location.X, guiControls.seekbarCursorPanel.Location.X + guiControls.seekbarCursorPanel.Width);
         }
 
         public void seekBarMoved(int x)
         {
             if (mediaController.playlist == null || mediaController.playlist.getCount() == 0) { throw new InvalidOperationException("No playlist generated"); }
             double percent = 0;
-            int form_width = controls.seekbar.Width;
-            int form_x_start = controls.seekbar.Location.X;
+            int form_width = guiControls.seekbar.Width;
+            int form_x_start = guiControls.seekbar.Location.X;
             percent = ((double)x - form_x_start) / form_width;
+            mediaController.Seek(percent);
+        }
+
+        public void seekBarCursorMoved(int x)
+        {
+            int test = x - guiForm.Location.X + guiControls.seekbar.Location.X;
+            if (mediaController.playlist == null || mediaController.playlist.getCount() == 0) { throw new InvalidOperationException("No playlist generated"); }
+            double percent = 0;
+            int form_width = guiControls.seekbar.Width;
+            int form_x_start = guiControls.seekbar.Location.X;
+            percent = ((double)test - form_x_start) / form_width;
             mediaController.Seek(percent);
         }
 
         private void populateDynamicButtons()
         {
-            ButtonAdder.addButtons(controls.dynamicButtonPanel,mediaController.playlist);
+            ButtonAdder.addButtons(guiControls.dynamicButtonPanel,mediaController.playlist);
         }
+
+        public void classifyLibrary()
+        {
+            string directory = settingsControls.musicDirectoryTextBox.Text;
+            string[] songs = DirectoryBrowser.getSongs(directory); 
+        }
+
+        public void showSettings()
+        {
+            settingsForm.Show();
+        }
+
         #endregion
     }
 }

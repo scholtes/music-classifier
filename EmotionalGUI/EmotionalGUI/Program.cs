@@ -13,7 +13,7 @@ namespace EmotionalGUI
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Canvas());
+            Application.Run(new GUI());
         }
     }
 }

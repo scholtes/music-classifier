@@ -24,7 +24,7 @@ namespace Framework
         /// A class used for easy functionality of the current song timer label
         /// </summary>
         /// <param name="lbl">The label that will be updated</param>
-        public TimeKeeper(Label lbl,ControlDTO controlDTO)
+        public TimeKeeper(Label lbl,GUIControlDTO controlDTO)
         {
             if(lbl == null)
             {

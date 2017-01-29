@@ -50,10 +50,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTOs\SettingsControlDTO.cs" />
     <Compile Include="HelperClasses\ButtonAdder.cs" />
     <Compile Include="HelperClasses\Buttons.cs" />
-    <Compile Include="DTOs\ControlDTO.cs" />
-    <Compile Include="Mappers\ControlDTOMapper.cs" />
+    <Compile Include="DTOs\GUIControlDTO.cs" />
+    <Compile Include="HelperClasses\DirectoryBrowser.cs" />
+    <Compile Include="Mappers\GUIControlDTOMapper.cs" />
     <Compile Include="DTOs\EmotionSpaceDTO.cs" />
     <Compile Include="Interfaces\IDatabase.cs" />
     <Compile Include="HelperClasses\FakeDatabase.cs" />
@@ -62,6 +64,7 @@
     <Compile Include="GUIModel.cs" />
     <Compile Include="Interfaces\IAudioPlayer.cs" />
     <Compile Include="DTOs\MetaDataDTO.cs" />
+    <Compile Include="Mappers\SettingsControlDTOMapper.cs" />
     <Compile Include="MediaPlayback\MediaTypes\MP3Player.cs" />
     <Compile Include="HelperClasses\PlayList.cs" />
     <Compile Include="Interfaces\ITagManager.cs" />
