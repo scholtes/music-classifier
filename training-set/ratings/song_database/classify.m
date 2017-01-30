@@ -8,7 +8,12 @@ clear all;
 data = xlsread('annotations_with_features.xlsx');
 
 % Which subset of bextract values?
-bextract = 4:34; % 9:21 -> best choice of bextract data? Not sure
+% 4:34 gives int 70% and pos 60%
+% 4:12 gives int 74% and pos 60%
+% 4:15 gives int 67% and pos 60%
+% 4:16 gives int 67% and pos 53%
+% 4:20 gives int 73% and pos 53%
+bextract = 4:12; 
 
 % Make positivity, intensity, confidence binary based on median.
 data(:,2) = data(:,2) > median(data(:,2));
