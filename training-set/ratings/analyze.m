@@ -137,10 +137,10 @@ ylabel('confidence');
 %% Normalize data
 % We need to make everyone's data fall within the same range.
 
-close all;
+%%% close all;
 
 % Outlier cutoff
-K = 5;
+K = 1;
 
 % What range to normalize to 
 % I.e., 
@@ -184,7 +184,7 @@ xlabel('positivity');
 ylabel('intensity');
 legend('Daniel','Garrett','Meeks','Ricky');
 
-close all;
+%%% close all;
 
 % More normalization integrity checking 
 figure;
@@ -231,7 +231,7 @@ legend('Daniel','Garrett','Meeks','Ricky');
 % are in similar agreement on values but one is an outlier, the median will
 % represent a less biased middle  
 
-close all;
+%%% close all;
 
 norm_tensor = zeros(COUNT, WIDTH, TEAM_MEMBERS); 
 norm_tensor(:,:,1) = dan_norm;
@@ -239,7 +239,7 @@ norm_tensor(:,:,2) = gar_norm;
 norm_tensor(:,:,3) = mee_norm;
 norm_tensor(:,:,4) = ric_norm;
 
-mean_data = mean(norm_tensor, 3);
+mean_data = median(norm_tensor, 3);
 
 % Graph each variable, with the x axis representing the same song for every
 % person (songs sorted by the median) 
