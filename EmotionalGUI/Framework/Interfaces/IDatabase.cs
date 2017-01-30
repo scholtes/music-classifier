@@ -1,7 +1,7 @@
 ﻿using System;
 namespace Framework
 {
-    interface IDatabase
+    public interface IDatabase
     {
         /// <summary>
         /// Get a list of X of the closest matching songs, DTO is a coordinate in emotionspace

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Forms;
-using System.Runtime.InteropServices;
 
 namespace Framework
 {
@@ -13,6 +12,8 @@ namespace Framework
         private GUIControlDTO guiControls;
         private SettingsControlDTO settingsControls;
         private MediaController mediaController;
+        private IDatabase database;
+        private IClassifier classifier;
         #endregion
 
         #region Constructors
@@ -26,6 +27,7 @@ namespace Framework
             settingsControls = SettingsControlDTOMapper.getSettingsControlDTO(settings);
             mediaController = new MediaController(metadataLabels,guiControls);
             populateDynamicButtons();
+            database = new FakeDatabase();
         }
         #endregion
 
@@ -98,7 +100,11 @@ namespace Framework
         public void classifyLibrary()
         {
             string directory = settingsControls.musicDirectoryTextBox.Text;
-            string[] songs = DirectoryBrowser.getSongs(directory); 
+            string[] songs = DirectoryBrowser.getSongs(directory);
+            classifier = new FakeClassifier();
+            string json = classifier.classifySongs(songs);
+            JsonDTO data = JsonDTOMapper.getJsonDTO(json);
+            Database.addResults(data,database);
         }
 
         public void showSettings()

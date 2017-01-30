@@ -13,30 +13,37 @@ namespace Framework
                 throw new ArgumentException("Not a valid Directory");
             }
 
-            List<string> songs = null;
+            List<string> songs = new List<string>();
             getSongs(directory, ref songs);
             return songs.ToArray();
         }
 
         private static void getSongs(string directory,ref List<string> songs)
         {
-            string[] directories = Directory.GetDirectories(directory);
-            string[] files = Directory.GetFiles(directory);
-
-            foreach(string file in files)
+            try
             {
-                foreach(string filetype in SupportedFiletypes.Types)
+                string[] directories = Directory.GetDirectories(directory);
+                string[] files = Directory.GetFiles(directory);
+
+                foreach (string file in files)
                 {
-                    if (file.EndsWith(filetype))
+                    foreach (string filetype in SupportedFiletypes.Types)
                     {
-                        songs.Add(file);
-                        break;
-                    } 
+                        if (file.EndsWith(filetype))
+                        {
+                            songs.Add(file);
+                            break;
+                        }
+                    }
+                }
+                foreach (string dir in directories)
+                {
+                    getSongs(dir, ref songs);
                 }
             }
-            foreach(string dir in directories)
+            catch
             {
-                getSongs(dir, ref songs);
+
             }
         }
     }
