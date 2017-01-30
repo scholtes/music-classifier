@@ -1,0 +1,81 @@
+wav\24k magic official video.wav	trainer
+wav\24k magic official.wav	trainer
+wav\a guy with a girl.wav	trainer
+wav\a night in tunisia.wav	trainer
+wav\alleluia.wav	trainer
+wav\bad and boujee.wav	trainer
+wav\best soundtracks of all time.wav	trainer
+wav\better man.wav	trainer
+wav\black beatles.wav	trainer
+wav\blue aint your color.wav	trainer
+wav\bounce back.wav	trainer
+wav\burn.wav	trainer
+wav\carl orff carmina bu.wav	trainer
+wav\caroline.wav	trainer
+wav\chain breaker.wav	trainer
+wav\cider time.wav	trainer
+wav\closer lyric.wav	trainer
+wav\closer.wav	trainer
+wav\cold water.wav	trainer
+wav\comparone plays scarlatti.wav	trainer
+wav\dark saint.wav	trainer
+wav\dirt on my boots.wav	trainer
+wav\dirty laundry.wav	trainer
+wav\dont let me down.wav	trainer
+wav\dont wanna know.wav	trainer
+wav\drake fake love.wav	trainer
+wav\funeral ikos.wav	trainer
+wav\garden of the gods.wav	trainer
+wav\handclap.wav	trainer
+wav\heathens.wav	trainer
+wav\in the name.wav	trainer
+wav\joli gar.wav	trainer
+wav\judah and the lion.wav	trainer
+wav\juju on that beat.wav	trainer
+wav\just hold on.wav	trainer
+wav\king porter stomp.wav	trainer
+wav\kubelik.wav	trainer
+wav\lean on.wav	trainer
+wav\leap the precipice.wav	trainer
+wav\let me love you lyric.wav	trainer
+wav\let me love you.wav	trainer
+wav\light of nibel.wav	trainer
+wav\limberlost.wav	trainer
+wav\look for the sliver lining.wav	trainer
+wav\love on the brai.wav	trainer
+wav\love on the brain.wav	trainer
+wav\machine gun kelly.wav	trainer
+wav\machine gun.wav	trainer
+wav\master of shadow.wav	trainer
+wav\may we all.wav	trainer
+wav\moonglow.wav	trainer
+wav\mortvia aqueduct.wav	trainer
+wav\never be like you.wav	trainer
+wav\ophelia.wav	trainer
+wav\ride.wav	trainer
+wav\rockabye.wav	trainer
+wav\scars to your beautiful.wav	trainer
+wav\seein red.wav	trainer
+wav\side to side.wav	trainer
+wav\someday the dream will end.wav	trainer
+wav\someone to watch over me.wav	trainer
+wav\sonata for clarinet.wav	trainer
+wav\sonata for oboe.wav	trainer
+wav\song for another time.wav	trainer
+wav\stair way to the stars.wav	trainer
+wav\star of the show.wav	trainer
+wav\starboy official.wav	trainer
+wav\starboy.wav	trainer
+wav\starving.wav	trainer
+wav\sucker for pain lil wayne.wav	trainer
+wav\summertime.wav	trainer
+wav\the good life.wav	trainer
+wav\this is what you came for.wav	trainer
+wav\toccata.wav	trainer
+wav\unsteady.wav	trainer
+wav\vector to the heavens.wav	trainer
+wav\vivaldi.wav	trainer
+wav\wanna be that song.wav	trainer
+wav\waste a moment.wav	trainer
+wav\way down we go.wav	trainer
+
