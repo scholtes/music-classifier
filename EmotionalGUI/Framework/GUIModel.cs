@@ -27,7 +27,7 @@ namespace Framework
             settingsControls = SettingsControlDTOMapper.getSettingsControlDTO(settings);
             mediaController = new MediaController(metadataLabels,guiControls);
             populateDynamicButtons();
-            database = new FakeDatabase();
+            database = ServerDatabase.Instance;
         }
         #endregion
 

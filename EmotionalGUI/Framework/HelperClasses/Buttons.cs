@@ -16,6 +16,12 @@ namespace Framework
             but.Click += (s, e) => (new ButtonFunctions()).CallFakeDatabase(playlist);
             result.Add(but);
 
+            but = new Button();
+            but.Text = "Real Database";
+            EmotionSpaceDTO esDTO = new EmotionSpaceDTO() { Energy = .3, Positivity = .7 };
+            but.Click += (s, e) => (new ButtonFunctions()).CallDatabase(2, esDTO, playlist);
+            result.Add(but);
+
             for (int i = 0; i < 30; i++)
             {
 
@@ -39,6 +45,14 @@ namespace Framework
 
             FakeDatabase fdb = new FakeDatabase();
             playlist.loadSongs(fdb.getSongs(songs, esDTO));
+        }
+
+        public void CallDatabase(int songs, EmotionSpaceDTO esDTO,PlayList playlist)
+        {
+            ServerDatabase SD = ServerDatabase.Instance;
+            string[] songlist = SD.getSongs(songs, esDTO);
+            playlist.loadSongs(songlist);
+
         }
     }
 }
