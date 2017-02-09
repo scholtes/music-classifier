@@ -41,7 +41,7 @@ def extract(filenames):
 		p.wait()
 	# Create mkcollection
 	tempfilesstrlist= "\n".join(tempfiles)
-	with open(MKCOLLECTION, 'wb') as f:
+	with open(MKCOLLECTION, 'w') as f:
 		f.write(tempfilesstrlist)
 	# Run bextract
 	p = subprocess.Popen([BEXTRACT_FILENAME, '-fe', '-ws', WINDOW_FS, '-hp', WINDOW_FS, '-od', TEMP_DIRECTORY+os.sep, MKCOLLECTION], cwd=TEMP_DIRECTORY)
