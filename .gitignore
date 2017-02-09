@@ -1,6 +1,8 @@
 *.mp3
 *.wav
 *.asv
+*.pyc
+__pycache__
 bextract.exe
 mkcollection.exe
 ffmpeg.exe
