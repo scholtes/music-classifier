@@ -6,5 +6,6 @@ __pycache__
 bextract.exe
 mkcollection.exe
 ffmpeg.exe
+marsyas.dll
 Classifier/testbed
 Classifier/tmp
