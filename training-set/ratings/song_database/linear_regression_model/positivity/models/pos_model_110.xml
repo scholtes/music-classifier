@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<!DOCTYPE boost_serialization>
+<boost_serialization signature="serialization::archive" version="12">
+<linearRegressionModel class_id="0" tracking_level="0" version="0">
+	<parameters class_id="1" tracking_level="0" version="0">
+		<n_rows>20</n_rows>
+		<n_cols>1</n_cols>
+		<n_elem>20</n_elem>
+		<vec_state>1</vec_state>
+		<item>5.09645114299668389e+00</item>
+		<item>-1.34487684443242772e-01</item>
+		<item>1.19771680639150391e-01</item>
+		<item>-1.55794547973717779e-01</item>
+		<item>5.41743731964730094e-02</item>
+		<item>4.94861576575656936e-01</item>
+		<item>-7.61271401006312631e-01</item>
+		<item>7.58237583083364419e-01</item>
+		<item>2.45100091542716614e-01</item>
+		<item>1.74547341838516973e-01</item>
+		<item>5.57264953508294525e-01</item>
+		<item>-1.42432727298969917e+03</item>
+		<item>1.88536424757170425e+03</item>
+		<item>2.62546888602422086e+03</item>
+		<item>-1.18048591495480241e+03</item>
+		<item>1.70874799729848905e+03</item>
+		<item>-6.23121620306295199e+02</item>
+		<item>-1.35376316810111643e+03</item>
+		<item>-1.19023673773195378e+03</item>
+		<item>-5.03530053302980676e+01</item>
+	</parameters>
+	<lambda>0.00000000000000000e+00</lambda>
+	<intercept>1</intercept>
+</linearRegressionModel>
+</boost_serialization>
+

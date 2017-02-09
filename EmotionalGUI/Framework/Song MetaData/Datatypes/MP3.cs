@@ -39,7 +39,14 @@ namespace Framework
         /// <returns>The title</returns>
         public string getTitle()
         {
-            return file.Tag.Title;
+            try
+            {
+                return file.Tag.Title;
+            }
+            catch (Exception)
+            {
+                return "Unknown Title";
+            }
         }
 
         /// <summary>
@@ -48,7 +55,14 @@ namespace Framework
         /// <returns>The album</returns>
         public string getAlbum()
         {
-            return file.Tag.Album;
+            try
+            {
+                return file.Tag.Album;
+            }
+            catch (Exception)
+            {
+                return "Unknown Album";
+            }
         }
 
         /// <summary>
@@ -57,7 +71,14 @@ namespace Framework
         /// <returns>An artist</returns>
         public string getArtist()
         {
-            return file.Tag.AlbumArtists[0];
+            try
+            {
+                return file.Tag.AlbumArtists[0];
+            }
+            catch (Exception)
+            {
+                return "Unknown Artist";
+            }
         }
 
         /// <summary>
@@ -66,12 +87,19 @@ namespace Framework
         /// <returns>An image</returns>
         public Image getThumbnail()
         {
-            if (file.Tag.Pictures.Length >= 1)
+            try
             {
-                var bin = (byte[])(file.Tag.Pictures[0].Data.Data);
-                return Image.FromStream(new MemoryStream(bin)).GetThumbnailImage(100, 100, null, IntPtr.Zero);
+                if (file.Tag.Pictures.Length >= 1)
+                {
+                    var bin = (byte[])(file.Tag.Pictures[0].Data.Data);
+                    return Image.FromStream(new MemoryStream(bin)).GetThumbnailImage(100, 100, null, IntPtr.Zero);
+                }
+                return null;
             }
-            return null;
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         /// <summary>
@@ -80,7 +108,14 @@ namespace Framework
         /// <returns>The duration</returns>
         public TimeSpan getDuration()
         {
-            return file.Properties.Duration;
+            try
+            {
+                return file.Properties.Duration;
+            }
+            catch (Exception)
+            {
+                return new TimeSpan(0);
+            }
         }
         #endregion
     }
