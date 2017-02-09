@@ -44,8 +44,9 @@ def extract(filenames):
 	with open(MKCOLLECTION, 'w') as f:
 		f.write(tempfilesstrlist)
 	# Run bextract
-	p = subprocess.Popen([BEXTRACT_FILENAME, '-fe', '-ws', WINDOW_FS, '-hp', WINDOW_FS, '-od', TEMP_DIRECTORY+os.sep, MKCOLLECTION], cwd=TEMP_DIRECTORY)
-	p.wait()
+	with open(os.devnull, 'w') as fp:
+		p = subprocess.Popen([BEXTRACT_FILENAME, '-fe', '-ws', WINDOW_FS, '-hp', WINDOW_FS, '-od', TEMP_DIRECTORY+os.sep, MKCOLLECTION], cwd=TEMP_DIRECTORY, stdout=fp)
+		p.wait()
 	# Parse bextract data
 	arff = ""
 	with open(os.path.join(TEMP_DIRECTORY, 'MARSYAS_EMPTY'), 'r') as f:
