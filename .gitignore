@@ -3,4 +3,6 @@
 *.asv
 bextract.exe
 mkcollection.exe
+ffmpeg.exe
 Classifier/testbed
+Classifier/tmp
