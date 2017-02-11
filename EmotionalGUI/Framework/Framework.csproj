@@ -63,6 +63,7 @@
     <Compile Include="HelperClasses\ButtonAdder.cs" />
     <Compile Include="HelperClasses\Buttons.cs" />
     <Compile Include="DTOs\GUIControlDTO.cs" />
+    <Compile Include="HelperClasses\Classifier.cs" />
     <Compile Include="HelperClasses\FakeClassifier.cs" />
     <Compile Include="HelperClasses\Database.cs" />
     <Compile Include="HelperClasses\DirectoryBrowser.cs" />

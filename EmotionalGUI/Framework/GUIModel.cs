@@ -101,7 +101,7 @@ namespace Framework
         {
             string directory = settingsControls.musicDirectoryTextBox.Text;
             string[] songs = DirectoryBrowser.getSongs(directory);
-            classifier = new FakeClassifier();
+            classifier = new Classifier();
             string json = classifier.classifySongs(songs);
             JsonDTO data = JsonDTOMapper.getJsonDTO(json);
             Database.addResults(data,database);
