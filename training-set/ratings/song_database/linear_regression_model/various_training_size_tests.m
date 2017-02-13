@@ -8,13 +8,24 @@
 
 clear all;
 close all;
-pkg load io;
-rand("seed",340);
 
 % Known values
 INT_BEXTRACT_COLS = 4:26;
 POS_BEXTRACT_COLS = 11:29;
 lambda_val = 0;
+
+%% Create needed directories
+[~, ~] = mkdir('intensity/test');
+[~, ~] = mkdir('intensity/train');
+[~, ~] = mkdir('intensity/models');
+[~, ~] = mkdir('intensity/predictions');
+[~, ~] = mkdir('intensity/results');
+
+[~, ~] = mkdir('positivity/test');
+[~, ~] = mkdir('positivity/train');
+[~, ~] = mkdir('positivity/models');
+[~, ~] = mkdir('positivity/predictions');
+[~, ~] = mkdir('positivity/results');
 
 % Load in full data
 annotations_with_features = xlsread('../annotations_with_features.xlsx');
@@ -61,13 +72,13 @@ for training_size = 10:10:620
   
   %% Run linear regression
   % Intensity
-  system_cmd = sprintf('mlpack_linear_regression -t %s -T %s -M %s -p %s -l %0.2f',
+  system_cmd = sprintf('mlpack_linear_regression.exe -t %s -T %s -M %s -o %s -l %0.2f', ...
                           int_training_set_filename, int_test_set_filename, pos_model_filename, int_predictions_filename, lambda_val);
   system(system_cmd);
   int_results = dlmread(int_predictions_filename);
   
   % Positivity
-  system_cmd = sprintf('mlpack_linear_regression -t %s -T %s -M %s -p %s -l %0.2f' ,
+  system_cmd = sprintf('mlpack_linear_regression.exe -t %s -T %s -M %s -o %s -l %0.2f' , ...
                           pos_training_set_filename, pos_test_set_filename, pos_model_filename, pos_predictions_filename, lambda_val);
   system(system_cmd);
   pos_results = dlmread(pos_predictions_filename);
@@ -88,19 +99,19 @@ for training_size = 10:10:620
   pos_accuracy(i) = sum(pos_results(:,6) == 0) / length(pos_results(:,6));
   
   subplot(3,1,1);
-  plot(training_size, int_accuracy(i)); hold on;
+  plot(training_size, int_accuracy(i), 'r*'); hold on;
   title('Intensity Accuracy')
   xlabel('Training Size')
   axis([0 700 0 1])
   
   subplot(3,1,2)
-  plot(training_size, pos_accuracy(i)); hold on;
+  plot(training_size, pos_accuracy(i), 'r*'); hold on;
   title('Positivity Accuracy')
   xlabel('Training Size')
   axis([0 700 0 1])
   
   subplot(3,1,3)
-  plot(training_size, int_accuracy(i) * pos_accuracy(i)); hold on;
+  plot(training_size, int_accuracy(i) * pos_accuracy(i), 'r*'); hold on;
   title('Int * Pos Accuracy');
   xlabel('Training Size')
   axis([0 700 0 1])
