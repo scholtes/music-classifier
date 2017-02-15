@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmotionalGUI", "EmotionalGUI\EmotionalGUI.csproj", "{2B00DA3F-3E3A-4821-AFD6-770D9CB13F83}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Framework", "Framework\Framework.csproj", "{40E17E1E-7C71-47A4-B46C-548372570505}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Classifier", "Classifier\Classifier.csproj", "{426B688A-EF3B-453E-9686-E3A810BAA771}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{40E17E1E-7C71-47A4-B46C-548372570505}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40E17E1E-7C71-47A4-B46C-548372570505}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40E17E1E-7C71-47A4-B46C-548372570505}.Release|Any CPU.Build.0 = Release|Any CPU
+		{426B688A-EF3B-453E-9686-E3A810BAA771}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{426B688A-EF3B-453E-9686-E3A810BAA771}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{426B688A-EF3B-453E-9686-E3A810BAA771}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{426B688A-EF3B-453E-9686-E3A810BAA771}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
