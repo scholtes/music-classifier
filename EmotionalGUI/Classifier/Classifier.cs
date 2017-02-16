@@ -27,7 +27,7 @@ namespace Classifier
             }
         }
 
-        protected string BEXTRACT_DIRECTORY;
+        protected string COMMON_UTILITIES_DIRECTORY;
         protected string BEXTRACT_FILENAME;
         protected string FFMPEG_FILENAME;
         protected string TEMP_DIRECTORY;
@@ -36,12 +36,12 @@ namespace Classifier
 
         public Classifier()
         {
-            BEXTRACT_DIRECTORY = Directory.GetCurrentDirectory() + "../bin";
-            BEXTRACT_FILENAME = BEXTRACT_DIRECTORY + "bextract.exe";
-            FFMPEG_FILENAME = BEXTRACT_DIRECTORY + "ffmpeg.exe";
-            TEMP_DIRECTORY = Directory.GetCurrentDirectory() + "../tmp";
+            COMMON_UTILITIES_DIRECTORY = Path.GetFullPath(Directory.GetCurrentDirectory() + "/../../../../common_utilities");
+            BEXTRACT_FILENAME = Path.GetFullPath(COMMON_UTILITIES_DIRECTORY + "/bextract.exe");
+            FFMPEG_FILENAME = Path.GetFullPath(COMMON_UTILITIES_DIRECTORY + "/ffmpeg.exe");
+            TEMP_DIRECTORY = Path.GetFullPath(Directory.GetCurrentDirectory() + "/../tmp");
 
-            WINDOW_FS = (2 ^ 21).ToString();
+            WINDOW_FS = (1 << 21).ToString();
         }
 
         public string classifySongs(string[] in_songs)
@@ -57,15 +57,14 @@ namespace Classifier
             string[] tempfiles = ffmpegConversion(in_songs);
 
             //Create mkcollection
-            string mkcollection = TEMP_DIRECTORY + Path.PathSeparator + "music.mk";
+            string mkcollection = TEMP_DIRECTORY + "/music.mk";
             File.WriteAllLines(mkcollection, tempfiles);
 
             //Run bextract
             runBextract(mkcollection);
 
             //Parse bextract data
-            parseArff(TEMP_DIRECTORY + Path.PathSeparator + "MARSYAS_EMPTY");
-            
+            parseArff(TEMP_DIRECTORY + "/MARSYAS_EMPTY");
             
             return "";
         }
@@ -80,22 +79,23 @@ namespace Classifier
             foreach (string file in files)
             {
                 //First create temporary file
-                string newfile = TEMP_DIRECTORY + Path.GetFileNameWithoutExtension(file);
+                string newfile = TEMP_DIRECTORY + "/" + Path.GetFileNameWithoutExtension(file);
                 while (files.Contains(newfile + ".wav"))
                 {
                     newfile += "_dup";
                 }
                 newfile += ".wav";
-                tempfiles[i] = newfile;
+                tempfiles[i] = Path.GetFullPath(newfile);
 
                 //Run FFMPEG
-                string ffmpegArgs = FFMPEG_FILENAME + " -loglevel quiet -y -i" + file + newfile;
+                string ffmpegArgs =  "-loglevel quiet -y -i " + file + " " + newfile;
 
                 System.Diagnostics.Process ffmpeg = new System.Diagnostics.Process();
                 ffmpeg.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
                 ffmpeg.StartInfo.UseShellExecute = false;
                 ffmpeg.StartInfo.RedirectStandardOutput = true;   // Redirect so we can read the standard output
                 ffmpeg.StartInfo.Arguments = ffmpegArgs;
+                ffmpeg.StartInfo.FileName = FFMPEG_FILENAME;
 
                 ffmpeg.Start();
                 ffmpeg.WaitForExit();
@@ -105,12 +105,13 @@ namespace Classifier
 
         protected void runBextract(string mkcollection)
         {
-            string bextractArgs = BEXTRACT_FILENAME + "-fe -n -ws " + WINDOW_FS + " -hp " + WINDOW_FS + "-od " + TEMP_DIRECTORY + Path.PathSeparator + mkcollection;
+            string bextractArgs = "-fe -n -ws " + WINDOW_FS + " -hp " + WINDOW_FS + " -od " + TEMP_DIRECTORY + "/" + " " + mkcollection;
             System.Diagnostics.Process bextract = new System.Diagnostics.Process();
             bextract.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
             bextract.StartInfo.UseShellExecute = false;
             bextract.StartInfo.RedirectStandardOutput = false;
             bextract.StartInfo.Arguments = bextractArgs;
+            bextract.StartInfo.FileName = BEXTRACT_FILENAME;
 
             bextract.Start();
             bextract.WaitForExit();
@@ -127,25 +128,29 @@ namespace Classifier
             string[] tokens = arff.Split(new[] { "% filename " }, StringSplitOptions.None);
 
             //Go through each of the songs (skip the first token, that has the bextract attribute comments)
-            foreach(string token in tokens)
+            for(int i = 1; i < tokens.Length; i++)
             {
+                string token = tokens[i];
                 SongData sdata = new SongData();
 
                 string[] lines = token.Split('\n');
-                string filename = lines[0].Trim('\n');
+                string filename = lines[0].Trim(new[] { '\n', '\r'});
                 sdata.SetFilename(filename);
   
                 //Line two is the sampling rate, which we do not use
 
                 //Go through each of the lines of the bextract features
-                foreach(string feature_line in lines)
+                for(int j = 2; j < lines.Length; j++)
                 {
+                    string feature_line = lines[j];
                     string[] feature_strs = feature_line.Split(',');
                     List<Double> features = new List<Double>();
 
                     //Convert each feature into a double, add to the double array
-                    foreach(string feature_str in feature_strs)
+                    //Skip the last one, it will be 'music'
+                    for(int k = 0; k < feature_strs.Length - 1; k++)
                     {
+                        string feature_str = feature_strs[k];
                         Double feature = Double.Parse(feature_str);
                         features.Add(feature);
                     }
@@ -153,6 +158,7 @@ namespace Classifier
                     sdata.AddFeatureList(features);
 
                 }
+                songData.Add(sdata);
             }
 
         }
