@@ -47,7 +47,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classifiers\Classifier.cs" />
     <Compile Include="Classifiers\ClassifierTypes\Base\BaseClassifierType.cs" />
     <Compile Include="Classifiers\ClassifierTypes\Base\IClassifierType.cs" />
     <Compile Include="DTOs\EmotionSpaceDTOList.cs" />

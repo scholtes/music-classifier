@@ -6,6 +6,6 @@ namespace Classifier
     {
         string Classify(string[] songPaths);
 
-        void Train(List<SongDataDTO> songsAndFeatures);
+        void Train(string[] songPaths);
     }
 }
