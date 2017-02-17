@@ -38,6 +38,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -46,14 +47,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classifier.cs" />
-    <Compile Include="MLR.cs" />
-    <Compile Include="SVM.cs" />
+    <Compile Include="Classifiers\Classifier.cs" />
+    <Compile Include="Classifiers\ClassifierTypes\Base\BaseClassifierType.cs" />
+    <Compile Include="Classifiers\ClassifierTypes\Base\IClassifierType.cs" />
+    <Compile Include="DTOs\EmotionSpaceDTOList.cs" />
+    <Compile Include="DTOs\SongDataDTO.cs" />
+    <Compile Include="HelperClasses\ArffParser.cs" />
+    <Compile Include="HelperClasses\BExtract.cs" />
+    <Compile Include="HelperClasses\ExecutableInformation.cs" />
+    <Compile Include="HelperClasses\FFMpeg.cs" />
+    <Compile Include="HelperClasses\JsonSerializer.cs" />
+    <Compile Include="Classifiers\ClassifierTypes\MultivariateLinearRegression.cs" />
+    <Compile Include="Classifiers\ClassifierTypes\SupportVectorMachine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Accord.3.4.0\build\Accord.targets" Condition="Exists('..\packages\Accord.3.4.0\build\Accord.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

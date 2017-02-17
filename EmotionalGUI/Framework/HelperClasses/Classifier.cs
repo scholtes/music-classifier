@@ -1,45 +1,42 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Diagnostics;
+using System.Web.Script.Serialization;
 
 namespace Framework
 {
-    public class Classifier : IClassifier
+    class Classifier : IClassifier
     {
-        public string classifySongs(string[] songs)
+        public string classifySongs(string[] songpaths)
         {
-
-            //Format the songs into single comma-separated string
-            string emotifyArgs = formatSongs(songs);
-
-            System.Diagnostics.Process emotify = new System.Diagnostics.Process();
-            emotify.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
-            emotify.StartInfo.UseShellExecute = false;
-            emotify.StartInfo.RedirectStandardOutput = true;   // Redirect so we can read the standard output
-
-            //Call "emotify.exe path/to/song1.mp3 path/to/song2.mp3 ... "
-            emotify.StartInfo.FileName = @"..\..\..\..\Classifier\dist\emotify\emotify.exe";
-            emotify.StartInfo.Arguments = emotifyArgs;
-
-            //Run the process
-            emotify.Start();
-            string output = emotify.StandardOutput.ReadToEnd();
-
-            return output;
+            JsonDTO json = new JsonDTO();
+            json.ClassifierResults = new System.Collections.Generic.List<ClassifierResult>();
+            foreach(string song in songpaths)
+            {
+                string classifierJson = classify(song);
+                JsonDTO dto = JsonDTOMapper.getJsonDTO(classifierJson);
+                json.ClassifierResults.Add(dto.ClassifierResults[0]);
+            }
+            string answer = new JavaScriptSerializer().Serialize(json);
+            return answer;
         }
 
-
-        //Add quotes around each song in the given string array
-        //Join songs into one string by adding space delimiter
-        private string formatSongs(string[] songs)
+        private string classify(string songpath)
         {
-            string formattedSongs = "";
-            foreach (string song in songs)
+            string output = null;
+            ProcessStartInfo startInfo = new ProcessStartInfo();
+            startInfo.FileName = @"D:\Desktop\emotify\emotify.exe";
+            startInfo.Arguments += "\"" + songpath + "\"";
+            startInfo.RedirectStandardOutput = true;
+            startInfo.UseShellExecute = false;
+            //startInfo.RedirectStandardError = true;
+            var proc = new Process();
+            proc.StartInfo = startInfo;
+            proc.Start();
+            while (!proc.StandardOutput.EndOfStream)
             {
-
-                formattedSongs += "\"" + song + "\" ";
+                output = proc.StandardOutput.ReadLine();
             }
 
-            return formattedSongs;
+            return output;
         }
     }
 }
