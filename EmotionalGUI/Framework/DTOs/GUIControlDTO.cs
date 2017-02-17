@@ -1,4 +1,4 @@
-﻿using System.Windows.Forms;
+﻿using System.Windows.Controls;
 
 namespace Framework
 {
@@ -7,8 +7,8 @@ namespace Framework
     /// </summary>
     public class GUIControlDTO
     {
-        public Panel dynamicButtonPanel;
-        public ProgressBar seekbar;
-        public Panel seekbarCursorPanel;
+        //public Panel dynamicButtonPanel;
+        public Canvas seekbar;
+        public Canvas seekbarCursorCanvas;
     }
 }

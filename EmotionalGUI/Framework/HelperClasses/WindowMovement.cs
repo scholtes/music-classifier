@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
+using System.Windows;
+using System.Windows.Input;
+using System.Windows.Interop;
+using System.Windows.Controls;
 
 namespace Framework
 {
@@ -19,32 +22,32 @@ namespace Framework
         public static extern bool ReleaseCapture();
         #endregion
 
-        #region Constructors
         /// <summary>
         /// Don't ask how this works, it just does
         /// </summary>
         /// <param name="sender">The Form that will be moving</param>
         /// <param name="e">Mouse arguments</param>
-        public static void moveWindow(Form sender, MouseEventArgs e)
+        public static void moveWindow(Window sender, MouseButtonEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            if (e.LeftButton == MouseButtonState.Pressed)
             {
                 ReleaseCapture();
-                SendMessage(sender.Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+                SendMessage(new WindowInteropHelper(sender).Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
             }
         }
 
-        public static void moveWindowAlongX(Panel panel, MouseEventArgs e, int min, int max)
+        public static void moveWindowAlongX(Canvas canvas, MouseButtonEventArgs e, int min, int max)
         {
-            if (e.Button == MouseButtons.Left) panel.Location = e.Location;
+            //TODO
+            //if (e.LeftButton == MouseButtonState.Pressed) Canvas.SetLeft(canvas, panel.Location = e.Location;
         }
 
         public static void other(Panel panel, MouseEventArgs e, int min, int max)
         {
-            panel.Left += e.X - panel.Location.X;
+            //TODO
+            //panel.Left += e.X - panel.Location.X;
 
-            panel.Top += e.Y - panel.Location.Y;
+            //panel.Top += e.Y - panel.Location.Y;
         }
-        #endregion
     }
 }

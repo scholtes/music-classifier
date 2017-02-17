@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System.Windows.Controls;
+using System.Windows.Interop;
 
 namespace Framework
 {
@@ -11,7 +12,7 @@ namespace Framework
         public Label Album { get; set; }
         public Label Artist { get; set; }
         public Label Duration { get; set; }
-        public PictureBox Thumbnail { get; set; } 
+        //public PictureBox Thumbnail { get; set; }
         public Label Time { get; set; }
     }
 }

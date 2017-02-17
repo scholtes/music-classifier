@@ -6,11 +6,11 @@
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
         Title="MainWindow" Height="546.875" Width="525" WindowStyle="None">
-    <Canvas HorizontalAlignment="Left" Height="37" VerticalAlignment="Top" Width="515" Background="#FFD46363">
+    <Canvas x:Name="WindowControlCanvas" HorizontalAlignment="Left" Height="37" VerticalAlignment="Top" Width="515" Background="#FFD46363" MouseDown="WindowControlCanvas_MouseDown">
         <Button x:Name="closeButton" Content="Close" Canvas.Left="430" Canvas.Top="7" Width="75" Click="closeButton_Click"/>
         <Slider x:Name="slider" Canvas.Left="32" Canvas.Top="70" Width="245"/>
         <Slider x:Name="slider1" Canvas.Left="32" Canvas.Top="124" Width="245"/>
-        <ListBox x:Name="listBox" Height="174" Canvas.Left="307" Canvas.Top="44" Width="198" Background="#FFACCEFF"/>
+        <ListBox x:Name="playlistListBox" Height="174" Canvas.Left="307" Canvas.Top="44" Width="198" Background="#FFACCEFF"/>
         <Button x:Name="queryDatabaseButton" Content="Make Playlist" Canvas.Left="32" Canvas.Top="173" Width="98"/>
         <Canvas Height="145" Canvas.Left="3" Canvas.Top="223" Width="515" Background="#FFFFDBC1">
             <Label x:Name="Title" Content="Title" Canvas.Left="10" Canvas.Top="10"/>
@@ -23,13 +23,13 @@
             <Label x:Name="durationLabel" Content="xxxxx" Canvas.Left="62" Canvas.Top="109"/>
             <Image x:Name="image" Height="125" Canvas.Left="380" Canvas.Top="10" Width="125" OpacityMask="White"/>
         </Canvas>
-        <Canvas x:Name="seekbarCanvas" Height="22" Canvas.Left="3" Canvas.Top="373" Width="515" Background="#FFA3FFFB"/>
-        <Canvas x:Name="seekbarCursorCanvas" Height="19" Canvas.Left="11" Canvas.Top="376" Width="21" Background="Black"/>
-        <Button x:Name="previousButton" Content="Previous" Canvas.Left="105" Canvas.Top="429" Width="75"/>
-        <Button x:Name="playButton" Content="Play/Pause" Canvas.Left="185" Canvas.Top="429" Width="75"/>
-        <Button x:Name="stopButton" Content="Stop" Canvas.Left="265" Canvas.Top="429" Width="75"/>
-        <Button x:Name="nextButton" Content="Next" Canvas.Left="345" Canvas.Top="429" Width="75"/>
-        <Button x:Name="settingsButton" Content="Settings" Canvas.Left="405" Canvas.Top="482" Width="75"/>
+        <Canvas x:Name="seekbarCanvas" Height="22" Canvas.Left="3" Canvas.Top="373" Width="515" Background="#FFA3FFFB" MouseLeftButtonDown="seekbarCanvas_MouseLeftButtonDown"/>
+        <Canvas x:Name="seekbarCursorCanvas" Height="19" Canvas.Left="11" Canvas.Top="376" Width="21" Background="Black" MouseDown="seekbarCursorCanvas_MouseDown" MouseMove="seekbarCursorCanvas_MouseMove" MouseUp="seekbarCursorCanvas_MouseUp"/>
+        <Button x:Name="previousButton" Content="Previous" Canvas.Left="105" Canvas.Top="429" Width="75" Click="previousButton_Click"/>
+        <Button x:Name="playButton" Content="Play/Pause" Canvas.Left="185" Canvas.Top="429" Width="75" Click="playButton_Click"/>
+        <Button x:Name="stopButton" Content="Stop" Canvas.Left="265" Canvas.Top="429" Width="75" Click="stopButton_Click"/>
+        <Button x:Name="nextButton" Content="Next" Canvas.Left="345" Canvas.Top="429" Width="75" Click="nextButton_Click"/>
+        <Button x:Name="settingsButton" Content="Settings" Canvas.Left="405" Canvas.Top="482" Width="75" Click="settingsButton_Click"/>
         <Label x:Name="Positivity" Content="Positivity" Canvas.Left="32" Canvas.Top="39"/>
         <Label x:Name="Energy" Content="Energy" Canvas.Left="32" Canvas.Top="93" RenderTransformOrigin="-4.596,-0.679"/>
         <Label x:Name="label10" Content="Emotional GUI" Canvas.Left="11" Canvas.Top="4"/>

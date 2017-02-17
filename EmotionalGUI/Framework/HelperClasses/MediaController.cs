@@ -101,18 +101,18 @@ namespace Framework
 
         private void updateMetaDataLabels()
         {
-            metadataLabels.Album.Text = songDTO.songTag.getAlbum();
-            metadataLabels.Artist.Text = songDTO.songTag.getArtist();
-            metadataLabels.Duration.Text = songDTO.songTag.getDuration().ToString(@"mm\:ss");
-            metadataLabels.Thumbnail.Image = songDTO.songTag.getThumbnail();
-            metadataLabels.Title.Text = songDTO.songTag.getTitle();
+            metadataLabels.Album.Content = songDTO.songTag.getAlbum();
+            metadataLabels.Artist.Content = songDTO.songTag.getArtist();
+            metadataLabels.Duration.Content = songDTO.songTag.getDuration().ToString(@"mm\:ss");
+            //metadataLabels.Thumbnail.Image = songDTO.songTag.getThumbnail();
+            metadataLabels.Title.Content = songDTO.songTag.getTitle();
             setTimeLabel(new TimeSpan(0));
         }
 
         private void setTimeLabel(TimeSpan time)
         {
             string result = time.ToString(@"mm\:ss");
-            metadataLabels.Time.Text = result;
+            metadataLabels.Time.Content = result;
         }
         #endregion
     }

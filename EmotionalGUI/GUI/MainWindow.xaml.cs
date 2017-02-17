@@ -26,11 +26,66 @@ namespace GUI
         public MainWindow()
         {
             InitializeComponent();
+            Settings settings = new Settings();
+
+            model = new GUIModel(this, settings);
+            settings.setModel(model);
+            
         }
 
         private void closeButton_Click(object sender, RoutedEventArgs e)
         {
+            model.closeApplication();
+        }
+        
+        private void previousButton_Click(object sender, RoutedEventArgs e)
+        {
+            model.playPrevSong();
+        }
 
+        private void playButton_Click(object sender, RoutedEventArgs e)
+        {
+            model.playSong();
+        }
+
+        private void stopButton_Click(object sender, RoutedEventArgs e)
+        {
+            model.stopSong();
+        }
+
+        private void nextButton_Click(object sender, RoutedEventArgs e)
+        {
+            model.playNextSong();
+        }
+
+        private void settingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            model.showSettings();
+        }
+
+        private void seekbarCursorCanvas_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            // TODO
+        }
+
+        private void seekbarCursorCanvas_MouseMove(object sender, MouseEventArgs e)
+        {
+            //TODO
+        }
+
+        private void seekbarCursorCanvas_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            //TODO
+        }
+
+        private void seekbarCanvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            model.seekBarMoved(e.GetPosition(this).X);
+        }
+
+        private void WindowControlCanvas_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            model.moveWindow(this, e);
         }
     }
 }

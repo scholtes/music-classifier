@@ -37,6 +37,8 @@
       <HintPath>..\packages\taglib.2.1.0.0\lib\policy.2.0.taglib-sharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.SQLite, Version=1.0.104.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
@@ -45,6 +47,7 @@
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -56,18 +59,18 @@
       <HintPath>..\packages\taglib.2.1.0.0\lib\taglib-sharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DTOs\JsonDTO.cs" />
     <Compile Include="DTOs\SettingsControlDTO.cs" />
-    <Compile Include="HelperClasses\ButtonAdder.cs" />
-    <Compile Include="HelperClasses\Buttons.cs" />
     <Compile Include="DTOs\GUIControlDTO.cs" />
     <Compile Include="HelperClasses\Classifier.cs" />
     <Compile Include="HelperClasses\FakeClassifier.cs" />
     <Compile Include="HelperClasses\Database.cs" />
     <Compile Include="HelperClasses\DirectoryBrowser.cs" />
     <Compile Include="HelperClasses\ServerDatabase.cs" />
+    <Compile Include="HelperClasses\WpfControls.cs" />
     <Compile Include="Interfaces\IClassifier.cs" />
     <Compile Include="Mappers\GUIControlDTOMapper.cs" />
     <Compile Include="DTOs\EmotionSpaceDTO.cs" />
@@ -110,6 +113,9 @@
       <Project>{426b688a-ef3b-453e-9686-e3a810baa771}</Project>
       <Name>Classifier</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.104.0\build\net451\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.104.0\build\net451\System.Data.SQLite.Core.targets')" />

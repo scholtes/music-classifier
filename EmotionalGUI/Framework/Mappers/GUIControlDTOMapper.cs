@@ -1,4 +1,6 @@
 ﻿using System.Windows.Forms;
+using System.Windows;
+using System.Windows.Controls;
 using System.Linq;
 
 namespace Framework
@@ -8,13 +10,13 @@ namespace Framework
     /// </summary>
     public static class GUIControlDTOMapper
     {
-        public static GUIControlDTO getControlDTO(Form form)
+        public static GUIControlDTO getControlDTO(Window window)
         {
             var dto = new GUIControlDTO()
             {
-                dynamicButtonPanel = form.Controls.Find("dynamicButtonPanel", true).First() as Panel,
-                seekbar = form.Controls.Find("seekbar", true).First() as ProgressBar,
-                seekbarCursorPanel = form.Controls.Find("seekbarCursorPanel",true).First() as Panel
+                //dynamicButtonPanel = form.Controls.Find("dynamicButtonPanel", true).First() as Panel,
+                seekbar = (Canvas)(window.FindName("seekbarCanvas")),
+                seekbarCursorCanvas = (Canvas)(window.FindName("seekbarCursorCanvas"))
             };
             return dto;
         }

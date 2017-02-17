@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Windows.Forms;
+using System.Windows.Controls;
+using System.Windows.Threading;
 
 namespace Framework
 {
@@ -9,13 +10,13 @@ namespace Framework
     public class TimeKeeper
     {
         #region Properties
-        private Timer timer;
+        private DispatcherTimer timer;
         private Label label;
         private DateTime timerStart;
         private TimeSpan accumulatedTime;
         public TimeSpan max;
-        public ProgressBar seekbar;
-        public Panel seekbarCursor;
+        public Canvas seekbar;
+        public Canvas seekbarCursor;
         #endregion
 
         #region Constructors
@@ -31,12 +32,12 @@ namespace Framework
                 throw new ArgumentException("Label is null");
             }
             label = lbl;
-            timer = new Timer();
-            timer.Interval = 1000;
+            timer = new DispatcherTimer();
+            timer.Interval = new TimeSpan(0, 0, 1);
             timer.Tick += Timer_Tick;
             accumulatedTime = new TimeSpan(0);
             seekbar = controlDTO.seekbar;
-            seekbarCursor = controlDTO.seekbarCursorPanel;
+            seekbarCursor = controlDTO.seekbarCursorCanvas;
             formatSeekbarCursor();
         }
         #endregion
@@ -93,7 +94,7 @@ namespace Framework
         {
             accumulatedTime += DateTime.Now - timerStart;
             timerStart = DateTime.Now;
-            label.Text = accumulatedTime < max ? accumulatedTime.ToString(@"mm\:ss") : max.ToString(@"mm\:ss");
+            label.Content = accumulatedTime < max ? accumulatedTime.ToString(@"mm\:ss") : max.ToString(@"mm\:ss");
             setSeekbarCursor(accumulatedTime.TotalSeconds / max.TotalSeconds);
 
         }
@@ -102,13 +103,14 @@ namespace Framework
         {
             seekbarCursor.Height = seekbar.Height;
             seekbarCursor.Width = seekbar.Width / 50;
-            seekbarCursor.Location = seekbar.Location;
+            Canvas.SetLeft(seekbarCursor,Canvas.GetLeft(seekbar));
+            Canvas.SetTop(seekbarCursor, Canvas.GetTop(seekbar));
         }
 
         private void setSeekbarCursor(double percent)
         {
             int x = (int)((seekbar.Width / 50) * 49 * percent);
-            seekbarCursor.Location = new System.Drawing.Point(x, seekbar.Location.Y);
+            Canvas.SetLeft(seekbarCursor, x);
         }
         #endregion
 

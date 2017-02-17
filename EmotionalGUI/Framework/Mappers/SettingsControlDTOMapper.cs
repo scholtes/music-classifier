@@ -1,5 +1,6 @@
 ﻿using System.Linq;
-using System.Windows.Forms;
+using System.Windows.Controls;
+using System.Windows;
 
 namespace Framework
 {
@@ -8,11 +9,11 @@ namespace Framework
     /// </summary>
     public static class SettingsControlDTOMapper
     {
-        public static SettingsControlDTO getSettingsControlDTO(Form form)
+        public static SettingsControlDTO getSettingsControlDTO(Window window)
         {
             var dto = new SettingsControlDTO()
             {
-                musicDirectoryTextBox = form.Controls.Find("musicDirectoryTextBox", true).First() as TextBox
+                musicDirectoryTextBox = (TextBox)(window.FindName("musicDirectoryTextBox"))
             };
             return dto;
         }
