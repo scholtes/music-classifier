@@ -112,8 +112,8 @@ namespace GUI
 
         public void updateMetaDataLabels(SongDTO song)
         {
-            Album.Content = song.songTag.getAlbum();
-            Artist.Content = song.songTag.getArtist();
+            albumLabel.Content = song.songTag.getAlbum();
+            artistLabel.Content = song.songTag.getArtist();
             this.durationLabel.Content = song.songTag.getDuration().ToString(@"mm\:ss");
             //metadataLabels.Thumbnail.Image = songDTO.songTag.getThumbnail();
             this.titleLabel.Content = song.songTag.getTitle();
