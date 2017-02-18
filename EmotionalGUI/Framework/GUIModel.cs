@@ -6,12 +6,10 @@ using System.Windows.Input;
 namespace Framework
 {
     public class GUIModel
-    {
+    {/*
         #region Properties
         private Window guiWindow;
-        private Window settingsWindow;
         private MetaDataLabelsDTO metadataLabels;
-        private GUIControlDTO guiControls;
         private SettingsControlDTO settingsControls;
         private MediaController mediaController;
         private IDatabase database;
@@ -19,14 +17,12 @@ namespace Framework
         #endregion
 
         #region Constructors
-        public GUIModel(Window gui, Window settings)
+        public GUIModel(Window gui)
         {
             guiWindow = gui;
-            settingsWindow = settings;
             metadataLabels = MetaDataDTOMapper.getMetaDataDTO(gui);
-            guiControls = GUIControlDTOMapper.getControlDTO(gui);
-            settingsControls = SettingsControlDTOMapper.getSettingsControlDTO(settings);
-            mediaController = new MediaController(metadataLabels,guiControls);
+            //settingsControls = SettingsControlDTOMapper.getSettingsControlDTO(settings);
+            //mediaController = new MediaController(metadataLabels,guiControls);
             database = ServerDatabase.Instance;
         }
         #endregion
@@ -105,9 +101,14 @@ namespace Framework
 
         public void showSettings()
         {
-            settingsWindow.Show();
+            settingsWindow.ShowDialog();
+            if (settingsWindow.DialogResult.HasValue && settingsWindow.DialogResult.Value)
+            {
+                //Update settings
+            }
         }
 
         #endregion
+    }*/
     }
 }

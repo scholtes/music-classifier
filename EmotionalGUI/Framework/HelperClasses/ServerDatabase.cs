@@ -5,7 +5,7 @@ using System.IO;
 
 namespace Framework
 {
-    public class ServerDatabase : IDatabase
+    public class ServerDatabase
     {
         private struct SongDistance
         {
@@ -19,7 +19,7 @@ namespace Framework
         private ServerDatabase()
         {
             string path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            filePath = Path.Combine(path, "library.db");
+            filePath = Path.Combine(path, "EmotionalPlayer\\library.db");
             if (!File.Exists(filePath) || !VerifyDatabase())
             {
                 CreateDatabase();
@@ -32,6 +32,10 @@ namespace Framework
             if (File.Exists(filePath))
             {
                 File.Delete(filePath);
+            }
+            if(!Directory.Exists(Path.GetDirectoryName(filePath)))
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(filePath));
             }
             SQLiteConnection.CreateFile(filePath);
             using (SQLiteConnection connection = Connect())
@@ -86,7 +90,7 @@ namespace Framework
         }
 
 
-        public string[] getSongs(int numberOfSongs, EmotionSpaceDTO emotionSpaceDTO)
+        public List<string> getSongs(int numberOfSongs, EmotionSpaceDTO emotionSpaceDTO)
         {
             Dictionary<string, EmotionSpaceDTO> songs = new Dictionary<string, EmotionSpaceDTO>();
             Action<SQLiteDataReader> addSongsToDict = (rdr) =>
@@ -137,7 +141,7 @@ namespace Framework
             {
                 ret.Add(finalVal.song);
             }
-            return ret.ToArray();
+            return ret;
         }
 
 
@@ -232,6 +236,28 @@ namespace Framework
         {
             return a.distance.CompareTo(b.distance);
         }
+
+        public bool DoesSongExist(string song)
+        {
+            bool exist = false;
+            SQLiteDataReader reader = null;
+            using (SQLiteConnection connection = Connect())
+            {
+                using (SQLiteTransaction transaction = connection.BeginTransaction())
+                {
+                    SQLiteCommand command = connection.CreateCommand();
+                    command.Transaction = transaction;
+                    command.CommandText = string.Format("SELECT Path FROM SONGS WHERE Path = \"{0}\";", song);
+                    reader = command.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        exist = true;
+                    }
+                }
+            }
+            return exist;
+        }
+
 
 
         private readonly string filePath;

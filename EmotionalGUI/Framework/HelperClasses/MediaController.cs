@@ -1,4 +1,5 @@
 ﻿using System;
+using Framework.Interfaces;
 
 namespace Framework
 {
@@ -18,7 +19,7 @@ namespace Framework
     public class MediaController
     {
         #region Properties
-        public MetaDataLabelsDTO metadataLabels = null;
+        public IMainForm mainform = null;
         public PlayList playlist = null;
         private PlayerStatus playerstatus = PlayerStatus.Stopped;
         private SongDTO songDTO = null;
@@ -27,12 +28,12 @@ namespace Framework
 
         #region Constructors
         private MediaController() { }
-        public MediaController(MetaDataLabelsDTO MDD,GUIControlDTO C)
+        public MediaController(IMainForm MDD)
         {
-            metadataLabels = MDD;
-            timer = new TimeKeeper(MDD.Time,C);
-            playlist = new PlayList();
+            mainform = MDD;
+            timer = new TimeKeeper(MDD);
         }
+
         #endregion
 
         #region Methods
@@ -44,7 +45,7 @@ namespace Framework
                 songDTO = SongDTOMapper.getSongDTO(song);
                 timer.max = songDTO.songTag.getDuration();
                 timer.Start();
-                updateMetaDataLabels();
+                mainform.updateMetaDataLabels(songDTO);
                 songDTO.songPlayer.Play(song);
                 playerstatus = PlayerStatus.Playing;
                 return;
@@ -71,7 +72,7 @@ namespace Framework
         public void Stop()
         {
             timer.Reset();
-            setTimeLabel(new TimeSpan(0));
+            mainform.setTimeLabel(new TimeSpan(0));
             songDTO.songPlayer.Stop();
             playerstatus = PlayerStatus.Stopped;
         }
@@ -92,28 +93,34 @@ namespace Framework
 
         public void Seek(double percent)
         {
-            double seconds = percent * songDTO.songTag.getDuration().TotalSeconds;
-            TimeSpan time = new TimeSpan(0, (int)seconds / 60, (int)seconds % 60);
-            timer.setAccumulatedTime(time);
-            songDTO.songPlayer.setPosition(seconds);
-            playerstatus = PlayerStatus.Paused;
-        }
-
-        private void updateMetaDataLabels()
-        {
-            metadataLabels.Album.Content = songDTO.songTag.getAlbum();
-            metadataLabels.Artist.Content = songDTO.songTag.getArtist();
-            metadataLabels.Duration.Content = songDTO.songTag.getDuration().ToString(@"mm\:ss");
-            //metadataLabels.Thumbnail.Image = songDTO.songTag.getThumbnail();
-            metadataLabels.Title.Content = songDTO.songTag.getTitle();
-            setTimeLabel(new TimeSpan(0));
+            if (songDTO != null)
+            {
+                double seconds = percent * songDTO.songTag.getDuration().TotalSeconds;
+                TimeSpan time = new TimeSpan(0, (int)seconds / 60, (int)seconds % 60);
+                timer.setAccumulatedTime(time);
+                songDTO.songPlayer.setPosition(seconds);
+                playerstatus = PlayerStatus.Paused;
+            }
         }
 
         private void setTimeLabel(TimeSpan time)
         {
-            string result = time.ToString(@"mm\:ss");
-            metadataLabels.Time.Content = result;
+            mainform.setTimeLabel(time);
         }
+
+        public bool HasPlayList
+        {
+            get
+            {
+                bool ret = false;
+                if (playlist != null && playlist.getCount() > 0)
+                {
+                    ret = true;
+                }
+                return ret;
+            }
+        }
+
         #endregion
     }
 }

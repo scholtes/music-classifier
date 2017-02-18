@@ -63,20 +63,15 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClassifierThread.cs" />
     <Compile Include="DTOs\JsonDTO.cs" />
     <Compile Include="DTOs\SettingsControlDTO.cs" />
-    <Compile Include="DTOs\GUIControlDTO.cs" />
     <Compile Include="HelperClasses\Classifier.cs" />
-    <Compile Include="HelperClasses\FakeClassifier.cs" />
-    <Compile Include="HelperClasses\Database.cs" />
     <Compile Include="HelperClasses\DirectoryBrowser.cs" />
     <Compile Include="HelperClasses\ServerDatabase.cs" />
     <Compile Include="HelperClasses\WpfControls.cs" />
-    <Compile Include="Interfaces\IClassifier.cs" />
-    <Compile Include="Mappers\GUIControlDTOMapper.cs" />
+    <Compile Include="Interfaces\IMainForm.cs" />
     <Compile Include="DTOs\EmotionSpaceDTO.cs" />
-    <Compile Include="Interfaces\IDatabase.cs" />
-    <Compile Include="HelperClasses\FakeDatabase.cs" />
     <Compile Include="Mappers\JsonDTOMapper.cs" />
     <Compile Include="Mappers\MetaDataDTOMapper.cs" />
     <Compile Include="HelperClasses\MediaController.cs" />

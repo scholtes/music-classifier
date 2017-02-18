@@ -38,31 +38,25 @@ namespace GUI
         {
             FolderBrowserDialog fbd = new FolderBrowserDialog();
             var dialogResult = fbd.ShowDialog();
-            string newpath = dialogResult.ToString();
-            // I know!
-            Controls.TextBox box = (Controls.TextBox)(this.FindName("directoryTextBox"));
-
-        }
-
-        private void emptyDatabase_Click(object sender, RoutedEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void classifyLibraryButton_Click(object sender, RoutedEventArgs e)
-        {
-            model.classifyLibrary();
+            if (dialogResult == System.Windows.Forms.DialogResult.OK)
+            {
+                this.directoryTextBox.Text = fbd.SelectedPath;
+            }
         }
 
         private void closeButton_Click(object sender, RoutedEventArgs e)
         {
-            Properties.Settings.Default.Save();
-            this.Hide();
+            this.DialogResult = true;
         }
 
         private void Canvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            model.moveWindow(this, e);
+            //model.moveWindow(this, e);
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            this.DialogResult = false;
         }
     }
 }

@@ -7,11 +7,24 @@ namespace Framework
     /// </summary>
     public class EmotionSpaceDTO
     {
+
+        public EmotionSpaceDTO()
+            :this(.5,.5)
+        {
+            //Center the point
+        }
+
+        public EmotionSpaceDTO(double energy, double Positivity)
+        {
+            this.Energy = energy;
+            this.Positivity = Positivity;
+        }
+
         public double Energy
         {
             get
             {
-                return _energy;
+                return energy;
             }
             set
             {
@@ -19,14 +32,14 @@ namespace Framework
                 {
                     throw new Exception("Invalid value for energy");
                 }
-                _energy = value;
+                energy = value;
             }
         }
         public double Positivity
         {
             get
             {
-                return _positivity;
+                return positivity;
             }
             set
             {
@@ -34,12 +47,12 @@ namespace Framework
                 {
                     throw new Exception("Invalid value for positivity");
                 }
-                _positivity = value;
+                positivity = value;
             }
         }
 
-        private double _energy;
-        private double _positivity;
+        private double energy;
+        private double positivity;
 
     }
 }

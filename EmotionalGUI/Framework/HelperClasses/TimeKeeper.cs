@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Framework.Interfaces;
+using System;
 using System.Windows.Controls;
 using System.Windows.Threading;
 
@@ -11,34 +12,28 @@ namespace Framework
     {
         #region Properties
         private DispatcherTimer timer;
-        private Label label;
+        private IMainForm mainForm;
         private DateTime timerStart;
         private TimeSpan accumulatedTime;
         public TimeSpan max;
-        public Canvas seekbar;
-        public Canvas seekbarCursor;
         #endregion
 
         #region Constructors
         private TimeKeeper() { }
+
+
         /// <summary>
         /// A class used for easy functionality of the current song timer label
         /// </summary>
         /// <param name="lbl">The label that will be updated</param>
-        public TimeKeeper(Label lbl,GUIControlDTO controlDTO)
+        public TimeKeeper(IMainForm mainform)
         {
-            if(lbl == null)
-            {
-                throw new ArgumentException("Label is null");
-            }
-            label = lbl;
+            mainForm = mainform;
             timer = new DispatcherTimer();
             timer.Interval = new TimeSpan(0, 0, 1);
             timer.Tick += Timer_Tick;
             accumulatedTime = new TimeSpan(0);
-            seekbar = controlDTO.seekbar;
-            seekbarCursor = controlDTO.seekbarCursorCanvas;
-            formatSeekbarCursor();
+            //formatSeekbarCursor();
         }
         #endregion
 
@@ -94,24 +89,10 @@ namespace Framework
         {
             accumulatedTime += DateTime.Now - timerStart;
             timerStart = DateTime.Now;
-            label.Content = accumulatedTime < max ? accumulatedTime.ToString(@"mm\:ss") : max.ToString(@"mm\:ss");
-            setSeekbarCursor(accumulatedTime.TotalSeconds / max.TotalSeconds);
-
+            mainForm.setTimeLabel(accumulatedTime < max ? accumulatedTime : max);
+            mainForm.UpdateCursor(accumulatedTime.TotalSeconds / max.TotalSeconds);
         }
 
-        private void formatSeekbarCursor()
-        {
-            seekbarCursor.Height = seekbar.Height;
-            seekbarCursor.Width = seekbar.Width / 50;
-            Canvas.SetLeft(seekbarCursor,Canvas.GetLeft(seekbar));
-            Canvas.SetTop(seekbarCursor, Canvas.GetTop(seekbar));
-        }
-
-        private void setSeekbarCursor(double percent)
-        {
-            int x = (int)((seekbar.Width / 50) * 49 * percent);
-            Canvas.SetLeft(seekbarCursor, x);
-        }
         #endregion
 
     }
