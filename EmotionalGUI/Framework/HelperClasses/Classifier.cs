@@ -3,30 +3,19 @@ using System.Web.Script.Serialization;
 
 namespace Framework
 {
-    class Classifier : IClassifier
+    class Classifier
     {
-        public string classifySongs(string[] songpaths)
-        {
-            JsonDTO json = new JsonDTO();
-            json.ClassifierResults = new System.Collections.Generic.List<ClassifierResult>();
-            foreach(string song in songpaths)
-            {
-                string classifierJson = classify(song);
-                JsonDTO dto = JsonDTOMapper.getJsonDTO(classifierJson);
-                json.ClassifierResults.Add(dto.ClassifierResults[0]);
-            }
-            string answer = new JavaScriptSerializer().Serialize(json);
-            return answer;
-        }
-
-        private string classify(string songpath)
+        public string classify(string songpath)
         {
             string output = null;
             ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.FileName = @"D:\Desktop\emotify\emotify.exe";
+            startInfo.FileName = @"..\..\..\..\Classifier\dist\emotify\emotify.exe";
             startInfo.Arguments += "\"" + songpath + "\"";
             startInfo.RedirectStandardOutput = true;
+            startInfo.RedirectStandardError = true;
             startInfo.UseShellExecute = false;
+            startInfo.CreateNoWindow = true;
+
             //startInfo.RedirectStandardError = true;
             var proc = new Process();
             proc.StartInfo = startInfo;

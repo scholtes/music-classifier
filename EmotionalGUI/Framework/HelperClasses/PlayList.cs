@@ -11,7 +11,13 @@ namespace Framework
         #endregion
 
         #region Constructors
-        public PlayList() { }
+        private PlayList() { }
+
+        public PlayList(List<string> songs)
+        {
+            this.loadSongs(songs.ToArray());
+        }
+
         #endregion
 
         #region Methods
@@ -23,7 +29,7 @@ namespace Framework
         public void loadSongs(string[] songs)
         {
             playlist = new LinkedList<string>();
-            if(songs == null || songs.Length == 0)
+            if(songs == null)
             {
                 throw new ArgumentException("Cannot pass in null or 0 songs");
             }

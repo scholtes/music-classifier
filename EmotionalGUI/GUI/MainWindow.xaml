@@ -8,12 +8,12 @@
         Title="MainWindow" Height="546.875" Width="525" WindowStyle="None">
     <Canvas x:Name="WindowControlCanvas" HorizontalAlignment="Left" Height="37" VerticalAlignment="Top" Width="515" Background="#FFD46363" MouseDown="WindowControlCanvas_MouseDown">
         <Button x:Name="closeButton" Content="Close" Canvas.Left="430" Canvas.Top="7" Width="75" Click="closeButton_Click"/>
-        <Slider x:Name="slider" Canvas.Left="32" Canvas.Top="70" Width="245"/>
-        <Slider x:Name="slider1" Canvas.Left="32" Canvas.Top="124" Width="245"/>
+        <Slider x:Name="posSlider" Canvas.Left="32" Canvas.Top="70" Width="245" Maximum="1" Minimum="0"/>
+        <Slider x:Name="energySlider" Canvas.Left="32" Canvas.Top="124" Width="245" Maximum="1" Minimum="0"/>
         <ListBox x:Name="playlistListBox" Height="174" Canvas.Left="307" Canvas.Top="44" Width="198" Background="#FFACCEFF"/>
-        <Button x:Name="queryDatabaseButton" Content="Make Playlist" Canvas.Left="32" Canvas.Top="173" Width="98"/>
+        <Button x:Name="queryDatabaseButton" Content="Make Playlist" Canvas.Left="32" Canvas.Top="173" Width="98" Click="queryDatabaseButton_Click"/>
         <Canvas Height="145" Canvas.Left="3" Canvas.Top="223" Width="515" Background="#FFFFDBC1">
-            <Label x:Name="Title" Content="Title" Canvas.Left="10" Canvas.Top="10"/>
+            <Label x:Name="TitleLabel" Content="Title" Canvas.Left="10" Canvas.Top="10"/>
             <Label x:Name="Artist" Content="Artist" Canvas.Left="10" Canvas.Top="41"/>
             <Label x:Name="Album" Content="Album" Canvas.Left="10" Canvas.Top="72"/>
             <Label x:Name="currentTimeLabel" Content="00:00" Canvas.Left="10" Canvas.Top="109"/>
@@ -30,8 +30,8 @@
         <Button x:Name="stopButton" Content="Stop" Canvas.Left="265" Canvas.Top="429" Width="75" Click="stopButton_Click"/>
         <Button x:Name="nextButton" Content="Next" Canvas.Left="345" Canvas.Top="429" Width="75" Click="nextButton_Click"/>
         <Button x:Name="settingsButton" Content="Settings" Canvas.Left="405" Canvas.Top="482" Width="75" Click="settingsButton_Click"/>
-        <Label x:Name="Positivity" Content="Positivity" Canvas.Left="32" Canvas.Top="39"/>
-        <Label x:Name="Energy" Content="Energy" Canvas.Left="32" Canvas.Top="93" RenderTransformOrigin="-4.596,-0.679"/>
+        <Label x:Name="PositivityLabel" Content="Positivity" Canvas.Left="32" Canvas.Top="39"/>
+        <Label x:Name="EnergyLabel" Content="Energy" Canvas.Left="32" Canvas.Top="93" RenderTransformOrigin="-4.596,-0.679"/>
         <Label x:Name="label10" Content="Emotional GUI" Canvas.Left="11" Canvas.Top="4"/>
         <ComboBox x:Name="emotionComboBox" Canvas.Left="157" Canvas.Top="171" Width="120"/>
     </Canvas>
