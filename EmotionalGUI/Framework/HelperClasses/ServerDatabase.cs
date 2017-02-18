@@ -13,8 +13,6 @@ namespace Framework
             public double distance;
         }
 
-
-
         /// <summary>
         /// Make sure that the database is private and only one instance ever exists.
         /// </summary>
@@ -208,18 +206,25 @@ namespace Framework
         /// <param name="emotionSpaceDTO">The coordinates in the emotionspace</param>
         public void addSongToDatabase(string songpath, EmotionSpaceDTO emotionSpaceDTO)
         {
-            using (SQLiteConnection connection = Connect())
+            try
             {
-                using (SQLiteTransaction tranaction = connection.BeginTransaction())
+                using (SQLiteConnection connection = Connect())
                 {
-                    using (SQLiteCommand command = connection.CreateCommand())
+                    using (SQLiteTransaction tranaction = connection.BeginTransaction())
                     {
-                        command.Transaction = tranaction;
-                        command.CommandText = string.Format("INSERT INTO SONGS (Path, Energy, Postitvity) VALUES (\"{0}\",{1},{2})", songpath, emotionSpaceDTO.Energy, emotionSpaceDTO.Positivity);
-                        command.ExecuteNonQuery();
+                        using (SQLiteCommand command = connection.CreateCommand())
+                        {
+                            command.Transaction = tranaction;
+                            command.CommandText = string.Format("INSERT INTO SONGS (Path, Energy, Postitvity) VALUES (\"{0}\",{1},{2})", songpath, emotionSpaceDTO.Energy, emotionSpaceDTO.Positivity);
+                            command.ExecuteNonQuery();
+                        }
+                        tranaction.Commit();
                     }
-                    tranaction.Commit();
                 }
+            }
+            catch
+            {
+                //This is likely trying to add a song twice. Just silently fail
             }
         }
 
