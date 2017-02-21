@@ -6,6 +6,6 @@ namespace Classifier
     {
         string Classify(string[] songPaths);
 
-        void Train(string[] songPaths);
+        void Train(string[] songPaths, double[] posOutputs, double[] energyOutputs);
     }
 }

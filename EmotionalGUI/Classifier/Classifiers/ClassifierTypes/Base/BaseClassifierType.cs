@@ -12,9 +12,9 @@ namespace Classifier
             FFMpeg.ffmpegConversion(filePaths);
         }
 
-        protected void ExtractFeaturesToFile(string mkcollectionPath)
+        protected string ExtractFeaturesToFile(string mkcollectionPath)
         {
-            BExtract.getFeatures(mkcollectionPath);
+            return BExtract.featureExtraction(mkcollectionPath);
         }
 
         protected void LoadFeaturesFromFile(string arffFilePath)

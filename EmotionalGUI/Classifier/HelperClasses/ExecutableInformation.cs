@@ -6,17 +6,17 @@ namespace Classifier
     {
         public static string getBExtractPath()
         {
-           return Directory.GetCurrentDirectory() + "..\\bin\\bextract.exe";
+           return Path.GetFullPath(Directory.GetCurrentDirectory() + "..\\bin\\bextract.exe");
         }
 
         public static string getFFMPegPath()
         {
-            return Directory.GetCurrentDirectory() + "..\\bin\\ffmpeg.exe";
+            return Path.GetFullPath(Directory.GetCurrentDirectory() + "..\\bin\\ffmpeg.exe");
         }
 
         public static string getTmpPath()
         {
-            return Directory.GetCurrentDirectory() + "..\\tmp";
+            return Path.GetFullPath(Directory.GetCurrentDirectory() + "..\\tmp");
         }
     }
 }
