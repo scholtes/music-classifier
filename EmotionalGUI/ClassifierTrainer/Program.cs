@@ -10,10 +10,20 @@ namespace ClassifierTrainer
     {
         static void Main(string[] args)
         {
-            string directory = @"E:\Music\Duran Duran\";
-            Classifier.IClassifierType classifier = new Classifier.SupportVectorMachine();
+            //Music directory
+            string directory = @"T:\Documents\music-classifier\clips_45seconds";
             string[] songPaths = Framework.DirectoryBrowser.getSongs(directory);
-            classifier.Train(songPaths);
+
+            //Expected energy output
+            IEnumerable<Double> energyOutput = System.IO.File.ReadAllLines(@"T:\Documents\music-classifier\clips_45seconds\wavs\expected_energy.csv").Select(l => Double.Parse(l));
+            double[] expectedEnergyOutput = energyOutput.ToArray<double>();
+
+            IEnumerable<Double> positivityOutput = System.IO.File.ReadAllLines(@"T:\Documents\music-classifier\clips_45seconds\wavs\expected_positivity.csv").Select(l => Double.Parse(l));
+            double[] expectedpositivityOutput = energyOutput.ToArray<double>();
+
+            //Train
+            Classifier.IClassifierType classifier = new Classifier.SupportVectorMachine();
+            classifier.Train(songPaths, expectedpositivityOutput, expectedEnergyOutput);
         }
     }
 }

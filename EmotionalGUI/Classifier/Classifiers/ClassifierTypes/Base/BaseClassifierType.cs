@@ -7,9 +7,9 @@ namespace Classifier
     {
         private List<SongDataDTO> songsAndFeatures;
 
-        protected void ConvertToWav(string[] filePaths)
+        protected string[] ConvertToWav(string[] filePaths)
         {
-            FFMpeg.ffmpegConversion(filePaths);
+            return FFMpeg.ffmpegConversion(filePaths);
         }
 
         protected string ExtractFeaturesToFile(string mkcollectionPath)
@@ -20,6 +20,14 @@ namespace Classifier
         protected void LoadFeaturesFromFile(string arffFilePath)
         {
             songsAndFeatures = ArffParser.parseArff(arffFilePath);
+        }
+
+        protected List<SongDataDTO> getFeatures(string[] filePaths)
+        {
+            string[] wavPaths = ConvertToWav(filePaths);
+            string mkcollectionFile = BExtract.convertToMkcollection(wavPaths);
+            string arffFilePath = ExtractFeaturesToFile(mkcollectionFile);
+            return ArffParser.parseArff(arffFilePath);
         }
 
         public abstract void LoadClassifier();

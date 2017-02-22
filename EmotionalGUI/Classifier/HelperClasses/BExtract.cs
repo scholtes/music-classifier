@@ -32,5 +32,12 @@ namespace Classifier
 
             return Path.Combine(ExecutableInformation.getTmpPath(), arffFilename);
         }
+
+        public static string convertToMkcollection(string[] filePaths)
+        {
+            string mkcollectionFile = Path.Combine(ExecutableInformation.getTmpPath(), "music.mk");
+            File.WriteAllLines(mkcollectionFile, filePaths);
+            return mkcollectionFile;
+        }
     }
 }
