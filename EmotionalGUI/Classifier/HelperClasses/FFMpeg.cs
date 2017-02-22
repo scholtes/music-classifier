@@ -16,11 +16,11 @@ namespace Classifier
             //ffmpeg will make temporary .wav files.
             string[] tempfiles = new string[files.Length];
 
-            int i = 0;
-            foreach (string file in files)
+            for(int i = 0; i < files.Length; i++)
             {
+                string file = files[i];
                 //First create temporary file
-                string newfile = ExecutableInformation.getTmpPath() + "/" + Path.GetFileNameWithoutExtension(file);
+                string newfile = Path.Combine(ExecutableInformation.getTmpPath(),Path.GetFileNameWithoutExtension(file));
                 while (files.Contains(newfile + ".wav"))
                 {
                     newfile += "_dup";

@@ -14,9 +14,15 @@ namespace Classifier
             return Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "..\\..\\..\\..\\common_utilities\\ffmpeg.exe"));
         }
 
+        //Returns the temporary working directory. Will create if it doesn't exist
         public static string getTmpPath()
         {
-            return Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "..\\tmp"));
+            string dir = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "..\\tmp"));
+            if (!Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
+            return dir;
         }
     }
 }
