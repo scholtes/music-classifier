@@ -6,7 +6,11 @@ namespace Classifier
     {
         private static readonly string WINDOW_FS = (1 << 21).ToString();
 
-        //Returns string to arff file that contains the features for the given mkcollection
+        /// <summary>
+        /// Run feature extract on the given mkcollection.
+        /// </summary>
+        /// <param name="mkcollection">Path to mkcollection of songs to run feature extraction on</param>
+        /// <returns>Path to .arff file that contains the features for the given mkcollection</returns>
         public static string featureExtraction(string mkcollection)
         {
 
@@ -33,6 +37,11 @@ namespace Classifier
             return Path.Combine(ExecutableInformation.getTmpPath(), arffFilename);
         }
 
+        /// <summary>
+        /// Write a list of file paths to mkcollection file in the temp directory.
+        /// </summary>
+        /// <param name="filePaths">List of paths to be included in the mkcolection file.</param>
+        /// <returns>Path to output mkcollection</returns>
         public static string convertToMkcollection(string[] filePaths)
         {
             string mkcollectionFile = Path.Combine(ExecutableInformation.getTmpPath(), "music.mk");
