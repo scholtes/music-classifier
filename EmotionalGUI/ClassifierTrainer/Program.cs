@@ -36,7 +36,6 @@ namespace ClassifierTrainer
                 song.energy = expectedEnergy;
                 song.title = songPath;
                 expectedOutputs.Add(song);
-
             }
 
             //Train

@@ -49,8 +49,8 @@ namespace Classifier
             return ArffParser.parseArff(arffFilePath);
         }
 
-        public abstract void LoadClassifier();
+        public abstract void LoadClassifier(string positivityPath, string energyPath);
 
-        public abstract void SaveClassifier();
+        public abstract void SaveClassifier(string positivityPath, string energyPath);
     }
 }

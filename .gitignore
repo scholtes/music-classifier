@@ -2,6 +2,8 @@
 *.wav
 *.asv
 *.pyc
+*.obj
+*.bin
 __pycache__
 bextract.exe
 mkcollection.exe
@@ -9,3 +11,16 @@ ffmpeg.exe
 marsyas.dll
 Classifier/testbed
 Classifier/tmp
+EmotionalGUI/Classifier/bin
+EmotionalGUI/Classifier/obj
+EmotionalGUI/ClassifierTest/bin
+EmotionalGUI/ClassifierTest/obj
+EmotionalGUI/ClassifierTrainer/bin
+EmotionalGUI/ClassifierTrainer/obj
+EmotionalGUI/EmotionalGUI/bin
+EmotionalGUI/EmotionalGUI/obj
+EmotionalGUI/Framework/bin
+EmotionalGUI/Framework/obj
+EmotionalGUI/GUI/bin
+EmotionalGUI/GUI/obj
+EmotionalGUI/.vs/
