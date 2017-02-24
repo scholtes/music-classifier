@@ -97,9 +97,7 @@ namespace Framework
             {
                 while (rdr.Read())
                 {
-                    EmotionSpaceDTO point = new EmotionSpaceDTO();
-                    point.Energy = rdr.GetDouble(1);
-                    point.Positivity = rdr.GetDouble(2);
+                    EmotionSpaceDTO point = new EmotionSpaceDTO(rdr.GetDouble(1),rdr.GetDouble(2));
                     songs[rdr.GetString(0)] = point;
                 }
             };

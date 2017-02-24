@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using System;
 using Framework.Interfaces;
 
 namespace Framework
@@ -20,18 +21,19 @@ namespace Framework
     {
         #region Properties
         public IMainForm mainform = null;
-        public PlayList playlist = null;
+        private PlayList playlist = null;
         private PlayerStatus playerstatus = PlayerStatus.Stopped;
         private SongDTO songDTO = null;
+        private int playerVolume;
         TimeKeeper timer;
         #endregion
 
         #region Constructors
-        private MediaController() { }
-        public MediaController(IMainForm MDD)
+        public MediaController(IMainForm MDD,int initialVolume)
         {
             mainform = MDD;
             timer = new TimeKeeper(MDD);
+            playerVolume = initialVolume;
         }
 
         #endregion
@@ -43,9 +45,10 @@ namespace Framework
             {
                 string song = playlist.getSong();
                 songDTO = SongDTOMapper.getSongDTO(song);
-                timer.max = songDTO.songTag.getDuration();
+                timer.max = songDTO.songTag.Duration;
                 timer.Start();
-                mainform.updateMetaDataLabels(songDTO);
+                mainform.updateSongMetadataInformation(songDTO);
+                songDTO.songPlayer.changeVolume(playerVolume);
                 songDTO.songPlayer.Play(song);
                 playerstatus = PlayerStatus.Playing;
                 return;
@@ -95,7 +98,7 @@ namespace Framework
         {
             if (songDTO != null)
             {
-                double seconds = percent * songDTO.songTag.getDuration().TotalSeconds;
+                double seconds = percent * songDTO.songTag.Duration.TotalSeconds;
                 TimeSpan time = new TimeSpan(0, (int)seconds / 60, (int)seconds % 60);
                 timer.setAccumulatedTime(time);
                 songDTO.songPlayer.setPosition(seconds);
@@ -103,9 +106,40 @@ namespace Framework
             }
         }
 
+        public void ChangeVolume(int volume)
+        {
+            playerVolume = volume;
+            songDTO.songPlayer.changeVolume(volume);
+        }
+
         private void setTimeLabel(TimeSpan time)
         {
             mainform.setTimeLabel(time);
+        }
+
+        public void PlaySong(string song)
+        {
+            bool matchingSong = false;
+            int count = 0;
+            while (!matchingSong)
+            {
+                if (count > 100) return;
+                string currSong = playlist.getSong();
+                if (currSong.Contains(song))
+                {
+                    matchingSong = true;
+                    Stop();
+                    Play();
+                    return;
+                }
+                playlist.cyclePlaylistForwards();
+                count++;
+            }
+        }
+
+        public void LoadSongs(string[] songs)
+        {
+            playlist = new PlayList(songs);
         }
 
         public bool HasPlayList

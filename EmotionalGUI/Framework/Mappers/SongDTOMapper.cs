@@ -43,7 +43,7 @@ namespace Framework
                 throw new NotImplementedException(".wav is not an accepted filetype yet");
             }
 
-            throw new Exception("We don't support this file type");
+            throw new Exception("We will not support this file type");
 
         }
     }

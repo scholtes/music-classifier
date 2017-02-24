@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
-        Title="Settings" Height="143.182" Width="448.296" WindowStyle="None">
-    <Canvas HorizontalAlignment="Left" Height="114" Margin="10,10,0,0" VerticalAlignment="Top" Width="420" MouseDown="Canvas_MouseDown">
-        <Button x:Name="closeButton" Content="Done" Canvas.Left="335" Canvas.Top="84" Width="75" Click="closeButton_Click"/>
+        Title="Settings" Height="145" Width="450" WindowStyle="None">
+    <Canvas x:Name="test" Height="145" Width="450" MouseDown="test_MouseDown" Background="AliceBlue">
         <Label x:Name="Settings1" Content="Settings"/>
+        <Button x:Name="closeButton" Content="Done" Canvas.Left="335" Canvas.Top="84" Width="75" Click="closeButton_Click"/>
         <TextBox x:Name="directoryTextBox" Height="23" Canvas.Left="10" TextWrapping="Wrap" Text="" Canvas.Top="31" Width="302"/>
         <Button x:Name="browseButton" Content="Browse" Canvas.Left="335" Canvas.Top="31" Width="75" Height="23" Click="browseButton_Click"/>
-        <Button Content="Cancel" Height="20" Canvas.Left="225" Canvas.Top="84" Width="77" Click="Button_Click"/>
+        <Button x:Name="classifyLibraryButton" Content="Classify Library" Canvas.Left="10" Canvas.Top="84" Width="302" Click="ClassifyLibrary_Click"/>
     </Canvas>
 </Window>

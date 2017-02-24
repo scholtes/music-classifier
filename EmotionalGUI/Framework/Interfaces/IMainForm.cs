@@ -8,7 +8,7 @@ namespace Framework.Interfaces
 {
     public interface IMainForm
     {
-        void updateMetaDataLabels(SongDTO song);
+        void updateSongMetadataInformation(SongDTO song);
 
         void setTimeLabel(TimeSpan time);
 

@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using Framework;
 using System.Windows.Forms;
 using System.IO;
+using System.Threading;
 
 namespace GUI
 {
@@ -22,16 +23,10 @@ namespace GUI
     /// </summary>
     public partial class Settings : Window
     {
-        GUIModel model;
-
         public Settings()
         {
             InitializeComponent();
-        }
-
-        public void setModel(GUIModel model)
-        {
-            this.model = model;
+            directoryTextBox.Text = UserSettings.Default.MusicDirectory;
         }
 
         private void browseButton_Click(object sender, RoutedEventArgs e)
@@ -44,19 +39,38 @@ namespace GUI
             }
         }
 
-        private void closeButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.DialogResult = true;
-        }
-
         private void Canvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            //model.moveWindow(this, e);
+            WindowMovement.moveWindow(this, e);
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void ClassifyLibrary_Click(object sender, RoutedEventArgs e)
         {
-            this.DialogResult = false;
+            string dir = directoryTextBox.Text;
+            if (Directory.Exists(dir))
+            {
+                string[] songs = DirectoryBrowser.getSongs(dir);
+                //will start automatically 
+                Framework.ClassifierThread worker = new ClassifierThread(songs);
+                
+            }
+        }
+
+        private void closeButton_Click(object sender, RoutedEventArgs e)
+        {
+            SaveSettings();
+            this.Hide();
+        }
+
+        private void test_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            WindowMovement.moveWindow(this, e);
+        }
+
+        private void SaveSettings()
+        {
+            UserSettings.Default.MusicDirectory = directoryTextBox.Text;
+            UserSettings.Default.Save();
         }
     }
 }

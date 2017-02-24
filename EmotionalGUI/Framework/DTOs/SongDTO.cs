@@ -6,7 +6,7 @@ namespace Framework
     /// </summary>
     public class SongDTO
     {
-        public ITagManager songTag;
+        public BaseAudioFile songTag;
         public IAudioPlayer songPlayer;
     }
 }

@@ -17,5 +17,8 @@ namespace Framework
 
         // Start the audio at the specified time (in seconds)
         void setPosition(double seconds);
+
+        // Changes the volume of the media player
+        void changeVolume(int volume);
     }
 }
