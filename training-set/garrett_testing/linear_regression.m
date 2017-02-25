@@ -45,8 +45,18 @@ regress_int = train_attr_mod\train_int;
 results_pos = test_attr_mod * regress_pos;
 results_int = test_attr_mod * regress_int;
 
+%% Results
+
 accuracy_pos = sum(abs(results_pos - test_pos) < std_pos)/size(test_set,1);
 accuracy_int = sum(abs(results_int - test_int) < std_int)/size(test_set,1);
 accuracy = accuracy_pos*accuracy_int;
+
+RMSE_pos = sqrt(sum((results_pos - test_pos).^2/size(test_set,1)));
+RMSE_int = sqrt(sum((results_int - test_int).^2/size(test_set,1)));
+
+mean_pos = mean(test_pos);
+mean_int = mean(test_int);
+R2_pos = 1 - sum((results_pos-mean_pos).^2)/sum((test_pos-mean_pos).^2);
+R2_int = 1 - sum((results_int-mean_int).^2)/sum((test_int-mean_int).^2);
 
 %% Using NonLinearModel.fit
