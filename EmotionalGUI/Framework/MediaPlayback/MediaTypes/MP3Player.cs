@@ -4,18 +4,13 @@ namespace Framework
 
     public class MP3Player : IAudioPlayer
     {
-        #region Properties
-        WMPLib.WindowsMediaPlayer audioPlayer = null;
-        #endregion
+        private WMPLib.WindowsMediaPlayer audioPlayer = null;
 
-        #region Constructors
         public MP3Player()
         {
             audioPlayer = new WMPLib.WindowsMediaPlayer();
         }
-        #endregion
 
-        #region Methods
         /// <summary>
         /// Begin Playback of audio file
         /// </summary>
@@ -58,6 +53,14 @@ namespace Framework
         {
             audioPlayer.controls.currentPosition = seconds;
         }
-        #endregion
+
+        /// <summary>
+        /// Changes the volume of the currently playing song
+        /// </summary>
+        /// <param name="volume">Volume is between 0 and 100</param>
+        public void changeVolume(int volume)
+        {
+            audioPlayer.settings.volume = volume;
+        }
     }
 }

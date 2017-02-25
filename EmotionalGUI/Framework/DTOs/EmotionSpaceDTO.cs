@@ -7,39 +7,33 @@ namespace Framework
     /// </summary>
     public class EmotionSpaceDTO
     {
+        private double energy;
+        private double positivity;
+
+        public EmotionSpaceDTO(double energy, double positivity)
+        {
+            if (energy > 1 || energy < 0) throw new Exception("Invalid Value for Energy");
+
+            if (positivity > 1 || positivity < 0) throw new Exception("Invalid Value for Positivity");
+            this.energy = energy;
+            this.positivity = positivity;
+        }
+
         public double Energy
         {
             get
             {
-                return _energy;
+                return energy;
             }
-            set
-            {
-                if(value > 1 || value < 0)
-                {
-                    throw new Exception("Invalid value for energy");
-                }
-                _energy = value;
-            }
+            private set { }
         }
         public double Positivity
         {
             get
             {
-                return _positivity;
+                return positivity;
             }
-            set
-            {
-                if (value > 1 || value < 0)
-                {
-                    throw new Exception("Invalid value for positivity");
-                }
-                _positivity = value;
-            }
+            private set { }
         }
-
-        private double _energy;
-        private double _positivity;
-
     }
 }

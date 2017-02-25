@@ -1,45 +1,31 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Diagnostics;
+using System.Web.Script.Serialization;
 
 namespace Framework
 {
-    public class Classifier : IClassifier
+    class Classifier
     {
-        public string classifySongs(string[] songs)
+        public string classify(string songpath)
         {
+            string output = null;
+            ProcessStartInfo startInfo = new ProcessStartInfo();
+            startInfo.FileName = @"..\..\..\..\Classifier\dist\emotify\emotify.exe";
+            startInfo.Arguments += "\"" + songpath + "\"";
+            startInfo.RedirectStandardOutput = true;
+            startInfo.RedirectStandardError = true;
+            startInfo.UseShellExecute = false;
+            startInfo.CreateNoWindow = true;
 
-            //Format the songs into single comma-separated string
-            string emotifyArgs = formatSongs(songs);
-
-            System.Diagnostics.Process emotify = new System.Diagnostics.Process();
-            emotify.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
-            emotify.StartInfo.UseShellExecute = false;
-            emotify.StartInfo.RedirectStandardOutput = true;   // Redirect so we can read the standard output
-
-            //Call "emotify.exe path/to/song1.mp3 path/to/song2.mp3 ... "
-            emotify.StartInfo.FileName = @"..\..\..\..\Classifier\dist\emotify\emotify.exe";
-            emotify.StartInfo.Arguments = emotifyArgs;
-
-            //Run the process
-            emotify.Start();
-            string output = emotify.StandardOutput.ReadToEnd();
-
-            return output;
-        }
-
-
-        //Add quotes around each song in the given string array
-        //Join songs into one string by adding space delimiter
-        private string formatSongs(string[] songs)
-        {
-            string formattedSongs = "";
-            foreach (string song in songs)
+            //startInfo.RedirectStandardError = true;
+            var proc = new Process();
+            proc.StartInfo = startInfo;
+            proc.Start();
+            while (!proc.StandardOutput.EndOfStream)
             {
-
-                formattedSongs += "\"" + song + "\" ";
+                output = proc.StandardOutput.ReadLine();
             }
 
-            return formattedSongs;
+            return output;
         }
     }
 }

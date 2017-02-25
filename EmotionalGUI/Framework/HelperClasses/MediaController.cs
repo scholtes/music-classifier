@@ -1,4 +1,6 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using System;
+using Framework.Interfaces;
 
 namespace Framework
 {
@@ -18,21 +20,22 @@ namespace Framework
     public class MediaController
     {
         #region Properties
-        public MetaDataLabelsDTO metadataLabels = null;
-        public PlayList playlist = null;
+        public IMainForm mainform = null;
+        private PlayList playlist = null;
         private PlayerStatus playerstatus = PlayerStatus.Stopped;
         private SongDTO songDTO = null;
+        private int playerVolume;
         TimeKeeper timer;
         #endregion
 
         #region Constructors
-        private MediaController() { }
-        public MediaController(MetaDataLabelsDTO MDD,GUIControlDTO C)
+        public MediaController(IMainForm MDD,int initialVolume)
         {
-            metadataLabels = MDD;
-            timer = new TimeKeeper(MDD.Time,C);
-            playlist = new PlayList();
+            mainform = MDD;
+            timer = new TimeKeeper(MDD);
+            playerVolume = initialVolume;
         }
+
         #endregion
 
         #region Methods
@@ -42,9 +45,10 @@ namespace Framework
             {
                 string song = playlist.getSong();
                 songDTO = SongDTOMapper.getSongDTO(song);
-                timer.max = songDTO.songTag.getDuration();
+                timer.max = songDTO.songTag.Duration;
                 timer.Start();
-                updateMetaDataLabels();
+                mainform.updateSongMetadataInformation(songDTO);
+                songDTO.songPlayer.changeVolume(playerVolume);
                 songDTO.songPlayer.Play(song);
                 playerstatus = PlayerStatus.Playing;
                 return;
@@ -71,7 +75,7 @@ namespace Framework
         public void Stop()
         {
             timer.Reset();
-            setTimeLabel(new TimeSpan(0));
+            mainform.setTimeLabel(new TimeSpan(0));
             songDTO.songPlayer.Stop();
             playerstatus = PlayerStatus.Stopped;
         }
@@ -92,28 +96,65 @@ namespace Framework
 
         public void Seek(double percent)
         {
-            double seconds = percent * songDTO.songTag.getDuration().TotalSeconds;
-            TimeSpan time = new TimeSpan(0, (int)seconds / 60, (int)seconds % 60);
-            timer.setAccumulatedTime(time);
-            songDTO.songPlayer.setPosition(seconds);
-            playerstatus = PlayerStatus.Paused;
+            if (songDTO != null)
+            {
+                double seconds = percent * songDTO.songTag.Duration.TotalSeconds;
+                TimeSpan time = new TimeSpan(0, (int)seconds / 60, (int)seconds % 60);
+                timer.setAccumulatedTime(time);
+                songDTO.songPlayer.setPosition(seconds);
+                playerstatus = PlayerStatus.Paused;
+            }
         }
 
-        private void updateMetaDataLabels()
+        public void ChangeVolume(int volume)
         {
-            metadataLabels.Album.Text = songDTO.songTag.getAlbum();
-            metadataLabels.Artist.Text = songDTO.songTag.getArtist();
-            metadataLabels.Duration.Text = songDTO.songTag.getDuration().ToString(@"mm\:ss");
-            metadataLabels.Thumbnail.Image = songDTO.songTag.getThumbnail();
-            metadataLabels.Title.Text = songDTO.songTag.getTitle();
-            setTimeLabel(new TimeSpan(0));
+            playerVolume = volume;
+            songDTO.songPlayer.changeVolume(volume);
         }
 
         private void setTimeLabel(TimeSpan time)
         {
-            string result = time.ToString(@"mm\:ss");
-            metadataLabels.Time.Text = result;
+            mainform.setTimeLabel(time);
         }
+
+        public void PlaySong(string song)
+        {
+            bool matchingSong = false;
+            int count = 0;
+            while (!matchingSong)
+            {
+                if (count > 100) return;
+                string currSong = playlist.getSong();
+                if (currSong.Contains(song))
+                {
+                    matchingSong = true;
+                    Stop();
+                    Play();
+                    return;
+                }
+                playlist.cyclePlaylistForwards();
+                count++;
+            }
+        }
+
+        public void LoadSongs(string[] songs)
+        {
+            playlist = new PlayList(songs);
+        }
+
+        public bool HasPlayList
+        {
+            get
+            {
+                bool ret = false;
+                if (playlist != null && playlist.getCount() > 0)
+                {
+                    ret = true;
+                }
+                return ret;
+            }
+        }
+
         #endregion
     }
 }

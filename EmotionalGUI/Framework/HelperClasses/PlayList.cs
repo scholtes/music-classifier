@@ -11,7 +11,13 @@ namespace Framework
         #endregion
 
         #region Constructors
-        public PlayList() { }
+        private PlayList() { }
+
+        public PlayList(string[] songs)
+        {
+            this.loadSongs(songs);
+        }
+
         #endregion
 
         #region Methods
@@ -20,10 +26,10 @@ namespace Framework
         /// Loads songs into the playlist, will overwrite current playlist
         /// </summary>
         /// <param name="songs">An array of fully qualified song paths</param>
-        public void loadSongs(string[] songs)
+        private void loadSongs(string[] songs)
         {
             playlist = new LinkedList<string>();
-            if(songs == null || songs.Length == 0)
+            if(songs == null)
             {
                 throw new ArgumentException("Cannot pass in null or 0 songs");
             }

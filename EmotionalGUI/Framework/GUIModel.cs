@@ -1,15 +1,15 @@
 ﻿using System;
-using System.Windows.Forms;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace Framework
 {
     public class GUIModel
-    {
+    {/*
         #region Properties
-        private Form guiForm;
-        private Form settingsForm;
+        private Window guiWindow;
         private MetaDataLabelsDTO metadataLabels;
-        private GUIControlDTO guiControls;
         private SettingsControlDTO settingsControls;
         private MediaController mediaController;
         private IDatabase database;
@@ -17,16 +17,12 @@ namespace Framework
         #endregion
 
         #region Constructors
-        private GUIModel() { }
-        public GUIModel(Form gui, Form settings)
+        public GUIModel(Window gui)
         {
-            guiForm = gui;
-            settingsForm = settings;
+            guiWindow = gui;
             metadataLabels = MetaDataDTOMapper.getMetaDataDTO(gui);
-            guiControls = GUIControlDTOMapper.getControlDTO(gui);
-            settingsControls = SettingsControlDTOMapper.getSettingsControlDTO(settings);
-            mediaController = new MediaController(metadataLabels,guiControls);
-            populateDynamicButtons();
+            //settingsControls = SettingsControlDTOMapper.getSettingsControlDTO(settings);
+            //mediaController = new MediaController(metadataLabels,guiControls);
             database = ServerDatabase.Instance;
         }
         #endregion
@@ -34,7 +30,7 @@ namespace Framework
         #region Methods
         public void closeApplication()
         {
-            guiForm.Close();
+            guiWindow.Close();
         }
 
         public void playSong()
@@ -61,40 +57,36 @@ namespace Framework
             mediaController.Prev();
         }
 
-        public void moveWindow(Form window, MouseEventArgs e)
+        public void moveWindow(Window window, MouseButtonEventArgs e)
         {
             WindowMovement.moveWindow(window, e);
         }
 
-        public void moveSeekbarCursorAlongX(Panel panel,MouseEventArgs e)
+        public void moveSeekbarCursorAlongX(Canvas canvas,MouseButtonEventArgs e)
         {
-            WindowMovement.moveWindowAlongX(panel, e, guiControls.seekbarCursorPanel.Location.X, guiControls.seekbarCursorPanel.Location.X + guiControls.seekbarCursorPanel.Width);
+            //TODO
+            //WindowMovement.moveWindowAlongX(canvas, e, Canvas.GetLeft(guiControls.seekbarCursorCanvas), Canvas.GetLeft(guiControls.seekbarCursorCanvas) + guiControls.seekbarCursorCanvas.Width);
         }
 
-        public void seekBarMoved(int x)
+        public void seekBarMoved(double x)
         {
             if (mediaController.playlist == null || mediaController.playlist.getCount() == 0) { throw new InvalidOperationException("No playlist generated"); }
             double percent = 0;
-            int form_width = guiControls.seekbar.Width;
-            int form_x_start = guiControls.seekbar.Location.X;
-            percent = ((double)x - form_x_start) / form_width;
+            double form_width = guiControls.seekbar.Width;
+            double form_x_start = Canvas.GetLeft(guiControls.seekbar);
+            percent = (x - form_x_start) / form_width;
             mediaController.Seek(percent);
         }
 
         public void seekBarCursorMoved(int x)
         {
-            int test = x - guiForm.Location.X + guiControls.seekbar.Location.X;
+            double test = x - guiWindow.Left + Canvas.GetLeft(guiControls.seekbar);
             if (mediaController.playlist == null || mediaController.playlist.getCount() == 0) { throw new InvalidOperationException("No playlist generated"); }
             double percent = 0;
-            int form_width = guiControls.seekbar.Width;
-            int form_x_start = guiControls.seekbar.Location.X;
+            double form_width = guiControls.seekbar.Width;
+            double form_x_start = Canvas.GetLeft(guiControls.seekbar);
             percent = ((double)test - form_x_start) / form_width;
             mediaController.Seek(percent);
-        }
-
-        private void populateDynamicButtons()
-        {
-            ButtonAdder.addButtons(guiControls.dynamicButtonPanel,mediaController.playlist);
         }
 
         public void classifyLibrary()
@@ -109,9 +101,14 @@ namespace Framework
 
         public void showSettings()
         {
-            settingsForm.Show();
+            settingsWindow.ShowDialog();
+            if (settingsWindow.DialogResult.HasValue && settingsWindow.DialogResult.Value)
+            {
+                //Update settings
+            }
         }
 
         #endregion
+    }*/
     }
 }
