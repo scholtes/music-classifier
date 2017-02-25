@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Framework;
 using Framework.Interfaces;
+using System.Text.RegularExpressions;
 using System.IO;
 
 namespace GUI
@@ -23,21 +24,45 @@ namespace GUI
     /// </summary>
     public partial class MainWindow : Window, IMainForm 
     {
+        private MediaController mediaController = null;
+        private Random rng = new Random();
+        private double Positivity
+        {
+            get
+            {
+                return this.posSlider.Value;
+            }
+            set
+            {
+                this.posSlider.Value = value;
+            }
+        }
+        private double Energy
+        {
+            get
+            {
+                return this.energySlider.Value;
+            }
+            set
+            {
+                this.energySlider.Value = value;
+            }
+        }
+        Settings settings;
+        bool isSeekbarPressed = false;
+
         public MainWindow()
         {
             InitializeComponent();
-            mediaController = new MediaController(this);
-
-            seekbarCursorCanvas.Height = seekbarCanvas.Height;
-            seekbarCursorCanvas.Width = seekbarCanvas.Width / 50;
-            Canvas.SetLeft(seekbarCursorCanvas, Canvas.GetLeft(seekbarCanvas));
-            Canvas.SetTop(seekbarCursorCanvas, Canvas.GetTop(seekbarCanvas));
-
+            mediaController = new MediaController(this, UserSettings.Default.Volume);
+            settings = new Settings();
             UpdateButtonStates();
+            volumeSlider.Value = UserSettings.Default.Volume;
         }
 
         private void closeButton_Click(object sender, RoutedEventArgs e)
         {
+            settings.Close();
             this.Close();
         }
         
@@ -63,37 +88,7 @@ namespace GUI
 
         private void settingsButton_Click(object sender, RoutedEventArgs e)
         {
-            Settings settingdlg = new Settings();
-
-            settingdlg.ShowDialog();
-            if (settingdlg.DialogResult.HasValue && settingdlg.DialogResult.Value)
-            {
-                string dir = settingdlg.directoryTextBox.Text;
-                if (Directory.Exists(dir))
-                {
-                    string[] songs = DirectoryBrowser.getSongs(dir);
-                    //will start automatically 
-                    worker = new ClassifierThread(songs);
-
-                }
-                //Handle the settings changed
-            }
-            UpdateButtonStates();
-        }
-
-        private void seekbarCursorCanvas_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            // TODO
-        }
-
-        private void seekbarCursorCanvas_MouseMove(object sender, MouseEventArgs e)
-        {
-            //TODO
-        }
-
-        private void seekbarCursorCanvas_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            //TODO
+            settings.Show();
         }
 
         private void seekbarCanvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -110,13 +105,13 @@ namespace GUI
             WindowMovement.moveWindow(this, e);
         }
 
-        public void updateMetaDataLabels(SongDTO song)
+        public void updateSongMetadataInformation(SongDTO song)
         {
-            albumLabel.Content = song.songTag.getAlbum();
-            artistLabel.Content = song.songTag.getArtist();
-            this.durationLabel.Content = song.songTag.getDuration().ToString(@"mm\:ss");
-            //metadataLabels.Thumbnail.Image = songDTO.songTag.getThumbnail();
-            this.titleLabel.Content = song.songTag.getTitle();
+            this.albumLabel.Content = song.songTag.Album;
+            this.artistLabel.Content = song.songTag.Artist;
+            this.durationLabel.Content = song.songTag.Duration.ToString(@"mm\:ss");
+            this.thumbnailImage.Source = song.songTag.ThumbnailSource;
+            this.titleLabel.Content = song.songTag.Title;
             setTimeLabel(new TimeSpan(0));
         }
 
@@ -128,33 +123,9 @@ namespace GUI
 
         public void UpdateCursor(double percent)
         {
-            int x = (int)((seekbarCanvas.Width / 50) * 49 * percent);
-            Canvas.SetLeft(seekbarCursorCanvas, x);
-        }
-
-        private MediaController mediaController = null;
-
-        private double Positivity
-        {
-            get
+            if (seekbarCursorSlider.IsEnabled && !isSeekbarPressed)
             {
-                return this.posSlider.Value;
-            }
-            set
-            {
-                this.posSlider.Value = value;
-            }
-        }
-
-        private double Energy
-        {
-            get
-            {
-                return this.energySlider.Value;
-            }
-            set
-            {
-                this.energySlider.Value = value;
+                seekbarCursorSlider.Value = percent;
             }
         }
 
@@ -164,14 +135,14 @@ namespace GUI
             int numSongs = 20; //Number chosen for now. Should reconsider this. 
             List<string> songs = ServerDatabase.Instance.getSongs(numSongs, point);
             Shuffle(songs);
-            mediaController.playlist = new PlayList(songs);
+            UpdatePlayList(songs);
+            mediaController.LoadSongs(songs.ToArray());
             UpdateButtonStates();
             if (playButton.IsEnabled)
             {
                 mediaController.Play();
             }
         }
-
 
         public void UpdateButtonStates()
         {
@@ -180,13 +151,9 @@ namespace GUI
             stopButton.IsEnabled = hasPlaylist;
             previousButton.IsEnabled = hasPlaylist;
             nextButton.IsEnabled = hasPlaylist;
+            volumeSlider.IsEnabled = hasPlaylist;
+            seekbarCursorSlider.IsEnabled = hasPlaylist;
         }
-
-        ClassifierThread worker = null;
-
-
-        //Randomizer 
-        private Random rng = new Random();
 
         private void Shuffle(IList<string> list)
         {
@@ -201,7 +168,51 @@ namespace GUI
             }
         }
 
+        private void volumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (volumeSlider.IsEnabled)
+            {
+                mediaController.ChangeVolume((int)e.NewValue);
+                UserSettings.Default.Volume = (int)e.NewValue;
+                UserSettings.Default.Save();
+            }
+        }
 
+        private void seekbarCursorSlider_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (seekbarCursorSlider.IsEnabled)
+            {
+                isSeekbarPressed = false;
+                mediaController.Seek(seekbarCursorSlider.Value);
+            }
+        }
 
+        private void seekbarCursorSlider_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (seekbarCursorSlider.IsEnabled)
+            {
+                isSeekbarPressed = true;
+            }
+        }
+        
+        private void UpdatePlayList(List<string> songs)
+        {
+            List<PlayListItemDTO> pliDTO = new List<PlayListItemDTO>();
+            foreach(string song in songs)
+            {
+                var myReg = new Regex(@"\([^\.]+");
+                Match match = myReg.Match(song);
+                string filteredSongName = match.Value;
+                pliDTO.Add(new PlayListItemDTO { Title = filteredSongName });
+            }
+            
+            playlistListBox.ItemsSource = pliDTO;
+        }
+
+        private void Label_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            string song = ((Label)sender).Content.ToString();
+            mediaController.PlaySong(song);
+        }
     }
 }

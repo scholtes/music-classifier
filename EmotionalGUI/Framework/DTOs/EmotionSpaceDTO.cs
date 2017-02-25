@@ -7,17 +7,16 @@ namespace Framework
     /// </summary>
     public class EmotionSpaceDTO
     {
+        private double energy;
+        private double positivity;
 
-        public EmotionSpaceDTO()
-            :this(.5,.5)
+        public EmotionSpaceDTO(double energy, double positivity)
         {
-            //Center the point
-        }
+            if (energy > 1 || energy < 0) throw new Exception("Invalid Value for Energy");
 
-        public EmotionSpaceDTO(double energy, double Positivity)
-        {
-            this.Energy = energy;
-            this.Positivity = Positivity;
+            if (positivity > 1 || positivity < 0) throw new Exception("Invalid Value for Positivity");
+            this.energy = energy;
+            this.positivity = positivity;
         }
 
         public double Energy
@@ -26,14 +25,7 @@ namespace Framework
             {
                 return energy;
             }
-            set
-            {
-                if(value > 1 || value < 0)
-                {
-                    throw new Exception("Invalid value for energy");
-                }
-                energy = value;
-            }
+            private set { }
         }
         public double Positivity
         {
@@ -41,18 +33,7 @@ namespace Framework
             {
                 return positivity;
             }
-            set
-            {
-                if (value > 1 || value < 0)
-                {
-                    throw new Exception("Invalid value for positivity");
-                }
-                positivity = value;
-            }
+            private set { }
         }
-
-        private double energy;
-        private double positivity;
-
     }
 }

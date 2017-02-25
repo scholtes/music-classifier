@@ -63,13 +63,15 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClassifierThread.cs" />
+    <Compile Include="WPFClasses\ClassifierThread.cs" />
     <Compile Include="DTOs\JsonDTO.cs" />
     <Compile Include="DTOs\SettingsControlDTO.cs" />
     <Compile Include="HelperClasses\Classifier.cs" />
+    <Compile Include="WPFClasses\CustomControls\CustomSlider.cs" />
     <Compile Include="HelperClasses\DirectoryBrowser.cs" />
     <Compile Include="HelperClasses\ServerDatabase.cs" />
-    <Compile Include="HelperClasses\WpfControls.cs" />
+    <Compile Include="WPFClasses\DTO\PlayListItemDTO.cs" />
+    <Compile Include="WPFClasses\WpfControls.cs" />
     <Compile Include="Interfaces\IMainForm.cs" />
     <Compile Include="DTOs\EmotionSpaceDTO.cs" />
     <Compile Include="Mappers\JsonDTOMapper.cs" />
@@ -81,8 +83,8 @@
     <Compile Include="Mappers\SettingsControlDTOMapper.cs" />
     <Compile Include="MediaPlayback\MediaTypes\MP3Player.cs" />
     <Compile Include="HelperClasses\PlayList.cs" />
-    <Compile Include="Interfaces\ITagManager.cs" />
     <Compile Include="Mappers\SongDTOMapper.cs" />
+    <Compile Include="Song MetaData\Datatypes\Base\BaseAudioFile.cs" />
     <Compile Include="Song MetaData\Datatypes\MP3.cs" />
     <Compile Include="DTOs\SongDTO.cs" />
     <Compile Include="HelperClasses\SupportedFiletypes.cs" />
@@ -109,9 +111,6 @@
       <Project>{426b688a-ef3b-453e-9686-e3a810baa771}</Project>
       <Name>Classifier</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="SQLite.Interop.dll">
