@@ -15,8 +15,8 @@ namespace ClassifierTest
         {
             //Create and load classifier
             Classifier.SupportVectorMachine svm = new Classifier.SupportVectorMachine();
-            svm.LoadClassifier(Path.Combine(@"T:\Documents\music-classifier\Classifier", "positivity_linear.svm"),
-                               Path.Combine(@"T:\Documents\music-classifier\Classifier", "energy_linear.svm"));
+            svm.LoadClassifier(Path.Combine(@"T:\Documents\music-classifier\Classifier", "positivity_gaussian.svm"),
+                               Path.Combine(@"T:\Documents\music-classifier\Classifier", "energy_gaussian.svm"));
 
             string directory = @"T:\Documents\music-classifier\clips_45seconds";
             
@@ -33,6 +33,7 @@ namespace ClassifierTest
             double energy_rmse = 0;
             int energy_correct = 0;
             List<double> energy_predicted = new List<double>();
+            List<double> energy_stds = new List<double>();
             List<double> energy_expected = new List<double>();
 
             double positivity_total = 0;
@@ -45,8 +46,10 @@ namespace ClassifierTest
             double positivity_rmse = 0;
             int positivity_correct = 0;
             List<double> positivity_predicted = new List<double>();
+            List<double> positivity_stds = new List<double>();
             List<double> positivity_expected = new List<double>();
 
+            List<string> songPaths = new List<string>();
             foreach (string line in songLines)
             {
                 //Get expected values
@@ -57,56 +60,66 @@ namespace ClassifierTest
                 double energyStd = double.Parse(parts[3]);
                 double positivityStd = double.Parse(parts[4]);
 
-                //Get predicted values
-                string jsonOutput = svm.Classify(new string[] { songPath });
-                JsonDTO jsonDTO = new System.Web.Script.Serialization.JavaScriptSerializer().Deserialize<JsonDTO>(jsonOutput);
-                List<Framework.ClassifierResult> classifierResults = jsonDTO.ClassifierResults;
-                double predictedEnergy = classifierResults[0].song.energy;
-                double predictedPositivity = classifierResults[0].song.positivity;
-
-                //Statistics stuff
+                songPaths.Add(songPath);
                 energy_expected.Add(expectedEnergy);
-                energy_predicted.Add(predictedEnergy);
-                energy_total += expectedEnergy;
-                energy_correct += Math.Abs(predictedEnergy - expectedEnergy) < energyStd ? 1 : 0;
-                energy_SSres += Math.Pow(predictedEnergy - expectedEnergy, 2);
+                energy_stds.Add(energyStd);
 
                 positivity_expected.Add(expectedPositivity);
-                positivity_predicted.Add(predictedPositivity);
-                positivity_total += expectedPositivity;
-                positivity_correct += Math.Abs(predictedPositivity - expectedPositivity) < positivityStd ? 1 : 0;
-                positivity_SSres += Math.Pow(predictedPositivity - expectedPositivity, 2);
+                positivity_stds.Add(positivityStd);
                 
             }
 
+            //Classify
+            string jsonOutput = svm.Classify(songPaths.ToArray());
+
+            //Retrieve the results
+            JsonDTO jsonDTO = new System.Web.Script.Serialization.JavaScriptSerializer().Deserialize<JsonDTO>(jsonOutput);
+            List<Framework.ClassifierResult> classifierResults = jsonDTO.ClassifierResults;
+
+            //Get stastics
+            //Assuming output is in same order as input
+            foreach(Framework.ClassifierResult result in classifierResults)
+            {
+                double predictedEnergy = result.song.energy;
+                double predictedPositivity = result.song.positivity;
+
+                energy_total += predictedEnergy;
+                positivity_total += predictedPositivity;
+
+                energy_predicted.Add(predictedEnergy);
+                positivity_predicted.Add(predictedPositivity);
+            }
+
             energy_mean = energy_total / energy_predicted.Count();
-            energy_accuracy = (double)energy_correct / energy_predicted.Count();
-            
-
             positivity_mean = positivity_total / positivity_predicted.Count();
-            positivity_accuracy = (double)positivity_correct / positivity_predicted.Count();
-            
 
-            //Get more statistics
             for (int i = 0; i < positivity_predicted.Count(); i++)
             {
                 double predictedEnergy = energy_predicted[i];
                 double expectedEnergy = energy_expected[i];
+                double energyStd = energy_stds[i];
+
                 double predictedPositivity = positivity_predicted[i];
                 double expectedPositivity = positivity_expected[i];
-
+                double positivityStd = positivity_stds[i];
+                
+                energy_correct += Math.Abs(predictedEnergy - expectedEnergy) < energyStd ? 1 : 0;
+                energy_SSres += Math.Pow(predictedEnergy - expectedEnergy, 2);
                 energy_SSreg += Math.Pow(predictedEnergy - energy_mean, 2);
-                energy_SStot += Math.Pow(predictedEnergy - expectedEnergy, 2);
+                energy_SStot += Math.Pow(expectedEnergy - energy_mean, 2);
 
+                positivity_correct += Math.Abs(predictedPositivity - expectedPositivity) < positivityStd ? 1 : 0;
+                positivity_SSres += Math.Pow(predictedPositivity - expectedPositivity, 2);
                 positivity_SSreg += Math.Pow(predictedPositivity - positivity_mean, 2);
-                positivity_SStot += Math.Pow(predictedPositivity - expectedPositivity, 2);
+                positivity_SStot += Math.Pow(expectedPositivity - positivity_mean, 2);
             }
+            energy_accuracy = (double)energy_correct / energy_predicted.Count();
             energy_r_squared = 1 - energy_SSreg / energy_SStot;
             energy_rmse = Math.Pow(energy_SStot / energy_predicted.Count(), 0.5);
 
+            positivity_accuracy = (double)positivity_correct / positivity_predicted.Count();
             positivity_r_squared = 1 - positivity_SSreg / positivity_SStot;
             positivity_rmse = Math.Pow(positivity_SStot / positivity_predicted.Count(), 0.5);
-            
 
             //Print
             System.Console.WriteLine("Accuracy (energy)\t=\t" + energy_accuracy*100 + "%");

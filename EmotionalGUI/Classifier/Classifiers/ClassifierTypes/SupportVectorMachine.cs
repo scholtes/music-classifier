@@ -14,8 +14,8 @@ namespace Classifier
     public class SupportVectorMachine : BaseClassifierType, IClassifierType
     {
 
-        private Accord.MachineLearning.VectorMachines.SupportVectorMachine<Polynomial> posSvm;
-        private Accord.MachineLearning.VectorMachines.SupportVectorMachine<Polynomial> energySvm;
+        private Accord.MachineLearning.VectorMachines.SupportVectorMachine<IKernel> posSvm;
+        private Accord.MachineLearning.VectorMachines.SupportVectorMachine<IKernel> energySvm;
 
         private IEnumerable<int> bextractPosCols = Enumerable.Range(7, 19);     //Values are determined from MATLAB analysis
         private IEnumerable<int> bextractEnergyCols = Enumerable.Range(0, 23);
@@ -86,18 +86,18 @@ namespace Classifier
 
             //Train
             System.Console.WriteLine(System.DateTime.Now.ToString() + " Training positivity.");
-            var learn = new SequentialMinimalOptimizationRegression<Polynomial>()
+            var learn = new SequentialMinimalOptimizationRegression()
             {
-                Kernel = new Polynomial(1),
-                Complexity = 50
+                Kernel = new Gaussian(1),
+                UseComplexityHeuristic = true
             }; 
             posSvm = learn.Learn(posInputs, posOutputs);
 
-            System.Console.WriteLine(System.DateTime.Now.ToString() + "Training energy.");
-            learn = new SequentialMinimalOptimizationRegression<Polynomial>()
+            System.Console.WriteLine(System.DateTime.Now.ToString() + " Training energy.");
+            learn = new SequentialMinimalOptimizationRegression()
             {
-                Kernel = new Polynomial(1),
-                Complexity = 50
+                Kernel = new Gaussian(1),
+                UseComplexityHeuristic = true
             };
             energySvm = learn.Learn(energyInputs, energyOutputs);
 
@@ -105,8 +105,8 @@ namespace Classifier
 
         public override void LoadClassifier(string positivityPath, string energyPath)
         {
-            posSvm = Serializer.Load<Accord.MachineLearning.VectorMachines.SupportVectorMachine<Polynomial>>(positivityPath);
-            energySvm = Serializer.Load<Accord.MachineLearning.VectorMachines.SupportVectorMachine<Polynomial>>(energyPath);
+            posSvm = Serializer.Load<Accord.MachineLearning.VectorMachines.SupportVectorMachine<IKernel>>(positivityPath);
+            energySvm = Serializer.Load<Accord.MachineLearning.VectorMachines.SupportVectorMachine<IKernel>>(energyPath);
         }
 
         public override void SaveClassifier(string positivityPath, string energyPath)
@@ -121,16 +121,16 @@ namespace Classifier
             List<List<Double>> features = songData.getFeatures();
             List<Double> featureList = features[0]; //Just pull the first row of features for now
 
-            posFeatures = new double[bextractPosCols.Count()];
-            energyFeatures = new double[bextractEnergyCols.Count()];
+            posFeatures = new double[bextractPosCols.Count() + 1];
+            energyFeatures = new double[bextractEnergyCols.Count() + 1];
 
             //Pull out relevant bextract columns
-            for(int i = 0; i < bextractPosCols.Count(); i++)
+            for(int i = 1; i < bextractPosCols.Count(); i++)
             {
                 int col = bextractPosCols.ElementAt(i);
                 posFeatures[i] = featureList[col];
             }
-            for(int i = 0; i < bextractEnergyCols.Count(); i++)
+            for(int i = 1; i < bextractEnergyCols.Count(); i++)
             {
                 int col = bextractEnergyCols.ElementAt(i);
                 energyFeatures[i] = featureList[col];
