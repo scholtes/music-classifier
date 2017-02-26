@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using Classifier;
+using Framework;
 
 namespace ClassifierTest
 {
@@ -12,12 +13,112 @@ namespace ClassifierTest
     {
         static void Main(string[] args)
         {
+            //Create and load classifier
             Classifier.SupportVectorMachine svm = new Classifier.SupportVectorMachine();
-            svm.LoadClassifier(Path.Combine(@"T:\Documents\music-classifier\Classifier", "positivity.svm"),
-                               Path.Combine(@"T:\Documents\music-classifier\Classifier", "energy.svm"));
+            svm.LoadClassifier(Path.Combine(@"T:\Documents\music-classifier\Classifier", "positivity_linear.svm"),
+                               Path.Combine(@"T:\Documents\music-classifier\Classifier", "energy_linear.svm"));
 
-            string jsonOutput = svm.Classify(new[] { @"T:\Documents\music-classifier\Classifier\2.mp3" });
-            System.Console.WriteLine(jsonOutput);
+            string directory = @"T:\Documents\music-classifier\clips_45seconds";
+            
+            List<Classifier.Song> expectedOutputs = new List<Classifier.Song>();
+            string[] songLines = System.IO.File.ReadAllLines(@"T:\Documents\music-classifier\clips_45seconds\expected_energy_positivity_random_test.csv");
+
+            double energy_total = 0;
+            double energy_mean = 0;
+            double energy_SStot = 0;
+            double energy_SSreg = 0;
+            double energy_SSres = 0;
+            double energy_r_squared = 0;
+            double energy_accuracy = 0;
+            double energy_rmse = 0;
+            int energy_correct = 0;
+            List<double> energy_predicted = new List<double>();
+            List<double> energy_expected = new List<double>();
+
+            double positivity_total = 0;
+            double positivity_mean = 0;
+            double positivity_SStot = 0;
+            double positivity_SSreg = 0;
+            double positivity_SSres = 0;
+            double positivity_r_squared = 0;
+            double positivity_accuracy = 0;
+            double positivity_rmse = 0;
+            int positivity_correct = 0;
+            List<double> positivity_predicted = new List<double>();
+            List<double> positivity_expected = new List<double>();
+
+            foreach (string line in songLines)
+            {
+                //Get expected values
+                string[] parts = line.Split(',');
+                string songPath = Path.Combine(directory, parts[0]);
+                double expectedEnergy = double.Parse(parts[1]);
+                double expectedPositivity = double.Parse(parts[2]);
+                double energyStd = double.Parse(parts[3]);
+                double positivityStd = double.Parse(parts[4]);
+
+                //Get predicted values
+                string jsonOutput = svm.Classify(new string[] { songPath });
+                JsonDTO jsonDTO = new System.Web.Script.Serialization.JavaScriptSerializer().Deserialize<JsonDTO>(jsonOutput);
+                List<Framework.ClassifierResult> classifierResults = jsonDTO.ClassifierResults;
+                double predictedEnergy = classifierResults[0].song.energy;
+                double predictedPositivity = classifierResults[0].song.positivity;
+
+                //Statistics stuff
+                energy_expected.Add(expectedEnergy);
+                energy_predicted.Add(predictedEnergy);
+                energy_total += expectedEnergy;
+                energy_correct += Math.Abs(predictedEnergy - expectedEnergy) < energyStd ? 1 : 0;
+                energy_SSres += Math.Pow(predictedEnergy - expectedEnergy, 2);
+
+                positivity_expected.Add(expectedPositivity);
+                positivity_predicted.Add(predictedPositivity);
+                positivity_total += expectedPositivity;
+                positivity_correct += Math.Abs(predictedPositivity - expectedPositivity) < positivityStd ? 1 : 0;
+                positivity_SSres += Math.Pow(predictedPositivity - expectedPositivity, 2);
+                
+            }
+
+            energy_mean = energy_total / energy_predicted.Count();
+            energy_accuracy = (double)energy_correct / energy_predicted.Count();
+            
+
+            positivity_mean = positivity_total / positivity_predicted.Count();
+            positivity_accuracy = (double)positivity_correct / positivity_predicted.Count();
+            
+
+            //Get more statistics
+            for (int i = 0; i < positivity_predicted.Count(); i++)
+            {
+                double predictedEnergy = energy_predicted[i];
+                double expectedEnergy = energy_expected[i];
+                double predictedPositivity = positivity_predicted[i];
+                double expectedPositivity = positivity_expected[i];
+
+                energy_SSreg += Math.Pow(predictedEnergy - energy_mean, 2);
+                energy_SStot += Math.Pow(predictedEnergy - expectedEnergy, 2);
+
+                positivity_SSreg += Math.Pow(predictedPositivity - positivity_mean, 2);
+                positivity_SStot += Math.Pow(predictedPositivity - expectedPositivity, 2);
+            }
+            energy_r_squared = 1 - energy_SSreg / energy_SStot;
+            energy_rmse = Math.Pow(energy_SStot / energy_predicted.Count(), 0.5);
+
+            positivity_r_squared = 1 - positivity_SSreg / positivity_SStot;
+            positivity_rmse = Math.Pow(positivity_SStot / positivity_predicted.Count(), 0.5);
+            
+
+            //Print
+            System.Console.WriteLine("Accuracy (energy)\t=\t" + energy_accuracy*100 + "%");
+            System.Console.WriteLine("Accuracy (positivity)\t=\t" + positivity_accuracy*100 + "%");
+            System.Console.WriteLine("Accuracy (total)\t=\t" + energy_accuracy * positivity_accuracy * 100 + "%");
+            System.Console.WriteLine();
+            System.Console.WriteLine("RMSE (energy)\t\t=\t" + energy_rmse);
+            System.Console.WriteLine("RMSE (positivity)\t=\t" + positivity_rmse);
+            System.Console.WriteLine();
+            System.Console.WriteLine("R^2 (energy)\t\t=\t" + energy_r_squared);
+            System.Console.WriteLine("R^2 (positivity)\t=\t" + positivity_r_squared);
+           
             System.Console.ReadKey();
         }
     }
