@@ -94,6 +94,17 @@ namespace Framework
             this.Play();
         }
 
+        public void Pause()
+        {
+            if (playerstatus == PlayerStatus.Playing)
+            {
+                timer.Pause();
+                setTimeLabel(timer.getAccumulatedTime());
+                songDTO.songPlayer.Pause();
+                playerstatus = PlayerStatus.Paused;
+            }
+        }
+
         public void Seek(double percent)
         {
             if (songDTO != null)

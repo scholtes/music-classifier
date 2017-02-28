@@ -63,6 +63,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HelperClasses\MediaControllerButtonUpdater.cs" />
     <Compile Include="WPFClasses\ClassifierThread.cs" />
     <Compile Include="DTOs\JsonDTO.cs" />
     <Compile Include="DTOs\SettingsControlDTO.cs" />
