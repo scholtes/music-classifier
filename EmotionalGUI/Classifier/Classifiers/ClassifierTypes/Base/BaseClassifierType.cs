@@ -5,7 +5,6 @@ namespace Classifier
 {
     public abstract class BaseClassifierType
     {
-        private List<SongDataDTO> songsAndFeatures;
 
         /// <summary>
         /// Convert a list of songs to .wav format.
@@ -15,6 +14,16 @@ namespace Classifier
         protected string[] ConvertToWav(string[] filePaths)
         {
             return FFMpeg.ffmpegConversion(filePaths);
+        }
+
+        /// <summary>
+        /// Write a list of file paths to mkcollection file.
+        /// </summary>
+        /// <param name="filePaths">List of paths to be included in the mkcolection file.</param>
+        /// <returns>Path to output mkcollection<s/returns>
+        protected string MakeMkcollection(string[] filePaths)
+        {
+            return BExtract.convertToMkcollection(filePaths);
         }
 
         /// <summary>
@@ -31,9 +40,9 @@ namespace Classifier
         /// Extract features from given .arff file and store into private list of SongDataDTOs
         /// </summary>
         /// <param name="arffFilePath">Path to .arff containing extracted features.</param>
-        protected void LoadFeaturesFromFile(string arffFilePath)
+        protected List<SongDataDTO> LoadFeaturesFromFile(string arffFilePath)
         {
-            songsAndFeatures = ArffParser.parseArff(arffFilePath);
+            return ArffParser.parseArff(arffFilePath);
         }
 
         /// <summary>
@@ -44,9 +53,9 @@ namespace Classifier
         protected List<SongDataDTO> getFeatures(string[] filePaths)
         {
             string[] wavPaths = ConvertToWav(filePaths);
-            string mkcollectionFile = BExtract.convertToMkcollection(wavPaths);
+            string mkcollectionFile = MakeMkcollection(wavPaths);
             string arffFilePath = ExtractFeaturesToFile(mkcollectionFile);
-            return ArffParser.parseArff(arffFilePath);
+            return LoadFeaturesFromFile(arffFilePath);
         }
 
         public abstract void LoadClassifier(string positivityPath, string energyPath);

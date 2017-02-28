@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System;
 using System.IO;
+using System.Linq;
 using Accord;
 using Accord.IO;
 using Accord.Math;
@@ -13,11 +14,11 @@ namespace Classifier
     public class SupportVectorMachine : BaseClassifierType, IClassifierType
     {
 
-        private Accord.MachineLearning.VectorMachines.SupportVectorMachine<Polynomial> posSvm;
-        private Accord.MachineLearning.VectorMachines.SupportVectorMachine<Polynomial> energySvm;
+        private Accord.MachineLearning.VectorMachines.SupportVectorMachine<IKernel> posSvm;
+        private Accord.MachineLearning.VectorMachines.SupportVectorMachine<IKernel> energySvm;
 
-        private int[] bextractPosCols = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-        private int[] bextractEnergyCols = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+        private IEnumerable<int> bextractPosCols = Enumerable.Range(7, 19);     //Values are determined from MATLAB analysis
+        private IEnumerable<int> bextractEnergyCols = Enumerable.Range(0, 23);
 
         public string Classify(string[] songPaths)
         {
@@ -40,8 +41,8 @@ namespace Classifier
                 song.title = songData.getFilename();
 
                 //Convert dto to double arrays (so svm can use them)
-                double[] posFeatures = new double[bextractPosCols.Length];
-                double[] energyFeatures = new double[bextractEnergyCols.Length];
+                double[] posFeatures = new double[bextractPosCols.Count()];
+                double[] energyFeatures = new double[bextractEnergyCols.Count()];
                 ConvertSongDataDtoToDoubleArrays(songData, ref posFeatures, ref energyFeatures);
 
                 //Run classification
@@ -72,6 +73,7 @@ namespace Classifier
             }
 
             //Get bextract values
+            System.Console.WriteLine(System.DateTime.Now.ToString() + " Extracting features...");
             List<SongDataDTO> songFeatures = getFeatures(songPaths);
 
             //Stick them in double arrays
@@ -83,27 +85,28 @@ namespace Classifier
             }
 
             //Train
-            //var learn = new SequentialMinimalOptimizationRegression<Gaussian>()
-            //{
-            //    Complexity = 100
-            //};
-            var learn = new SequentialMinimalOptimizationRegression<Polynomial>()
+            System.Console.WriteLine(System.DateTime.Now.ToString() + " Training positivity.");
+            var learn = new SequentialMinimalOptimizationRegression()
             {
-                Kernel = new Polynomial(2),
-                Complexity = 100
-            };
+                Kernel = new Gaussian(1),
+                UseComplexityHeuristic = true
+            }; 
             posSvm = learn.Learn(posInputs, posOutputs);
-            energySvm = learn.Learn(energyInputs, energyOutputs);
 
-            //Save classifier
-            SaveClassifier(Path.Combine(ExecutableInformation.getTmpPath(), "positivity.svm"), Path.Combine(ExecutableInformation.getTmpPath(), "energy.svm"));
+            System.Console.WriteLine(System.DateTime.Now.ToString() + " Training energy.");
+            learn = new SequentialMinimalOptimizationRegression()
+            {
+                Kernel = new Gaussian(1),
+                UseComplexityHeuristic = true
+            };
+            energySvm = learn.Learn(energyInputs, energyOutputs);
 
         }
 
         public override void LoadClassifier(string positivityPath, string energyPath)
         {
-            posSvm = Serializer.Load<Accord.MachineLearning.VectorMachines.SupportVectorMachine<Polynomial>>(positivityPath);
-            energySvm = Serializer.Load<Accord.MachineLearning.VectorMachines.SupportVectorMachine<Polynomial>>(energyPath);
+            posSvm = Serializer.Load<Accord.MachineLearning.VectorMachines.SupportVectorMachine<IKernel>>(positivityPath);
+            energySvm = Serializer.Load<Accord.MachineLearning.VectorMachines.SupportVectorMachine<IKernel>>(energyPath);
         }
 
         public override void SaveClassifier(string positivityPath, string energyPath)
@@ -118,16 +121,19 @@ namespace Classifier
             List<List<Double>> features = songData.getFeatures();
             List<Double> featureList = features[0]; //Just pull the first row of features for now
 
-            posFeatures = new double[bextractPosCols.Length];
-            energyFeatures = new double[bextractEnergyCols.Length];
+            posFeatures = new double[bextractPosCols.Count() + 1];
+            energyFeatures = new double[bextractEnergyCols.Count() + 1];
 
-            foreach (int col in bextractEnergyCols)
+            //Pull out relevant bextract columns
+            for(int i = 1; i < bextractPosCols.Count(); i++)
             {
-                posFeatures[col] = featureList[col];
+                int col = bextractPosCols.ElementAt(i);
+                posFeatures[i] = featureList[col];
             }
-            foreach (int col in bextractPosCols)
+            for(int i = 1; i < bextractEnergyCols.Count(); i++)
             {
-                energyFeatures[col] = featureList[col];
+                int col = bextractEnergyCols.ElementAt(i);
+                energyFeatures[i] = featureList[col];
             }
         }
     }

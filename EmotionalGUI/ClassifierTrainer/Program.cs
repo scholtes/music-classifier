@@ -23,7 +23,7 @@ namespace ClassifierTrainer
             //song1 is expected to be the filename of the song, and the file is expected to be in the same directory as the csv
             //so if song1 is "hello.mp3", a hello.mp3 file should be in the directory that the csv is located
             List<Song> expectedOutputs = new List<Song>();
-            string[] energyLines = System.IO.File.ReadAllLines(@"T:\Documents\music-classifier\clips_45seconds\expected_energy_positivity_small.csv");
+            string[] energyLines = System.IO.File.ReadAllLines(@"T:\Documents\music-classifier\clips_45seconds\expected_energy_positivity_random.csv");
             foreach (string line in energyLines)
             {
                 string[] parts = line.Split(',');
@@ -39,8 +39,11 @@ namespace ClassifierTrainer
             }
 
             //Train
-            Classifier.IClassifierType classifier = new Classifier.SupportVectorMachine();
+            Classifier.SupportVectorMachine classifier = new Classifier.SupportVectorMachine();
             classifier.Train(expectedOutputs);
+
+            //Save classifier
+            classifier.SaveClassifier(Path.Combine(ExecutableInformation.getTmpPath(), "positivity.svm"), Path.Combine(ExecutableInformation.getTmpPath(), "energy.svm"));
         }
     }
 }
