@@ -15,7 +15,7 @@ namespace ClassifierTest
         {
             //Create and load classifier
             Classifier.SupportVectorMachine svm = new Classifier.SupportVectorMachine();
-            svm.LoadClassifier(Path.Combine(@"T:\Documents\music-classifier\Classifier", "positivity_gaussian.svm"),
+            svm.LoadClassifier(Path.Combine(@"T:\Documents\music-classifier\Classifier", "positivity_gaussian.25.svm"),
                                Path.Combine(@"T:\Documents\music-classifier\Classifier", "energy_gaussian.svm"));
 
             string directory = @"T:\Documents\music-classifier\clips_45seconds";
@@ -77,7 +77,7 @@ namespace ClassifierTest
             List<Framework.ClassifierResult> classifierResults = jsonDTO.ClassifierResults;
 
             //Get stastics
-            //Assuming output is in same order as input
+            //Assuming output is in same order as input (it should be)
             foreach(Framework.ClassifierResult result in classifierResults)
             {
                 double predictedEnergy = result.song.energy;
