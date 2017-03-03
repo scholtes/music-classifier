@@ -22,6 +22,8 @@ namespace Classifier
 
         /// <summary>
         /// Classify the given songs and output a JSON string with the results.
+        /// </summary>
+        /// <remarks>
         /// Results will be in the following format:
         /// 
         ///     { "ClassifierResults":
@@ -42,8 +44,7 @@ namespace Classifier
         ///           ...
         ///         ]
         ///     }
-        /// 
-        /// </summary>
+        /// </remarks>
         /// <param name="songPaths">Paths to the songs to classify.</param>
         public string Classify(string[] songPaths)
         {
@@ -94,9 +95,11 @@ namespace Classifier
 
         /// <summary>
         /// Train the classifier and save to generics files in the temporary directory.
+        /// </summary>
+        /// <remarks>
         /// Input is a list of Song objects which are the expected outputs.
         /// This function will pull the bextract values and use the class's bextract subset for training.
-        /// </summary>
+        /// </remarks>
         /// <param name="expectedOutputs">List of Song objects to use for training.</param>
         public void Train(List<Song> expectedOutputs)
         {
@@ -167,9 +170,11 @@ namespace Classifier
 
         /// <summary>
         /// Extract the data from the SongDataDTO object and place into arrays of doubles. This is needed for training.
+        /// </summary>
+        /// <remarks>
         /// Only pulls out the bextract columns for positivity/energy.
         /// This function will allocate the arrays.
-        /// </summary>
+        /// </remarks>
         /// <param name="songData">SongDataDTO object containing the bextract data to use for training.</param>
         /// <param name="posFeatures">Reference to double array to store the features needed for training positivity.</param>
         /// <param name="energyFeatures">Reference to double array to store the features needed for training energy.</param>
