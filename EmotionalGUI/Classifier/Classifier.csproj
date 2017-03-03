@@ -76,7 +76,6 @@
     <Compile Include="HelperClasses\ExecutableInformation.cs" />
     <Compile Include="HelperClasses\FFMpeg.cs" />
     <Compile Include="HelperClasses\JsonSerializer.cs" />
-    <Compile Include="Classifiers\ClassifierTypes\MultivariateLinearRegression.cs" />
     <Compile Include="Classifiers\ClassifierTypes\SupportVectorMachine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
