@@ -33,7 +33,7 @@ namespace Classifier
                 tempfiles[i] = Path.GetFullPath(newfile);
 
                 //Run FFMPEG
-                string ffmpegArgs = "-loglevel quiet -y -i " + file + " " + newfile;
+                string ffmpegArgs = "-loglevel quiet -y -i \"" + file + "\" \"" + newfile + "\"";
 
                 System.Diagnostics.Process ffmpeg = new System.Diagnostics.Process();
                 ffmpeg.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;

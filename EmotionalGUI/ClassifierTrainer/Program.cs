@@ -43,7 +43,7 @@ namespace ClassifierTrainer
             classifier.Train(expectedOutputs);
 
             //Save classifier
-            classifier.SaveClassifier(Path.Combine(ExecutableInformation.getTmpPath(), "positivity.svm"), Path.Combine(ExecutableInformation.getTmpPath(), "energy.svm"));
+            classifier.SaveModels(Path.Combine(ExecutableInformation.getTmpPath(), "positivity.svm"), Path.Combine(ExecutableInformation.getTmpPath(), "energy.svm"));
         }
     }
 }

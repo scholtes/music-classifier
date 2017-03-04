@@ -15,8 +15,8 @@ namespace ClassifierTest
         {
             //Create and load classifier
             Classifier.SupportVectorMachine svm = new Classifier.SupportVectorMachine();
-            svm.LoadClassifier(Path.Combine(@"T:\Documents\music-classifier\Classifier", "positivity_gaussian.25.svm"),
-                               Path.Combine(@"T:\Documents\music-classifier\Classifier", "energy_gaussian.svm"));
+            svm.LoadModels(Path.Combine(@"T:\Documents\music-classifier\EmotionalGUI\resources\models", "positivity_gaussian.svm"),
+                               Path.Combine(@"T:\Documents\music-classifier\EmotionalGUI\resources\models", "energy_gaussian.svm"));
 
             string directory = @"T:\Documents\music-classifier\clips_45seconds";
             

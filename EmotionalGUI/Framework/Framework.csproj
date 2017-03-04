@@ -67,7 +67,6 @@
     <Compile Include="WPFClasses\ClassifierThread.cs" />
     <Compile Include="DTOs\JsonDTO.cs" />
     <Compile Include="DTOs\SettingsControlDTO.cs" />
-    <Compile Include="HelperClasses\Classifier.cs" />
     <Compile Include="WPFClasses\CustomControls\CustomSlider.cs" />
     <Compile Include="HelperClasses\DirectoryBrowser.cs" />
     <Compile Include="HelperClasses\ServerDatabase.cs" />

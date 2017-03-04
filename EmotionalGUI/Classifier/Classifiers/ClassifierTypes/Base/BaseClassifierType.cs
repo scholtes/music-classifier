@@ -58,8 +58,8 @@ namespace Classifier
             return LoadFeaturesFromFile(arffFilePath);
         }
 
-        public abstract void LoadClassifier(string positivityPath, string energyPath);
+        public abstract void LoadModels(string positivityPath, string energyPath);
 
-        public abstract void SaveClassifier(string positivityPath, string energyPath);
+        public abstract void SaveModels(string positivityPath, string energyPath);
     }
 }

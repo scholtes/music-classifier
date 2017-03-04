@@ -19,13 +19,15 @@ namespace Framework
 
         public void Classify()
         {
-            Classifier clas = new Classifier();
+            string positivitySvmPath = System.IO.Path.Combine(Classifier.ExecutableInformation.getModelsDir(), "positivity_gaussian.svm");
+            string energySvmPath = System.IO.Path.Combine(Classifier.ExecutableInformation.getModelsDir(), "energy_gaussian.svm");
+            Classifier.SupportVectorMachine svm = new Classifier.SupportVectorMachine(positivitySvmPath, energySvmPath);
             foreach (string song in songs)
             {
                 if(!ServerDatabase.Instance.DoesSongExist(song))
                 {
                     //Don't try to reclassify the same song. Waste of time.
-                   string output = clas.classify(song);
+                   string output = svm.Classify(song);
                    Song classifiedSong = JsonDTOMapper.getJsonDTO(output).ClassifierResults[0].song;
                    EmotionSpaceDTO point = new EmotionSpaceDTO(classifiedSong.energy, classifiedSong.positivity);
                    ServerDatabase.Instance.addSongToDatabase(song, point);
