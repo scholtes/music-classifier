@@ -44,7 +44,6 @@ namespace Framework
             }
 
             throw new Exception("We will not support this file type");
-
         }
     }
 }

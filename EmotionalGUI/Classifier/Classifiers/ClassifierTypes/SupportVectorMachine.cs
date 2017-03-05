@@ -85,7 +85,8 @@ namespace Classifier
 
                 ClassifierResult result = new ClassifierResult();
                 Song song = new Song();
-                song.title = songData.getFilename();
+                //song.title = songData.getFilename(); Turns the database into .wavs
+                song.title = songPaths[i];
 
                 //Convert dto to double arrays (so svm can use them)
                 double[] posFeatures = new double[bextractPosCols.Count()];

@@ -146,7 +146,11 @@ namespace Framework
                 if (currSong.Contains(song))
                 {
                     matchingSong = true;
-                    Stop();
+                    try //bad fix Stop may have a null player attached to it
+                    {
+                        Stop();
+                    }
+                    catch { }
                     Play();
                     songDTO.songPlayer.changeVolume(playerVolume);
                     return;
