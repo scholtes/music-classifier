@@ -30,7 +30,7 @@
             <Button x:Name="queryDatabaseButton" Content="Make Playlist" Canvas.Left="23" Canvas.Top="156" Width="98" Click="queryDatabaseButton_Click"/>
             <Label x:Name="PositivityLabel" Content="Positivity" Canvas.Left="32" Canvas.Top="20"/>
             <Label x:Name="EnergyLabel" Content="Energy" Canvas.Left="32" Canvas.Top="83" RenderTransformOrigin="-4.596,-0.679"/>
-            <ComboBox x:Name="emotionComboBox" Canvas.Left="157" Canvas.Top="154" Width="120"/>
+            <ComboBox x:Name="emotionComboBox" Canvas.Left="157" Canvas.Top="154" Width="120" SelectionChanged="emotionComboBox_SelectionChanged"/>
         </Canvas>
         <Canvas x:Name="PlaylistListBox" Canvas.Right="0"  Height="200" Canvas.Top="40" Width="225">
             <ListBox x:Name="playlistListBox" HorizontalAlignment="Right" Height="200"  Width="225" Background="#FFACCEFF">

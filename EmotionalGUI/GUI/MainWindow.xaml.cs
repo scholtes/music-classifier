@@ -59,6 +59,7 @@ namespace GUI
             settings = new Settings();
             UpdateButtonStates();
             volumeSlider.Value = UserSettings.Default.Volume;
+            InitializeCombobox();
         }
         
         private void previousButton_Click(object sender, RoutedEventArgs e)
@@ -391,6 +392,19 @@ namespace GUI
                 isSeekbarPressed = false;
                 mediaController.Seek(seekbarCursorSlider.Value);
             }
+        }
+
+        private void InitializeCombobox()
+        {
+            emotionComboBox.ItemsSource = EmotionComboBoxOptions.GetComboBoxOptions();
+            emotionComboBox.SelectedValue = "Custom";
+        }
+
+        private void emotionComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var item = (EmotionDTO)(((ComboBox)sender).SelectedItem);
+            posSlider.Value = item.Positivity;
+            energySlider.Value = item.Energy;
         }
     }
 }
