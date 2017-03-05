@@ -14,7 +14,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Framework;
 using Framework.Interfaces;
-using System.Text.RegularExpressions;
 using System.IO;
 
 namespace GUI
@@ -136,6 +135,7 @@ namespace GUI
             UpdateButtonStates();
             if (PlayControl.IsEnabled)
             {
+                // no autoplay right now because it messes up the control bar
                 //mediaController.Play();
             }
         }
@@ -148,7 +148,7 @@ namespace GUI
             PreviousControl.IsEnabled = hasPlaylist;
             NextControl.IsEnabled = hasPlaylist;
             PauseControl.IsEnabled = hasPlaylist;
-            volumeSlider.IsEnabled = hasPlaylist;
+            //volumeSlider.IsEnabled = hasPlaylist;
             seekbarCursorSlider.IsEnabled = hasPlaylist;
 
             if (hasPlaylist)
@@ -183,33 +183,14 @@ namespace GUI
                 UserSettings.Default.Save();
             }
         }
-
-        private void seekbarCursorSlider_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            if (seekbarCursorSlider.IsEnabled)
-            {
-                isSeekbarPressed = false;
-                mediaController.Seek(seekbarCursorSlider.Value);
-            }
-        }
-
-        private void seekbarCursorSlider_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (seekbarCursorSlider.IsEnabled)
-            {
-                isSeekbarPressed = true;
-            }
-        }
         
         private void UpdatePlayList(List<string> songs)
         {
             List<PlayListItemDTO> pliDTO = new List<PlayListItemDTO>();
             foreach(string song in songs)
             {
-                var myReg = new Regex(@"\([^\.]+");
-                Match match = myReg.Match(song);
-                string filteredSongName = match.Value;
-                pliDTO.Add(new PlayListItemDTO { Title = filteredSongName });
+                string songname = System.IO.Path.GetFileNameWithoutExtension(song);
+                pliDTO.Add(new PlayListItemDTO { Title = songname });
             }
             
             playlistListBox.ItemsSource = pliDTO;
@@ -394,5 +375,22 @@ namespace GUI
         }
 
         #endregion
+
+        private void seekbarCursorSlider_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (seekbarCursorSlider.IsEnabled)
+            {
+                isSeekbarPressed = true;
+            }
+        }
+
+        private void seekbarCursorSlider_PreviewMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (seekbarCursorSlider.IsEnabled)
+            {
+                isSeekbarPressed = false;
+                mediaController.Seek(seekbarCursorSlider.Value);
+            }
+        }
     }
 }

@@ -120,7 +120,14 @@ namespace Framework
         public void ChangeVolume(int volume)
         {
             playerVolume = volume;
-            songDTO.songPlayer.changeVolume(volume);
+            try //temporary fix
+            {
+                if (songDTO.songPlayer.isPlaying)
+                {
+                    songDTO.songPlayer.changeVolume(volume);
+                }
+            }
+            catch{ } //temporary fix
         }
 
         private void setTimeLabel(TimeSpan time)
@@ -141,6 +148,7 @@ namespace Framework
                     matchingSong = true;
                     Stop();
                     Play();
+                    songDTO.songPlayer.changeVolume(playerVolume);
                     return;
                 }
                 playlist.cyclePlaylistForwards();

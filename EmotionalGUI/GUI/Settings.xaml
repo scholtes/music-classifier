@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
-        Title="Settings" Height="145" Width="450" WindowStyle="None">
+        Title="Settings" Height="145" Width="450" WindowStyle="None" ResizeMode="NoResize">
     <Canvas x:Name="test" Height="145" Width="450" MouseDown="test_MouseDown" Background="AliceBlue">
         <Label x:Name="Settings1" Content="Settings"/>
         <Button x:Name="closeButton" Content="Done" Canvas.Left="335" Canvas.Top="84" Width="75" Click="closeButton_Click"/>

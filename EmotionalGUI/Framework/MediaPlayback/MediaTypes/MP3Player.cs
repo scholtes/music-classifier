@@ -62,5 +62,14 @@ namespace Framework
         {
             audioPlayer.settings.volume = volume;
         }
+
+        public bool isPlaying
+        {
+            get
+            {
+                return (audioPlayer.playState == WMPLib.WMPPlayState.wmppsPlaying);
+            }
+            set { }
+        }
     }
 }

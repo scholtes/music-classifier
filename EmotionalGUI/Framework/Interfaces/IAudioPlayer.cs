@@ -20,5 +20,8 @@ namespace Framework
 
         // Changes the volume of the media player
         void changeVolume(int volume);
+
+        // Returns whether or not the player is playing
+        bool isPlaying { get; set; }
     }
 }

@@ -58,7 +58,7 @@
             <Image x:Name="thumbnailImage" Height="145" Canvas.Left="345" Width="170" OpacityMask="White"/>
         </Canvas>
         <Canvas x:Name="seekbarCanvas" Height="20" Canvas.Top="385" Canvas.Left="0" Width="525" Background="BurlyWood">
-            <custom:CustomSlider x:Name="seekbarCursorSlider" Width="525" Minimum="0" Maximum="1" IsMoveToPointEnabled="True" MouseUp="seekbarCursorSlider_MouseUp" MouseDown="seekbarCursorSlider_MouseDown" />
+            <custom:CustomSlider x:Name="seekbarCursorSlider" Width="525" Minimum="0" Maximum="1" IsMoveToPointEnabled="True" PreviewMouseDown="seekbarCursorSlider_PreviewMouseDown" PreviewMouseUp="seekbarCursorSlider_PreviewMouseUp" />
         </Canvas>
         <Canvas x:Name="MediaControls" Height="145" Canvas.Top="405" Canvas.Left="0" Width="525" Background="#FF909090">
             <custom:CustomSlider x:Name="volumeSlider" Canvas.Left="15" IsMoveToPointEnabled="True" Orientation="Vertical" Height="113" Canvas.Top="10" Minimum="0" Maximum="100" ValueChanged="volumeSlider_ValueChanged"/>
