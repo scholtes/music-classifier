@@ -14,7 +14,7 @@ namespace Framework
             var result = new ObservableCollection<EmotionDTO>();
             result.Add(new EmotionDTO("Joy",1,1));
             result.Add(new EmotionDTO("Anxiety",1,0));
-            result.Add(new EmotionDTO("Serentiy",0,1));
+            result.Add(new EmotionDTO("Serenity",0,1));
             result.Add(new EmotionDTO("Anguish",0,0));
             return result;
         }

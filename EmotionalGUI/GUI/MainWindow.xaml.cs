@@ -128,7 +128,7 @@ namespace GUI
         private void queryDatabaseButton_Click(object sender, RoutedEventArgs e)
         {
             EmotionSpaceDTO point = new EmotionSpaceDTO(Energy, Positivity);
-            int numSongs = 20; //Number chosen for now. Should reconsider this. 
+            int numSongs = 2; //Number chosen for now. Should reconsider this. 
             List<string> songs = ServerDatabase.Instance.getSongs(numSongs, point);
             Shuffle(songs);
             UpdatePlayList(songs);
