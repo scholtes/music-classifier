@@ -63,6 +63,8 @@ namespace Classifier
         ///         ]
         ///     }
         /// </remarks>
+        /// 
+        /// 
         /// <param name="songPaths">Paths to the songs to classify.</param>
         public string Classify(string[] songPaths)
         {
@@ -76,6 +78,7 @@ namespace Classifier
 
             //Classify each song
             List<ClassifierResult> classifierResults = new List<ClassifierResult>();
+            ConsoleManager.Show();
             for(int i = 0; i < songsWithFeatures.Count; i++)
             {
                 SongDataDTO songData = songsWithFeatures[i];
@@ -94,8 +97,14 @@ namespace Classifier
                 song.energy = energySvm.Score(energyFeatures);
 
                 result.song = song;
+                //Fun Debugging info
+                
+                Console.WriteLine("Song: {0}\n Positivity: {1}\n Energy: {2} \n\n", song.title, song.positivity, song.energy);
                 classifierResults.Add(result);
             }
+            Console.WriteLine("Press Enter to continue");
+            Console.ReadLine();
+            ConsoleManager.Hide();
 
             EmotionSpaceDTOList emotionSpaceDtoList = new EmotionSpaceDTOList();
             emotionSpaceDtoList.ClassifierResults = classifierResults;
@@ -109,6 +118,11 @@ namespace Classifier
         public string Classify(string songPath)
         {
             return Classify(new string[] { songPath } );
+        }
+
+        public string Classify(List<String> songpaths)
+        {
+            return Classify(songpaths.ToArray());
         }
 
         /// <summary>

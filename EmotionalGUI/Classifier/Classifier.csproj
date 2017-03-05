@@ -73,6 +73,7 @@
     <Compile Include="DTOs\SongDataDTO.cs" />
     <Compile Include="HelperClasses\ArffParser.cs" />
     <Compile Include="HelperClasses\BExtract.cs" />
+    <Compile Include="HelperClasses\ConsoleManager.cs" />
     <Compile Include="HelperClasses\ExecutableInformation.cs" />
     <Compile Include="HelperClasses\FFMpeg.cs" />
     <Compile Include="HelperClasses\JsonSerializer.cs" />

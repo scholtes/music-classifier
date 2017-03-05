@@ -37,6 +37,7 @@ namespace Classifier
 
                 System.Diagnostics.Process ffmpeg = new System.Diagnostics.Process();
                 ffmpeg.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
+                ffmpeg.StartInfo.CreateNoWindow = true;
                 ffmpeg.StartInfo.UseShellExecute = false;
                 ffmpeg.StartInfo.RedirectStandardOutput = true;   // Redirect so we can read the standard output
                 ffmpeg.StartInfo.Arguments = ffmpegArgs;

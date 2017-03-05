@@ -9,18 +9,23 @@ namespace Framework
 {
     public class ClassifierThread
     {
+        string[] songs = null;
+        Thread backgroundworker;
+        private string positiveClassificationMethod = "positivity_gaussian.svm";
+        private string energyClassificationMethod = "energy_gaussian.svm";
+
         public ClassifierThread(string[] songs)
         {
             this.songs = songs;
-            backgroundworker = new Thread(Classify);
+            backgroundworker = new Thread(ClassifySongsTogether);
             backgroundworker.Start();
         }
 
 
-        public void Classify()
+        public void ClassifySongsIndividually()
         {
-            string positivitySvmPath = System.IO.Path.Combine(Classifier.ExecutableInformation.getModelsDir(), "positivity_gaussian.svm");
-            string energySvmPath = System.IO.Path.Combine(Classifier.ExecutableInformation.getModelsDir(), "energy_gaussian.svm");
+            string positivitySvmPath = System.IO.Path.Combine(Classifier.ExecutableInformation.getModelsDir(), positiveClassificationMethod);
+            string energySvmPath = System.IO.Path.Combine(Classifier.ExecutableInformation.getModelsDir(), energyClassificationMethod);
             Classifier.SupportVectorMachine svm = new Classifier.SupportVectorMachine(positivitySvmPath, energySvmPath);
             foreach (string song in songs)
             {
@@ -35,8 +40,28 @@ namespace Framework
             }
         }
 
+        public void ClassifySongsTogether()
+        {
+            string positivitySvmPath = System.IO.Path.Combine(Classifier.ExecutableInformation.getModelsDir(), positiveClassificationMethod);
+            string energySvmPath = System.IO.Path.Combine(Classifier.ExecutableInformation.getModelsDir(), energyClassificationMethod);
+            Classifier.SupportVectorMachine svm = new Classifier.SupportVectorMachine(positivitySvmPath, energySvmPath);
+            List<string> unclassifiedSongs = new List<string>();
+            foreach (string song in songs)
+            {
+                if (!ServerDatabase.Instance.DoesSongExist(song))
+                {
+                    unclassifiedSongs.Add(song);
+                }
+            }
+            //Don't try to reclassify the same song. Waste of time.
+            string output = svm.Classify(unclassifiedSongs);
+            foreach (ClassifierResult result in JsonDTOMapper.getJsonDTO(output).ClassifierResults)
+            {
+                Song classifiedSong = result.song;
+                EmotionSpaceDTO point = new EmotionSpaceDTO(classifiedSong.energy, classifiedSong.positivity);
+                ServerDatabase.Instance.addSongToDatabase(classifiedSong.title, point);
+            }
 
-        string[] songs = null;
-        Thread backgroundworker;
+        }
     }
 }
