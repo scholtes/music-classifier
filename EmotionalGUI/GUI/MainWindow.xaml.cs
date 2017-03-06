@@ -82,11 +82,6 @@ namespace GUI
             mediaController.Next();
         }
 
-        private void settingsButton_Click(object sender, RoutedEventArgs e)
-        {
-            settings.Show();
-        }
-
         private void seekbarCanvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             double percent = 0;
@@ -405,6 +400,11 @@ namespace GUI
             var item = (EmotionDTO)(((ComboBox)sender).SelectedItem);
             posSlider.Value = item.Positivity;
             energySlider.Value = item.Energy;
+        }
+
+        private void Settings_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            settings.Show();
         }
     }
 }

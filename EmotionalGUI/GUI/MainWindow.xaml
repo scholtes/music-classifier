@@ -62,13 +62,24 @@
         </Canvas>
         <Canvas x:Name="MediaControls" Height="145" Canvas.Top="405" Canvas.Left="0" Width="525" Background="#FF909090">
             <custom:CustomSlider x:Name="volumeSlider" Canvas.Left="15" IsMoveToPointEnabled="True" Orientation="Vertical" Height="113" Canvas.Top="10" Minimum="0" Maximum="100" ValueChanged="volumeSlider_ValueChanged"/>
-            <Button x:Name="settingsButton" Content="Settings"  Width="75" Click="settingsButton_Click" Canvas.Left="441" Canvas.Top="115"/>
             <Label x:Name="label" Content="Volume" Canvas.Top="119"/>
             <Image x:Name="PreviousControl"  Canvas.Left="50" Canvas.Top="22" Width="98" Height="80" Source="Design/Pics/Media Controls/Disabled/Previous.png" Cursor="Hand" MouseDown="PreviousControl_MouseDown" MouseEnter="PreviousControl_MouseEnter" MouseLeave="PreviousControl_MouseLeave" MouseUp="PreviousControl_MouseUp"/>
             <Image x:Name="PlayControl"  Canvas.Left="148" Canvas.Top="22" Width="88" Height="80" Source="Design/Pics/Media Controls/Disabled/Play.png" Cursor="Hand" MouseDown="PlayControl_MouseDown" MouseEnter="PlayControl_MouseEnter" MouseLeave="PlayControl_MouseLeave" MouseUp="PlayControl_MouseUp"/>
             <Image x:Name="PauseControl"  Canvas.Left="236" Canvas.Top="22" Width="87" Height="80" Source="Design/Pics/Media Controls/Disabled/Pause.png" Cursor="Hand" MouseDown="PauseControl_MouseDown" MouseEnter="PauseControl_MouseEnter" MouseLeave="PauseControl_MouseLeave" MouseUp="PauseControl_MouseUp"/>
             <Image x:Name="StopControl"  Canvas.Left="323" Canvas.Top="22" Width="87" Height="80" Source="Design/Pics/Media Controls/Disabled/Stop.png" Cursor="Hand" MouseDown="StopControl_MouseDown" MouseEnter="StopControl_MouseEnter" MouseLeave="StopControl_MouseLeave" MouseUp="StopControl_MouseUp"/>
             <Image x:Name="NextControl"  Canvas.Left="410" Canvas.Top="22" Width="100" Height="80" Source="Design/Pics/Media Controls/Disabled/Next.png" Cursor="Hand" MouseDown="NextControl_MouseDown" MouseEnter="NextControl_MouseEnter" MouseLeave="NextControl_MouseLeave" MouseUp="NextControl_MouseUp"/>
+            <Image x:Name="Settings" Height="30" Canvas.Right="5" Canvas.Bottom="5" Width="30" MouseDown="Settings_MouseDown" Cursor="Hand" Canvas.Left="480">
+                <Image.Style>
+                    <Style>
+                        <Setter Property="Image.Source" Value="Design/Pics/Media Controls/Normal/Settings.png"/>
+                        <Style.Triggers>
+                            <Trigger Property="Image.IsMouseOver" Value="True">
+                                <Setter Property="Image.Source" Value="Design/Pics/Media Controls/Hover/Settings.png"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
         </Canvas>
     </Canvas>
 </Window>
